@@ -1,0 +1,60 @@
+#navBar{
+    display: flex;
+    background-color: #1a1a1a;
+    align-items: center;
+    border-bottom: 1px solid rgb(84 84 84 / 48%);
+}
+
+nav {
+    padding: 0px 15px;
+    height: 50px;
+    flex-direction: row;
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
+    place-content: baseline;
+    align-items: center;
+
+    a {
+      color: #fff;
+      padding: 10px;
+      text-align: left;
+      text-decoration: none;
+  
+      &.router-link-exact-active {
+        text-decoration: underline #42b983;
+        text-underline-offset: 18px;
+        font-weight: 500;
+        color: #42b983;
+    }
+    
+    &:hover{
+        color: #42b983;
+        font-weight: 500;
+      }
+    }
+}
+
+.seccionUsuarioNav{
+    display: flex;
+    margin-right: 20px;
+    cursor: pointer;
+
+    .imagenUsuario{
+        width: 40px;
+        height: 40px;
+        border-radius: 100px;
+        border: 1px solid white;
+    }  
+    // .datosUsuario{
+    //     padding-left: 10px;
+    //     text-align: left;
+    //     display: flex;
+    //     flex-direction: column;
+    //     .nombreUsuario{
+    //         padding-top: 10px;
+    //         padding-bottom: 10px;
+    //         font-weight: bold;
+    //     }
+    // }
+}
