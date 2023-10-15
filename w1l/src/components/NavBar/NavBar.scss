@@ -20,6 +20,14 @@ nav {
       padding: 10px;
       text-align: left;
       text-decoration: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+
+      svg{
+        margin-left: 3px;
+        margin-top: 2px;
+      }
   
       &.router-link-exact-active {
         text-decoration: underline #42b983;
@@ -38,23 +46,19 @@ nav {
 .seccionUsuarioNav{
     display: flex;
     margin-right: 20px;
-    cursor: pointer;
+    align-items: center;
+
+    span{
+        font-weight: 100;
+        font-size: 15px;
+        padding-right: 10px;
+    }
 
     .imagenUsuario{
+        cursor: pointer;
         width: 40px;
         height: 40px;
         border-radius: 100px;
         border: 1px solid white;
     }  
-    // .datosUsuario{
-    //     padding-left: 10px;
-    //     text-align: left;
-    //     display: flex;
-    //     flex-direction: column;
-    //     .nombreUsuario{
-    //         padding-top: 10px;
-    //         padding-bottom: 10px;
-    //         font-weight: bold;
-    //     }
-    // }
 }
