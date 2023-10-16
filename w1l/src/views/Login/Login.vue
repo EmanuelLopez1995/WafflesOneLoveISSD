@@ -1,10 +1,10 @@
 <template>
   <div>
-    <v-img
-      class="mx-auto my-6"
+    <img
+      class="logoSSLIT mx-auto my-3 mt-10"
       max-width="228"
-      src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg"
-    ></v-img>
+      src="../../assets/img/SSLIT.png"
+    />
 
     <v-card
       id="cardLogin"
@@ -27,7 +27,7 @@
 
         <a
           id="olvidastePassw" 
-          class="text-caption text-decoration-none text-blue"
+          class="linkLogin text-caption text-decoration-none"
           href="#"
           rel="noopener noreferrer"
           target="_blank"
@@ -58,7 +58,7 @@
       <v-btn
         block
         class="mb-8"
-        color="blue"
+        color="#42b883"
         size="large"
         variant="tonal"
       >
@@ -67,7 +67,7 @@
 
       <v-card-text class="text-center">
         <a
-          class="text-blue text-decoration-none"
+          class="linkLogin text-decoration-none"
           href="#"
           rel="noopener noreferrer"
           target="_blank"
