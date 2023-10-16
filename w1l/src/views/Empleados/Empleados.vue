@@ -1,13 +1,13 @@
 <template>
-  <div class="home">
+  <div class="empleados">
       <h1>BIENVENIDO!</h1>
   </div>
 </template>
 
 <script>
-import './HomeView.scss'
+import './Empleados.scss'
 export default {
-  name: 'HomeView',
+  name: 'Empleados',
   components: {
   }
 }
