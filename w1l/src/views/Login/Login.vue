@@ -7,37 +7,39 @@
     ></v-img>
 
     <v-card
+      id="cardLogin"
       class="mx-auto pa-12 pb-8"
       elevation="8"
       max-width="448"
       rounded="lg"
     >
-      <div class="text-subtitle-1 text-medium-emphasis">Account</div>
+      <div class="correoLabel text-subtitle-1 text-medium-emphasis">Email</div>
 
       <v-text-field
         density="compact"
-        placeholder="Email address"
+        placeholder="Correo electrónico"
         prepend-inner-icon="mdi-email-outline"
         variant="outlined"
       ></v-text-field>
 
       <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
-        Password
+        Contraseña
 
         <a
+          id="olvidastePassw" 
           class="text-caption text-decoration-none text-blue"
           href="#"
           rel="noopener noreferrer"
           target="_blank"
         >
-          Forgot login password?</a>
+          Olvidaste tu contraseña?</a>
       </div>
 
       <v-text-field
         :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
         :type="visible ? 'text' : 'password'"
         density="compact"
-        placeholder="Enter your password"
+        placeholder="Ingrese su contraseña"
         prepend-inner-icon="mdi-lock-outline"
         variant="outlined"
         @click:append-inner="visible = !visible"
@@ -49,7 +51,7 @@
         variant="tonal"
       >
         <v-card-text class="text-medium-emphasis text-caption">
-          Warning: After 3 consecutive failed login attempts, you account will be temporarily locked for three hours. If you must login now, you can also click "Forgot login password?" below to reset the login password.
+          Si olvidaste tu contraseña puedes darle click a "Olvidaste tu contraseña?" para resetearla 
         </v-card-text>
       </v-card>
 
@@ -60,7 +62,7 @@
         size="large"
         variant="tonal"
       >
-        Log In
+        Ingresar
       </v-btn>
 
       <v-card-text class="text-center">
@@ -70,7 +72,7 @@
           rel="noopener noreferrer"
           target="_blank"
         >
-          Sign up now <v-icon icon="mdi-chevron-right"></v-icon>
+          Crea tu cuenta <v-icon icon="mdi-chevron-right"></v-icon>
         </a>
       </v-card-text>
     </v-card>
@@ -78,11 +80,13 @@
 </template>
 
 <script>
-export default {
-    components: {},
-    name: 'login',
-    
-}
+  import './Login.scss'
+
+  export default {
+    data: () => ({
+      visible: false,
+    }),
+  }
 </script>
 
 <style>
