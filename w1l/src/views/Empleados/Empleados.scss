@@ -14,5 +14,39 @@
 
 }
 
+#inputsFormEmpleados{
+    padding-left: 10px;
+    padding-right: 10px;
+    
+    
+}
+
+
+#formulario{
+    
+    position: relative;
+    width: 70%;
+    height: 590px;
+    margin: 0 auto;
+    padding: 1em;
+    box-sizing: border-box;
+
+    /* creamos nuestra malla (grid) */
+    display: grid;
+    grid-gap: 90px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1em 1em 1em 4em;
+
+    .me-10{
+        background-color:forestgreen ;
+        width: 30%;
+        margin-left: 70%;
+    }
+
+    .botonLimpiar{
+        background-color: red;
+        width: 30%;
+    }
+  }
 
 
