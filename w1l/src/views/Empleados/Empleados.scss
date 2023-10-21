@@ -17,11 +17,12 @@
     input{
         padding-left: 10px;
         padding-right: 10px;
+        
     }
 }
 
 
-#formulario{
+#formularioRegistro{
     
     position: relative;
     width: 70%;
@@ -33,18 +34,49 @@
     /* creamos nuestra malla (grid) */
     display: grid;
     grid-gap: 90px;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 1em 1em 1em 4em;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1em 1em 1em 1em;
 
     .me-10{
+        
         background-color:forestgreen ;
-        width: 30%;
-        margin-left: 70%;
+        width: 40%;
+        margin-left: 100%;
     }
 
     .botonLimpiar{
         background-color: red;
-        width: 30%;
+        width: 40%;
+        margin-left: 100%;
+    }
+  }
+
+  #formularioAdelanto{
+     
+    position: relative;
+    width: 50%;
+    height: 300px;
+    margin: 0 auto;
+    padding: 1em;
+    box-sizing: border-box;
+
+    /* creamos nuestra malla (grid) */
+    display: grid;
+    grid-gap: 60px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1em 0em ;
+
+    .me-10{
+        
+        background-color:forestgreen ;
+        width: 40%;
+        margin-left: 60%;
+    }
+
+    .botonLimpiar{
+        background-color: red;
+        width: 40%;
+        margin-left: 0%;
     }
   }
 
