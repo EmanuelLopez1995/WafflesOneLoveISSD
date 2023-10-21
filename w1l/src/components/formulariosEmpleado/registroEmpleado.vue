@@ -1,5 +1,5 @@
 <template>
-    <v-form @submit.prevent id="formulario" ref="form">
+    <v-form @submit.prevent id="formularioRegistro" ref="form">
     <v-text-field
         v-model="nombre"
         :rules="reglas.nombre"
@@ -18,7 +18,7 @@
 
     <v-text-field
         v-model="dni"
-        :rules="reglas.apellido"
+        :rules="reglas.dni"
         :counter="15"
         label="DNI"
         class="inputsFormEmpleados"
@@ -26,7 +26,7 @@
 
     <v-text-field
         v-model="telefono"
-        :rules="reglas.apellido"
+        :rules="reglas.telefono"
         :counter="15"
         label="Telefono"
         class="inputsFormEmpleados"
@@ -34,7 +34,7 @@
 
     <v-text-field
         v-model="direccion"
-        :rules="reglas.apellido"
+        :rules="reglas.direccion"
         :counter="10"
         label="Direccion"
         class="inputsFormEmpleados"
@@ -42,27 +42,51 @@
 
     <v-text-field
         v-model="email"
-        :rules="reglas.apellido"
+        :rules="reglas.email"
         label="E-mail"
         class="inputsFormEmpleados"
     ></v-text-field>
 
+     <v-text-field
+        v-model="sueldoNormal"
+        :rules="reglas.sueldoNormal"
+        label="Sueldo hora normal"
+        class="inputsFormEmpleados"
+        type=number
+    ></v-text-field>
+
+     <v-text-field
+        v-model="sueldoFeriado"
+        :rules="reglas.sueldoFeriado"
+        label="Sueldo hora feriado"
+        class="inputsFormEmpleados"
+        type=number
+    ></v-text-field>
+
+     <v-text-field
+        v-model="sueldoDomingo"
+        :rules="reglas.sueldoDomingo"
+        label="Sueldo hora domingo"
+        class="inputsFormEmpleados"
+        type=number
+    ></v-text-field>
+
     <v-select
         v-model="puestos"
-        :rules="reglas.apellido"
+        :rules="reglas.puestos"
         :items="itemsPuestos"
         label="Puesto"
         class="inputsFormEmpleados"
     ></v-select>
-
+    
     <v-checkbox
         v-model="confirmarDatos"
-        :rules="reglas.apellido"
+        :rules="reglas.confirmarDatos"
         value="1"
         label="Confirmar datos"
         type="checkbox"
     ></v-checkbox>
-
+    <br>
     <v-btn class="me-10" type="submit"> Registrar </v-btn>
 
     <v-btn @click="resetForm" class="botonLimpiar"> Limpiar </v-btn>
@@ -79,6 +103,9 @@ export default {
     telefono: '',
     direccion: '',
     email: '',
+    sueldoNormal: '',
+    sueldoFeriado: '',
+    sueldoDomingo: '',
     puestos: '',
     confirmarDatos: false,
     itemsPuestos: [
