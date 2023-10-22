@@ -51,6 +51,14 @@
     }
   }
 
+  .inputsFormAdelanto{
+    input{
+        padding-left: 10px;
+        padding-right: 10px;
+        
+    }
+}
+
   #formularioAdelanto{
      
     position: relative;
@@ -64,7 +72,7 @@
     display: grid;
     grid-gap: 60px;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 1em 0em ;
+    grid-template-rows: 2em 2em ;
 
     .me-10{
         
