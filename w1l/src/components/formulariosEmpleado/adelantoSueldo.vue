@@ -47,7 +47,7 @@ export default {
   }),
   computed: {
     reglas() {
-      return this.$store.state.reglas;
+      return this.$store.getters['validaciones/reglas'];
     }
   },
   methods: {
