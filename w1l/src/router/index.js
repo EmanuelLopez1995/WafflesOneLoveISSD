@@ -31,7 +31,8 @@ const router = createRouter({
 })
 
 router.beforeEach( async (to, from, next) => {
-  let usuarioAutenticado = true; // este valor va a venir del backend
+
+  let usuarioAutenticado = localStorage.getItem('usuarioAutenticado'); // esto cambiaría desde el back 
   store.commit('setUsuarioAutenticado', usuarioAutenticado);
 
   if(to.path != '/login'){
