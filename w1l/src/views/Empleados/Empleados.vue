@@ -12,7 +12,12 @@
     <v-card-text class="h-screen">
       <v-window v-model="tab">
        
-        <v-window-item value="1"></v-window-item> 
+        <v-window-item value="1" id="windowListado">
+          <br>
+          <h2>Listado de empleados registrados:</h2>
+          <br>
+          <listadoEmpleados />  
+        </v-window-item> 
 
         <v-window-item value="2">
           <br>
@@ -44,12 +49,16 @@
 import "./Empleados.scss";
 import registroEmpleado from '@/components/formulariosEmpleado/registroEmpleado.vue'
 import adelantoSueldo from '@/components/formulariosEmpleado/adelantoSueldo.vue'
+import listadoEmpleados from '@/components/listadosEmpleado/listadoEmpleados.vue'
+// import listadoAdelantoSueldo from '@/components/listadosEmpleado/listadoAdelantoSueldo.vue'
 
 
 export default {
   components: {
     registroEmpleado,
     adelantoSueldo,
+    listadoEmpleados,
+    // listadoAdelantoSueldo,
   },
   data: () => ({
     tab: null,
