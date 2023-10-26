@@ -39,7 +39,7 @@ const validacionesStore = {
               return 'El email es obligatorio'
             },
             value => {
-              if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
+              if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(value)) return true
               return 'Email inválido' 
             },
           ],
