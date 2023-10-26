@@ -61,4 +61,22 @@ nav {
         border-radius: 100px;
         border: 1px solid white;
     }  
+
+}
+
+.listItem{
+  cursor: pointer;
+  &:hover{
+    color: #42b983;
+  }
+  .v-list-item__content{
+    display: flex;
+    align-items: center;
+    span{
+      padding-top: 3px;
+    }
+    .v-list-item-title{
+      padding-left: 8px;
+    }
+  }
 }
