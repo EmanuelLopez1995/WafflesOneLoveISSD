@@ -1,6 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView/HomeView.vue'
-import Empleados from '../views/Empleados/Empleados.vue'
 import store from '@/store';
 
 const routes = [
@@ -12,12 +11,17 @@ const routes = [
   {
     path: '/empleados',
     name: 'empleados',
-    component: Empleados
+    component: () => import ('@/views/Empleados/Empleados.vue')
   },
   {
     path: '/login',
     name: 'login',
     component: () => import ('@/views/Login/Login.vue')
+  },
+  {
+    path: '/stock',
+    name: 'stock',
+    component: () => import ('@/views/Stock/Stock.vue')
   },
   { 
     path: '/:pathMatch(.*)*', 
