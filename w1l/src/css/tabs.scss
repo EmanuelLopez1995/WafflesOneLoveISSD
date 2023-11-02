@@ -1,5 +1,5 @@
 .tabsStyles{
-    --v-tabs-height: 35px;
+    --v-tabs-height: 45px;
     z-index: 999;
     background-color: #1a1a1a;
     border-bottom: 1px solid rgb(84 84 84 / 48%);
@@ -8,6 +8,9 @@
         text-transform: none;
         font-weight: 400;
         padding: 0 10px;
+    }
+    .v-tab__slider{
+        top: 19px;
     }
     
 }
