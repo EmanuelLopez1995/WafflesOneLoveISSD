@@ -2,16 +2,16 @@
     <v-card>
         <v-tabs class="tabsStyles" v-model="tab">
             <v-tab value="1">Listado</v-tab>
-            <v-tab value="2">Registrar producto</v-tab>
+            <v-tab value="2">Registrar Proveedor</v-tab>
         </v-tabs>
 
         <v-card-text class="h-screen">
             <v-window v-model="tab">
                 <v-window-item value="1" class="h-screen">
-                    <h1>Listado</h1>
+                    1
                 </v-window-item> 
                 <v-window-item value="2" class="h-screen">
-                    <registrarStock />
+                    2
                 </v-window-item> 
             </v-window>
         </v-card-text>
@@ -20,13 +20,11 @@
 </template>
 
 <script>
-    import './Stock.scss';
+    import './Proveedores.scss';
     import '@/css/tabs.scss';
-    import registrarStock from '@/components/registrarStock/registrarStock.vue'
 
     export default {
         components: {
-            registrarStock
         },
         data: () => ({
             tab: null,

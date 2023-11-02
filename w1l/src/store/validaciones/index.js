@@ -2,6 +2,13 @@ const validacionesStore = {
     namespaced: true,
     state: () => ({
         reglas: {
+          //Validación general campo vacío
+          notNull: [
+            value => {
+              if (value) return true
+              return 'El campo es obligatorio'
+            }
+          ],
           // Validacion formulario de registro de empleado
           nombre: [
             value => {
@@ -81,34 +88,34 @@ const validacionesStore = {
     
       
         // Validacion formulario adelanto de sueldo
-            empleados: [
+          empleados: [
             value => {
                 if (value) return true
                 return 'Debe seleccionar un empleado'
             }
-            ],
+          ],
 
-            adelantoSueldo: [
+          adelantoSueldo: [
             value => {
                 if (value) return true
                 return 'Debe ingresar el adelanto para el empleado seleccionado'
             }
-            ],
-            confirmarAdelanto: [
+          ],
+          confirmarAdelanto: [
             value => {
                 if (value) return true
                 return 'Debe confirmar el adelanto'
             }
-            ],  
+          ],  
 
         //fin validaciones formulario de registro adelanto de empleados
 
-            password: [
+          password: [
             value => {
                 if (value) return true
                 return 'Debe ingresar la contraseña'
             }
-            ],  
+          ],  
         }
     }),
     getters: {

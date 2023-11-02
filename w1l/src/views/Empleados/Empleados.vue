@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-tabs v-model="tab" bg-color="#29272A">
+    <v-tabs class="tabsStyles" v-model="tab">
       <v-tab value="1">Listado</v-tab>
       <v-tab value="2">Registrar</v-tab>
       <v-tab value="3">Eliminar</v-tab>
