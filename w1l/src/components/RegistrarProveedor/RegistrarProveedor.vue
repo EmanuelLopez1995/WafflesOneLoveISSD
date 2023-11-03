@@ -67,41 +67,68 @@
                 </v-row>
             </v-container>
             <br>
-            <v-btn class="me-10" type="submit" color="green-darken-4"> Registrar </v-btn>
+            <v-btn v-if="!loading" class="me-10" type="submit" color="green-darken-4"> Registrar </v-btn>
 
-            <v-btn @click="resetForm" class="botonLimpiar " color="red-darken-4"> Limpiar </v-btn>
+            <v-btn v-if="!loading" @click="resetForm" class="botonLimpiar " color="red-darken-4"> Limpiar </v-btn>
         </v-form>
+        <v-progress-circular v-if="loading"
+            :width="5"
+            color="green"
+            indeterminate
+        ></v-progress-circular>
+        <snack-bar v-if="submitFinalizado" :exitoso="esExitoso" @timeout-completado="submitFinalizado = false" />
     </div>
 </template>
 
 <script>
 import './RegistrarProveedor.scss'
+import SnackBar from '@/components/SnackBar/SnackBar.vue'
+
+
 export default {
-  data: () => ({
-    nombreFantasiaProveedor: '',
-    razonSocialProveedor: '',
-    domicilioProveedor: '',
-    telefonoProveedor: '',
-    cuitProveedor: '',
-    emailProveedor: '',
-    detalleProveedor: ''
-  }),
-  computed: {
-    reglas() {
-      return this.$store.getters['validaciones/reglas'];
-    }
-  },
-  methods: {
-    resetForm () {
-      this.$refs.form.reset()
+
+    components: {
+        SnackBar
     },
-    registrarProveedor() {
-      this.$refs.form.validate().then(response => {
-        if (response.valid) {
-          console.log('form valido')
+    data: () => ({
+        nombreFantasiaProveedor: '',
+        razonSocialProveedor: '',
+        domicilioProveedor: '',
+        telefonoProveedor: '',
+        cuitProveedor: '',
+        emailProveedor: '',
+        detalleProveedor: '',
+        submitFinalizado: false,
+        esExitoso: false,
+        loading: false
+    }),
+    computed: {
+        reglas() {
+        return this.$store.getters['validaciones/reglas'];
         }
-      });
+    },
+    methods: {
+        resetForm () {
+            this.$refs.form.reset()
+        },
+        registrarProveedor() {
+            this.$refs.form.validate().then(response => {
+                if (response.valid) {
+                    
+                    this.loading = true;
+                    setTimeout(()=>{
+                        this.loading = false;
+                        if(true){ //TODO: si la llamada se hace bien
+                            this.esExitoso = true;
+                        }else{
+                            this.esExitoso = false;
+                        }
+                        this.resetForm();
+                        this.submitFinalizado = true
+                    },2000)
+                }
+            });
+        }
     }
-  }
 }
 </script>
