@@ -11,7 +11,7 @@
                     1
                 </v-window-item> 
                 <v-window-item value="2" class="h-screen">
-                    2
+                    <registrar-proveedor />
                 </v-window-item> 
             </v-window>
         </v-card-text>
@@ -22,9 +22,11 @@
 <script>
     import './Proveedores.scss';
     import '@/css/tabs.scss';
+    import RegistrarProveedor from '../../components/RegistrarProveedor/RegistrarProveedor.vue';
 
     export default {
         components: {
+            RegistrarProveedor
         },
         data: () => ({
             tab: null,
