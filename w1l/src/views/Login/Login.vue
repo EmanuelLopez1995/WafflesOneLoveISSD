@@ -20,6 +20,7 @@
         <v-text-field
           density="compact"
           placeholder="Correo electrónico"
+          type="email"
           :rules="reglas.email"
           prepend-inner-icon="mdi-email-outline"
           variant="outlined"
