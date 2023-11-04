@@ -10,7 +10,16 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
+import axios from 'axios';
 
+
+const customAxios = axios.create({
+    baseURL: process.env.VUE_APP_API_URL,
+    timeout: 10000,
+});
+
+const app = createApp(App);
+app.config.globalProperties.$http = customAxios;
 
 const vuetify = createVuetify({
     components,
@@ -23,4 +32,4 @@ const vuetify = createVuetify({
     },
   })
 
-createApp(App).use(store).use(router).use(vuetify).mount('#app')
+app.use(store).use(router).use(vuetify).mount('#app')
