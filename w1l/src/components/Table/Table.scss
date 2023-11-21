@@ -1,0 +1,24 @@
+.options {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.editButton {
+    cursor: pointer;
+    display: inline-block;
+    width: 20px; 
+    height: 20px; 
+    background: url('../../assets/icons/editIcon.svg') no-repeat center center;
+    background-size: cover;
+}
+
+.deleteButton {
+    cursor: pointer;
+    display: inline-block;
+    width: 20px; 
+    height: 20px; 
+    background: url('../../assets/icons/deleteIcon.svg') no-repeat center center;
+    background-size: cover;
+    margin-left: 25px;
+}

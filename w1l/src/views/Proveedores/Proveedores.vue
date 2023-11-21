@@ -8,7 +8,7 @@
         <v-card-text class="h-screen">
             <v-window v-model="tab">
                 <v-window-item value="1" class="h-screen">
-                    1
+                    <listado-proveedor />
                 </v-window-item> 
                 <v-window-item value="2" class="h-screen">
                     <registrar-proveedor />
@@ -23,10 +23,12 @@
     import './Proveedores.scss';
     import '@/css/tabs.scss';
     import RegistrarProveedor from '../../components/RegistrarProveedor/RegistrarProveedor.vue';
+    import ListadoProveedor from '../../components/ListadoProveedor/ListadoProveedor.vue';
 
     export default {
         components: {
-            RegistrarProveedor
+            RegistrarProveedor,
+            ListadoProveedor
         },
         data: () => ({
             tab: null,
