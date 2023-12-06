@@ -1,0 +1,30 @@
+C:\Users\ernes\source\repos\WafflesOneLove\Service\bin\Debug\net6.0\Service.deps.json
+C:\Users\ernes\source\repos\WafflesOneLove\Service\bin\Debug\net6.0\Service.dll
+C:\Users\ernes\source\repos\WafflesOneLove\Service\bin\Debug\net6.0\Service.pdb
+C:\Users\ernes\source\repos\WafflesOneLove\Service\bin\Debug\net6.0\Common.dll
+C:\Users\ernes\source\repos\WafflesOneLove\Service\bin\Debug\net6.0\Common.pdb
+C:\Users\ernes\source\repos\WafflesOneLove\Service\obj\Debug\net6.0\Service.csproj.AssemblyReference.cache
+C:\Users\ernes\source\repos\WafflesOneLove\Service\obj\Debug\net6.0\Service.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ernes\source\repos\WafflesOneLove\Service\obj\Debug\net6.0\Service.AssemblyInfoInputs.cache
+C:\Users\ernes\source\repos\WafflesOneLove\Service\obj\Debug\net6.0\Service.AssemblyInfo.cs
+C:\Users\ernes\source\repos\WafflesOneLove\Service\obj\Debug\net6.0\Service.csproj.CoreCompileInputs.cache
+C:\Users\ernes\source\repos\WafflesOneLove\Service\obj\Debug\net6.0\Service.csproj.CopyComplete
+C:\Users\ernes\source\repos\WafflesOneLove\Service\obj\Debug\net6.0\Service.dll
+C:\Users\ernes\source\repos\WafflesOneLove\Service\obj\Debug\net6.0\refint\Service.dll
+C:\Users\ernes\source\repos\WafflesOneLove\Service\obj\Debug\net6.0\Service.pdb
+C:\Users\ernes\source\repos\WafflesOneLove\Service\obj\Debug\net6.0\ref\Service.dll
+C:\Users\Win10\Desktop\Back Waffles\Service\bin\Debug\net6.0\Service.deps.json
+C:\Users\Win10\Desktop\Back Waffles\Service\bin\Debug\net6.0\Service.dll
+C:\Users\Win10\Desktop\Back Waffles\Service\bin\Debug\net6.0\ref\Service.dll
+C:\Users\Win10\Desktop\Back Waffles\Service\bin\Debug\net6.0\Service.pdb
+C:\Users\Win10\Desktop\Back Waffles\Service\bin\Debug\net6.0\Common.dll
+C:\Users\Win10\Desktop\Back Waffles\Service\bin\Debug\net6.0\Common.pdb
+C:\Users\Win10\Desktop\Back Waffles\Service\obj\Debug\net6.0\Service.csproj.AssemblyReference.cache
+C:\Users\Win10\Desktop\Back Waffles\Service\obj\Debug\net6.0\Service.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Win10\Desktop\Back Waffles\Service\obj\Debug\net6.0\Service.AssemblyInfoInputs.cache
+C:\Users\Win10\Desktop\Back Waffles\Service\obj\Debug\net6.0\Service.AssemblyInfo.cs
+C:\Users\Win10\Desktop\Back Waffles\Service\obj\Debug\net6.0\Service.csproj.CoreCompileInputs.cache
+C:\Users\Win10\Desktop\Back Waffles\Service\obj\Debug\net6.0\Service.csproj.CopyComplete
+C:\Users\Win10\Desktop\Back Waffles\Service\obj\Debug\net6.0\Service.dll
+C:\Users\Win10\Desktop\Back Waffles\Service\obj\Debug\net6.0\ref\Service.dll
+C:\Users\Win10\Desktop\Back Waffles\Service\obj\Debug\net6.0\Service.pdb
