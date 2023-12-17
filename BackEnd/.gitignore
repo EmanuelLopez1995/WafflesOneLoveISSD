@@ -28,6 +28,7 @@ obj/
 msbuild.log
 msbuild.err
 msbuild.wrn
+appsettings.Local.json
 
 # Visual Studio 2015
 .vs/

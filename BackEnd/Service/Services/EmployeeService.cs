@@ -25,11 +25,12 @@ namespace Service.Services
             var empleado = new Employee
             {
                 Direction = model.Direccion,
-                Dni = model.Direccion,
+                Dni = model.Dni,
                 Email = model.Email,
                 LastName = model.Apellido,
                 Name = model.Nombre,
                 PhoneNumber = model.Numero,
+                Salary = model.Salario,
                 Position = model.Posicion
             };
 
