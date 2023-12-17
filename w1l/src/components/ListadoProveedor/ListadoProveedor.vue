@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Table v-if="proveedores" :contenido="proveedores" :titulos="titulosTabla"/>
+        <!-- <Table v-if="proveedores" :contenido="proveedores" :titulos="titulosTabla"/> -->
     </div>
 </template>
 
@@ -18,14 +18,14 @@ export default {
         }
     },
     created() {
-        this.getDatosProveedor();
+        // this.getDatosProveedor();
     },
     methods: {
-        getDatosProveedor() {
-            this.$http.get('/pokemon').then((response) =>{
-                this.proveedores = response.data.results;
-            })
-        }
+        // getDatosProveedor() {
+        //     this.$http.get('/pokemon').then((response) =>{
+        //         this.proveedores = response.data.results;
+        //     })
+        // }
     }
 }
 </script>
