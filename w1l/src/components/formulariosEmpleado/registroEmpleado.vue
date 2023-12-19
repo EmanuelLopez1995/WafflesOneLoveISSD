@@ -1,5 +1,5 @@
 <template>
-    <v-form @submit.prevent id="formularioRegistro" ref="form">
+    <v-form @submit.prevent="registrarEmpleado()" id="formularioRegistro" ref="form">
     <v-text-field
         v-model="nombre"
         :rules="reglas.nombre"
@@ -54,7 +54,7 @@
         class="inputsFormEmpleados"
         type=number
     ></v-text-field>
-
+<!-- 
      <v-text-field
         v-model="sueldoFeriado"
         :rules="reglas.sueldoFeriado"
@@ -69,7 +69,7 @@
         label="Sueldo hora domingo"
         class="inputsFormEmpleados"
         type=number
-    ></v-text-field>
+    ></v-text-field> -->
 
     <v-select
         v-model="puestos"
@@ -124,6 +124,29 @@ export default {
     resetForm () {
       this.$refs.form.reset()
     },
+    registrarEmpleado(){
+      this.$refs.form.validate().then(response => {
+            if (response.valid) {
+                   let params = {
+                      nombre: this.nombre,
+                      apellido: this.apellido,
+                      dni: this.dni,
+                      numero: this.telefono,
+                      direccion: this.direccion,
+                      email: this.email,
+                      salario: this.sueldoNormal,
+                      posicion: this.puestos
+              }
+               this.$http.post('/employees', params).then((response) =>{
+                
+                  console.log(response);
+                  })
+                  
+                }else{
+                    console.log("no Es valido")
+                }
+            });
+    }
   }
 }
 </script>
