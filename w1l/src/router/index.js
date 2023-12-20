@@ -33,6 +33,11 @@ const routes = [
     name: 'compras',
     component: () => import ('@/views/Compras/Compras.vue')
   },
+  {
+    path: '/inicioTurno',
+    name: 'inicioTurno',
+    component: () => import ('@/views/Turno/InicioTurno.vue')
+  },
   { 
     path: '/:pathMatch(.*)*', 
     redirect: {name: 'home'}
