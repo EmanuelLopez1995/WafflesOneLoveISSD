@@ -47,7 +47,7 @@
         <br>
         <v-btn class="me-10" type="submit" color="green-darken-4"> Registrar </v-btn>
 
-        <v-btn @click="resetForm" class="botonLimpiar " color="red-darken-4"> Limpiar </v-btn>
+        <v-btn @click="resetForm" class="botonLimpiar " color="#8A1212"> Limpiar </v-btn>
       </v-form>
   </div>
 </template>

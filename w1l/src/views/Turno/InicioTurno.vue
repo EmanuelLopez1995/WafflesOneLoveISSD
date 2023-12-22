@@ -1,12 +1,13 @@
 <template>
   <div class="pt-4">
-        <v-form class="formInicioTurno" ref="form" border>
+        <v-form class="formInicioTurno" @submit.prevent="iniciarCaja()" ref="form" border>
                 <v-container >
                     <h1>Iniciar turno</h1>
                     <v-row>
                         <v-col cols="2">
                             <v-text-field
                                 v-model="fecha"
+                                :rules="reglas.notNull"
                                 label="Fecha"
                                 type="date"
                                 class="inputsFormProveedor"
@@ -16,6 +17,7 @@
                             <v-text-field
                                 v-model="hora"
                                 label="Hora"
+                                :rules="reglas.notNull"
                                 type="time"
                                 class="inputsFormProveedor"
                             ></v-text-field>
@@ -24,6 +26,7 @@
                             <v-select
                                 v-model="turno"
                                 :items="itemsTurno"
+                                :rules="reglas.notNull"
                                 label="Turno"
                                 class="inputsFormEmpleados"
                             ></v-select>
@@ -44,9 +47,11 @@
                         <v-row v-for="(empleado, index) in empleados" :key="index" class="mb-0 mt-0">
                             <v-col cols="3" class="pt-0 pb-0">
                                 <v-select
+                                    no-data-text="No hay mas empleados"
                                     density="compact"
                                     v-model="empleado.empleado"
                                     :items="itemsEmpleados"
+                                    :rules="reglas.notNull"
                                     label="Empleado"
                                     class="pt-0"
                                     @update:modelValue="eliminarItemDeArray(empleado.empleado)"
@@ -56,6 +61,7 @@
                                 <v-text-field
                                     v-model="empleado.horaIngreso"
                                     label="Hora de ingreso"
+                                    :rules="reglas.notNull"
                                     type="time"
                                     class="pt-0"
                                     density="comfortable"
@@ -71,9 +77,12 @@
                             </v-col>
                             <span class="deleteButton" @click="eliminarFila(index, empleado.empleado)"></span>
                         </v-row>
-                        <v-btn class="me-10 mt-0 d-flex" color="green-darken-4" @click="agregarFila()">Agregar fila</v-btn>
-
+                        <v-btn class="me-10 mt-0 d-flex" color="light-blue-darken-4" prepend-icon="mdi-plus" @click="agregarFila()">Agregar fila</v-btn>
                     </div>
+                    <br>
+                    <v-row justify="end" class="mt-4">
+                        <v-btn class="me-10 mt-0 d-flex" color="green-darken-4" type="submit" append-icon="mdi-arrow-right">Siguiente</v-btn>
+                    </v-row>
                 </v-container>
         </v-form>
     </div>
@@ -102,7 +111,7 @@ export default {
     },
     computed: {
         reglas() {
-        return this.$store.getters['validaciones/reglas'];
+            return this.$store.getters['validaciones/reglas'];
         }
     },
     methods: {
@@ -146,6 +155,13 @@ export default {
             if (indiceAEliminar !== -1) {
                 this.itemsEmpleados.splice(indiceAEliminar, 1);
             }
+        },
+        iniciarCaja() {
+            this.$refs.form.validate().then(response => {
+                if (response.valid) {
+                    console.log(this.empleados);
+                }
+            });
         }
     }
 }
