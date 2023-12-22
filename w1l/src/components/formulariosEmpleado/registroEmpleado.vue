@@ -87,7 +87,7 @@
         type="checkbox"
     ></v-checkbox>
     <br>
-    <v-btn class="me-10" type="submit"> Registrar </v-btn>
+    <v-btn class="me-10" color="green-darken-4" type="submit"> Registrar </v-btn>
 
     <v-btn @click="resetForm" class="botonLimpiar"> Limpiar </v-btn>
     </v-form>

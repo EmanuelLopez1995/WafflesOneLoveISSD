@@ -2,7 +2,7 @@
   <div class="text-center">
 
     <v-snackbar
-        :color="exitoso ? 'green-darken-4' : 'red-darken-4'"   
+        :color="exitoso ? '#1B5E20' : '#8A1212'"   
         v-model="showSnackbar"
         :timeout="timeout"
     >

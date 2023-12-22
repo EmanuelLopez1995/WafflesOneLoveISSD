@@ -69,7 +69,7 @@
             <br>
             <v-btn v-if="!loading" class="me-10" type="submit" color="green-darken-4"> Registrar </v-btn>
 
-            <v-btn v-if="!loading" @click="resetForm" class="botonLimpiar " color="red-darken-4"> Limpiar </v-btn>
+            <v-btn v-if="!loading" @click="resetForm" class="botonLimpiar " color="#8A1212"> Limpiar </v-btn>
         </v-form>
         <v-progress-circular v-if="loading"
             :width="5"
