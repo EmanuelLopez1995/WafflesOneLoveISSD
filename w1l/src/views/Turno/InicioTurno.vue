@@ -1,6 +1,6 @@
 <template>
   <div class="pt-4">
-        <v-form class="formInicioTurno" @submit.prevent="iniciarCaja()" ref="form" border>
+        <v-form v-if="!siguienteClickeado" class="formInicioTurno" @submit.prevent="iniciarCaja()" ref="form" border>
                 <v-container >
                     <h1>Iniciar turno</h1>
                     <v-row>
@@ -85,6 +85,71 @@
                     </v-row>
                 </v-container>
         </v-form>
+        <v-form v-else>
+            <v-container>
+                <v-row>
+                    <v-col>
+                        <h1>Apertura de caja</h1>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
+                        <v-row class="justify-center">
+                            <v-col cols="6">
+                                <v-select
+                                    no-data-text="No hay empleados"
+                                    density="compact"
+                                    v-model="encargadoDeCaja"
+                                    :items="itemsEmpleados"
+                                    :rules="reglas.notNull"
+                                    label="Encargado de caja"
+                                ></v-select>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                <p class="text-h6 activoInicial">Activo inicial: $2500</p>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                    <v-col>
+                        <v-row>
+                            <v-col>
+                                  <v-table class="tablaBilletes" theme="dark">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">
+                                            Billete
+                                            </th>
+                                            <th class="text-center">
+                                            Cantidad
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr
+                                        v-for="billete in billetes"
+                                        :key="billete"
+                                    >
+                                        <td>{{ billete }}</td>
+                                        <td>
+                                            <v-text-field
+                                                variant="solo-filled"
+                                                type="number"
+                                                class="pt-0"
+                                                density="compact"
+                                                :hide-details="true"
+                                            ></v-text-field>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </v-table>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-form>
     </div>
 </template>
 
@@ -103,7 +168,11 @@ export default {
         esFeriado: false,
         notas: null,
         fecha: '',
-        hora: ''
+        hora: '',
+        siguienteClickeado: false,
+        encargadoDeCaja: null,
+        billetes: ['$10', '$20', '$50', '$100', '$500', '$1000']
+        
     }),
     created() {
         this.definirFechaYhora();
@@ -159,7 +228,7 @@ export default {
         iniciarCaja() {
             this.$refs.form.validate().then(response => {
                 if (response.valid) {
-                    console.log(this.empleados);
+                    this.siguienteClickeado = true;
                 }
             });
         }
