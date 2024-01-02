@@ -128,18 +128,28 @@
                                     </thead>
                                     <tbody>
                                     <tr
-                                        v-for="billete in billetes"
+                                        v-for="(billete, index) in billetes"
                                         :key="billete"
                                     >
-                                        <td>{{ billete }}</td>
+                                        <td>${{ billete }}</td>
                                         <td>
                                             <v-text-field
+                                                v-model="valoresBilletes[index]"
                                                 variant="solo-filled"
                                                 type="number"
                                                 class="pt-0"
                                                 density="compact"
                                                 :hide-details="true"
+                                                @input="sumarValores(index)"
                                             ></v-text-field>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            TOTAL
+                                        </td>
+                                        <td>
+                                            ${{valorTotal}}
                                         </td>
                                     </tr>
                                     </tbody>
@@ -171,7 +181,10 @@ export default {
         hora: '',
         siguienteClickeado: false,
         encargadoDeCaja: null,
-        billetes: ['$10', '$20', '$50', '$100', '$500', '$1000']
+        billetes: [10, 20, 50, 100, 500, 1000],
+        valoresBilletes: [],
+        sumaBilletes: [],
+        valorTotal: 0
         
     }),
     created() {
@@ -231,6 +244,10 @@ export default {
                     this.siguienteClickeado = true;
                 }
             });
+        },
+        sumarValores(index) {
+            this.sumaBilletes[index] = this.billetes[index] * this.valoresBilletes[index];
+            this.valorTotal = this.sumaBilletes.reduce((suma, numero) => suma + numero, 0);
         }
     }
 }
