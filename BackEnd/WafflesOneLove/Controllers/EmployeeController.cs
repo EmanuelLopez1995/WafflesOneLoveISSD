@@ -52,5 +52,15 @@ namespace WafflesOneLove.Controllers
 
             return Ok(ack);
         }
+
+         [HttpGet(ApiRoutes.Employee.GetAll)]
+        public IActionResult GetAll()
+        {
+            var employee = employeeService.GetAll();
+            if (employee == null || !employee.Any()) return NotFound();
+
+            return Ok(employee);
+        }
+
     }
 }

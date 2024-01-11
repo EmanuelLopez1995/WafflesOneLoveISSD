@@ -16,5 +16,7 @@ namespace Common.Interfaces.Service
         Ack Delete(int id);
         AckEntity<EmployeeModel> Crear(EmployeeModel model);
         EmployeeModel Obtener(int id);
+
+        List<EmployeeModel> GetAll();
     }
 }

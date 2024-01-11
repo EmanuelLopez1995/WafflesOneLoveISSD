@@ -7,6 +7,8 @@ namespace Common.Repository
         IEmployeeRepository Employees { get; }
         IEmployeeShiftRepository EmployeeShifts { get; }
         ISuppliersRepository Suppliers { get; }
+        IShiftRepository Shifts { get; }
+
         int Complete();
     }
 }

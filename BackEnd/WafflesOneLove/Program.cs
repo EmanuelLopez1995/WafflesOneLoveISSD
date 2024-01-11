@@ -12,7 +12,9 @@ builder.Services.AddEntityFrameworkSqlServer()
                 .AddDbContext<Context>(opt => opt.UseSqlServer(connectionString, sql => sql.MigrationsAssembly("Data")))
                 .AddScoped<IUnitOfWork, UnitOfWork>()
                 .AddScoped<IEmployeeService, EmployeeService>()
-                .AddScoped<IEmployeeShiftService, EmployeeShiftService>();
+                .AddScoped<IEmployeeShiftService, EmployeeShiftService>()
+                .AddScoped<ISuppliersService, SuppliersService>()
+                .AddScoped<IShiftService, ShiftService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

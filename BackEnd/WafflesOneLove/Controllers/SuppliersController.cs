@@ -52,5 +52,15 @@ namespace WafflesOneLove.Controllers
 
             return Ok(ack);
         }
+
+
+        [HttpGet(ApiRoutes.Suppliers.GetAll)]
+        public IActionResult GetAll()
+        {
+            var suppliers = suppliersService.GetAll();
+            if (suppliers == null || !suppliers.Any()) return NotFound();
+
+            return Ok(suppliers);
+        }
     }
 }

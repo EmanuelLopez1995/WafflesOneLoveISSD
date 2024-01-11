@@ -103,5 +103,19 @@ namespace Service.Services
 
             return ack;
         }
+
+        public List<SuppliersModel> GetAll()
+        {
+            var list = UoW.Suppliers.GetAll();
+            return list.Select(Suppliers => new SuppliersModel
+            {
+               Nombre=Suppliers.Name,
+               RazonSocial=Suppliers.SocialReason,
+               Direccion=Suppliers.Addrees,
+               Email=Suppliers.Email,
+               Numero=Suppliers.PhoneNumber,
+               Cuit=Suppliers.Cuit,    
+            }).ToList();
+        }
     }
 }
