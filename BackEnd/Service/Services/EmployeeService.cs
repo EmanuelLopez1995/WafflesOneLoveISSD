@@ -83,6 +83,23 @@ namespace Service.Services
             };
         }
 
+        public List<EmployeeModel> GetAll()
+        {
+            var list = UoW.Employees.GetAll();
+            return list.Select(employee => new EmployeeModel
+            {
+                Apellido = employee.LastName,
+                Nombre = employee.Name,
+                Direccion = employee.Direction,
+                Dni = employee.Dni,
+                Email = employee.Email,
+                Id = employee.Id,
+                Numero = employee.PhoneNumber,
+                Posicion = employee.Position,
+                Salario = employee.Salary
+            }).ToList();
+        }
+
         public AckEntity<EmployeeModel> Update(EmployeeModel model)
         {
             var ack = new AckEntity<EmployeeModel>();

@@ -12,5 +12,7 @@
 		public decimal? Salary {get; set; } 
 		public string Position {get; set; }
         public virtual ICollection<EmployeeShift> EmployeeShifts { get; set; } = new HashSet<EmployeeShift>();
-    }
+
+		public virtual ICollection<Shift> Shifts { get; set; } = new HashSet<Shift>();
+	}
 }
