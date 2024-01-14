@@ -1,11 +1,11 @@
 <template>
     <div>
-        <!-- <Table v-if="proveedores" :contenido="proveedores" :titulos="titulosTabla"/> -->
+        <Table v-if="proveedores" :contenido="proveedores" :titulos="titulosTabla"/>
     </div>
 </template>
 
 <script>
-import Table from '../Table/Table.vue'
+import Table from '../Table/Table.vue';
 
 export default {
     components: {
@@ -14,18 +14,20 @@ export default {
     data() {
         return {
             proveedores: [],
-            titulosTabla: ['Nombre', 'Url']
+            titulosTabla: ['ID', 'Nombre', 'Razón Social', 'Dirección', 'Teléfono', 'CUIT', 'Email']
         }
     },
     created() {
-        // this.getDatosProveedor();
+        this.getDatosProveedor();
     },
     methods: {
-        // getDatosProveedor() {
-        //     this.$http.get('/pokemon').then((response) =>{
-        //         this.proveedores = response.data.results;
-        //     })
-        // }
+        getDatosProveedor() {
+            this.$http.get('/suppliers/get-all').then((response) =>{
+                this.proveedores = response.data;
+            }).catch((error)=>{
+                console.error(error);
+            })
+        },
     }
 }
 </script>
