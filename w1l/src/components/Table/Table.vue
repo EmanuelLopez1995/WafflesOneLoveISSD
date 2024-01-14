@@ -1,5 +1,6 @@
 <template>
-    <div>
+
+    <div class="contenedorTable">
         <h3 v-if="contenido.length == 0">No hay datos para mostrar</h3>
         <v-table v-else hover density="comfortable">
             <thead>
@@ -25,6 +26,7 @@
             </tbody>
         </v-table>
     </div>
+    
 </template>
 
 <script>

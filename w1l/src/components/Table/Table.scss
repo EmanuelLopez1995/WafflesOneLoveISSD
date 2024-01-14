@@ -1,3 +1,5 @@
+@import '../../css/variables.scss';
+
 .options {
     display: flex;
     justify-content: flex-start;
@@ -22,3 +24,11 @@
     background-size: cover;
     margin-left: 25px;
 }
+
+.contenedorTable{
+    border: 1px solid rgba(128, 128, 128, 0.158);
+    border-radius: 10px;
+    padding: 20px 0px 20px 20px;
+    background-color: rgb(32, 32, 32);
+}
+

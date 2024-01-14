@@ -50,26 +50,6 @@ const validacionesStore = {
               return 'Email inválido' 
             },
           ],
-          sueldoNormal: [
-            value => {
-              if (value) return true
-              return 'Debe colocar el valor de la hora normal'
-            }
-          ],
-        
-          sueldoFeriado: [
-            value => {
-              if (value) return true
-              return 'Debe colocar el valor de la hora feriado'
-            }
-          ],
-        
-          sueldoDomingo: [
-            value => {
-              if (value) return true
-              return 'Debe colocar el valor de la hora domingo'
-            }
-          ],
         
           puestos: [
             value => {
