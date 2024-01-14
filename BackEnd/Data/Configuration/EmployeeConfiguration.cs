@@ -15,7 +15,6 @@ namespace FC.Data.Configuration
             builder.Property(x => x.PhoneNumber).HasMaxLength(20).IsRequired(false);
             builder.Property(x => x.Direction).HasMaxLength(255).IsRequired(false);
             builder.Property(x => x.Email).HasMaxLength(255).IsRequired(false);
-            builder.Property(x => x.Salary).IsRequired(false);
             builder.Property(x => x.Position).HasMaxLength(100).IsRequired(false);
         }
     }

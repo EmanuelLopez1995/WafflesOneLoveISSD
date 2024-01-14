@@ -1,5 +1,6 @@
 <template>
-    <v-form @submit.prevent="registrarEmpleado()" id="formularioRegistro" ref="form">
+<div>
+    <v-form @submit.prevent="registrarEmpleado()" id="formularioRegistro" class="contenedorRegistroEmpleado" ref="form">
     <v-text-field
         v-model="nombre"
         :rules="reglas.nombre"
@@ -47,30 +48,6 @@
         class="inputsFormEmpleados"
     ></v-text-field>
 
-     <v-text-field
-        v-model="sueldoNormal"
-        :rules="reglas.sueldoNormal"
-        label="Sueldo hora normal"
-        class="inputsFormEmpleados"
-        type=number
-    ></v-text-field>
-<!-- 
-     <v-text-field
-        v-model="sueldoFeriado"
-        :rules="reglas.sueldoFeriado"
-        label="Sueldo hora feriado"
-        class="inputsFormEmpleados"
-        type=number
-    ></v-text-field>
-
-     <v-text-field
-        v-model="sueldoDomingo"
-        :rules="reglas.sueldoDomingo"
-        label="Sueldo hora domingo"
-        class="inputsFormEmpleados"
-        type=number
-    ></v-text-field> -->
-
     <v-select
         v-model="puestos"
         :rules="reglas.puestos"
@@ -91,10 +68,22 @@
 
     <v-btn @click="resetForm" class="botonLimpiar"> Limpiar </v-btn>
     </v-form>
+    <v-progress-circular v-if="loading"
+            :width="5"
+            color="green"
+            indeterminate
+    ></v-progress-circular>
+    <snack-bar v-if="submitFinalizado" :exitoso="esExitoso" @timeout-completado="submitFinalizado = false" />
+    </div>
 </template>
 
 <script>
+import SnackBar from '@/components/SnackBar/SnackBar.vue'
+
 export default {
+  components: {
+        SnackBar
+    },
   data: () => ({
     tab: null,
     nombre: '',
@@ -103,16 +92,13 @@ export default {
     telefono: '',
     direccion: '',
     email: '',
-    sueldoNormal: '',
-    sueldoFeriado: '',
-    sueldoDomingo: '',
     puestos: '',
     confirmarDatos: false,
     itemsPuestos: [
-      'Cocinero',
-      'Encargado de turno',
+      'Dueño',
       'Encargado general',
-      'Limpieza',
+      'Referente de turno',
+      'Colaborador',
     ]
   }),
   computed: {
@@ -134,16 +120,22 @@ export default {
                       numero: this.telefono,
                       direccion: this.direccion,
                       email: this.email,
-                      salario: this.sueldoNormal,
                       posicion: this.puestos
               }
-               this.$http.post('/employees', params).then((response) =>{
-                
-                  console.log(response);
-                  })
-                  
-                }else{
-                    console.log("no Es valido")
+               this.loading = true;
+                    this.$http.post('/employees', params).then((response) =>{
+                        this.loading = false;
+                        if(response.status == 200){
+                            this.esExitoso = true;
+                        }else{
+                            this.esExitoso = false;
+                        }
+                        this.resetForm();
+                        this.submitFinalizado = true
+
+                    }).catch((error)=>{
+                        this.esExitoso = false;
+                    })
                 }
             });
     }
@@ -151,6 +143,3 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
