@@ -115,17 +115,28 @@ export default {
             this.$refs.form.validate().then(response => {
                 if (response.valid) {
                     
+                    let params = {
+                        Nombre: this.nombreFantasiaProveedor,
+                        RazonSocial: this.razonSocialProveedor,
+                        Direccion: this.domicilioProveedor,
+                        Numero: this.telefonoProveedor,
+                        Cuit: this.cuitProveedor,
+                        Email: this.emailProveedor
+                    }
                     this.loading = true;
-                    setTimeout(()=>{
+                    this.$http.post('/suppliers', params).then((response) =>{
                         this.loading = false;
-                        if(true){ //TODO: si la llamada se hace bien
+                        if(response.status == 200){
                             this.esExitoso = true;
                         }else{
                             this.esExitoso = false;
                         }
                         this.resetForm();
                         this.submitFinalizado = true
-                    },2000)
+
+                    }).catch((error)=>{
+                        this.esExitoso = false;
+                    })
                 }
             });
         }
