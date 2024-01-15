@@ -74,7 +74,7 @@ export default {
             console.log("Editar")
         },
         confirmarEliminacion(id) {
-            console.log(`Estás intentando eliminar al empleado con el ID: ${id}`)
+           
             Swal.fire({
                 title: "Estas seguro?",
                 text: " No podrás revertir esta acción!",
@@ -89,11 +89,10 @@ export default {
                 showLoaderOnConfirm: true,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        console.log(`Estás intentando eliminar al empleado con el ID: ${id}`)
-                        this.$emit("eliminarEmpleado", id); // Pasar el ID del empleado al emitir el evento
+                        this.$emit("eliminar", id); // Pasar el ID del empleado al emitir el evento
                         Swal.fire({
                             title: "Eliminado!",
-                            text: `El empleado con id ${id} fue eliminado`,
+                            text: `El registro con id ${id} fue eliminado`,
                             icon: "success",
                             color: "#fff",
                             background: "#212121",
