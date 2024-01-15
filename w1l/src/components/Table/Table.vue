@@ -1,5 +1,6 @@
 <template>
-    <div>
+
+    <div class="contenedorTable">
         <h3 v-if="contenido.length == 0">No hay datos para mostrar</h3>
         <v-table v-else hover density="comfortable">
             <thead>
@@ -19,12 +20,13 @@
                     </td>
                     <td class="options">
                         <span class="editButton" @click="editar"></span>
-                        <span class="deleteButton" @click="eliminar"></span>
+                        <span class="deleteButton" @click="confirmarEliminacion(item.id)"></span>
                     </td>
                 </tr>
             </tbody>
         </v-table>
     </div>
+    
 </template>
 
 <script>
@@ -71,7 +73,8 @@ export default {
         editar() {
             console.log("Editar")
         },
-        eliminar() {
+        confirmarEliminacion(id) {
+           
             Swal.fire({
                 title: "Estas seguro?",
                 text: " No podrás revertir esta acción!",
@@ -86,9 +89,10 @@ export default {
                 showLoaderOnConfirm: true,
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        this.$emit("eliminar", id); // Pasar el ID del empleado al emitir el evento
                         Swal.fire({
                             title: "Eliminado!",
-                            text: "El registro fue eliminado exitosamente",
+                            text: `El registro con id ${id} fue eliminado`,
                             icon: "success",
                             color: "#fff",
                             background: "#212121",

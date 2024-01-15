@@ -1,84 +1,51 @@
 <template>
-
-  <v-table
-    fixed-header
-    height="500px"
-    class="listadoEmpleados" 
-  >
-    <thead >
-      <tr>
-        <th class="text-center">
-          Nombre
-        </th>
-        <th class="text-center">
-          Apellido
-        </th>
-         <th class="text-center">
-          DNI
-        </th>
-         <th class="text-center">
-          Telefono
-        </th>
-         <th class="text-center">
-          Email
-        </th>
-          <th class="text-center">
-          Opciones
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="item in datos"
-        :key="item.nombre"
-      >
-        <td>{{ item.nombre }}</td>
-        <td>{{ item.apellido }}</td>
-        <td>{{ item.dni }}</td>
-        <td>{{ item.telefono }}</td>
-        <td>{{ item.email }}</td>
-      </tr>
-    </tbody>
-  </v-table>
-
+    <div class="listadoEmpleados">
+        <Table v-if="empleados" :contenido="empleados" :titulos="titulosTabla" @eliminar="eliminarEmpleado"/> 
+    </div>
 </template>
 
 <script>
+import Table from '../Table/Table.vue'
+
   export default {
+    components: {
+        Table
+    },
     data () {
       return {
-        datos: [
-          {
-            nombre: 'Ignacio ',
-            apellido: 'Santamaria',
-            dni: '38001617',
-            telefono: '3512278051',
-            email: 'santamariaign@live.com.ar',
-          },
-          {
-            nombre: 'Ignacio ',
-            apellido: 'Santamaria',
-            dni: '38001617',
-            telefono: '3512278051',
-            email: 'santamariaign@live.com.ar',
-          },
-          {
-            nombre: 'Ignacio ',
-            apellido: 'Santamaria',
-            dni: '38001617',
-            telefono: '3512278051',
-            email: 'santamariaign@live.com.ar',
-          },
-          {
-            nombre: 'Ignacio ',
-            apellido: 'Santamaria',
-            dni: '38001617',
-            telefono: '3512278051',
-            email: 'santamariaign@live.com.ar',
-          },
-          
-        ],
+        empleados: [],
+        titulosTabla:['ID','Nombre','Apellido','DNI','Telefono','Direccion','Email','Puesto']
       }
     },
+       mounted() {
+          this.getDatosEmpleados();
+          
+      },
+       methods: {
+          getDatosEmpleados() {
+                this.$http.get('/employees/get-all').then((response) =>{
+                  console.log('Respuesta de la API:', response.data);
+                   this.empleados = response.data;
+              })
+               .catch(error => {
+                  console.error('Error al obtener empleados', error);
+                });
+           },
+           eliminarEmpleado(id) {
+            
+              const url = `/employees?id=${id}`;
+
+              this.$http.delete(url)
+              
+                  .then(response => {
+                      console.log('Respuesta de la API:', response.data);
+                      console.log('Empleado eliminado con éxito');
+                      this.getDatosEmpleados();
+                  })
+                  .catch(error => {
+                      console.error('Error al eliminar empleado', error);
+                  });
+}
+     },
   }
 </script>

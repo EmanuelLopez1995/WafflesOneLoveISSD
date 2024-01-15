@@ -30,7 +30,6 @@ namespace Service.Services
                 LastName = model.Apellido,
                 Name = model.Nombre,
                 PhoneNumber = model.Numero,
-                Salary = model.Salario,
                 Position = model.Posicion
             };
 
@@ -79,7 +78,7 @@ namespace Service.Services
                 Id = employee.Id,
                 Numero = employee.PhoneNumber,
                 Posicion = employee.Position,
-                Salario = employee.Salary
+                
             };
         }
 
@@ -96,7 +95,7 @@ namespace Service.Services
                 Id = employee.Id,
                 Numero = employee.PhoneNumber,
                 Posicion = employee.Position,
-                Salario = employee.Salary
+                
             }).ToList();
         }
 
