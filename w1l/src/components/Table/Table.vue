@@ -89,6 +89,7 @@ export default {
                 showLoaderOnConfirm: true,
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        console.log("");
                         this.$emit("eliminar", id); // Pasar el ID del empleado al emitir el evento
                         Swal.fire({
                             title: "Eliminado!",
