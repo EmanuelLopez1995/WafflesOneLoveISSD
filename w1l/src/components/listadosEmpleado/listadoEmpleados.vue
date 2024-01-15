@@ -41,10 +41,10 @@ import Table from '../Table/Table.vue'
               this.$http.delete(url)
               
                   .then(response => {
-                    console.log(`Intentando eliminar al empleado con ID: ${id}`);
+              
                       console.log('Respuesta de la API:', response.data);
                       console.log('Empleado eliminado con éxito');
-                      console.log(`Eliminar empleado con ID: ${id}`);
+                      
                       this.getDatosEmpleados();
                   })
                   .catch(error => {
