@@ -5,7 +5,8 @@
 </template>
 
 <script>
-import Table from '../Table/Table.vue'
+import Table from '../Table/Table.vue';
+import {algoSalioMalError} from '@/components/Swal/SwalCustom.js';
 
   export default {
     components: {
@@ -24,27 +25,21 @@ import Table from '../Table/Table.vue'
        methods: {
           getDatosEmpleados() {
                 this.$http.get('/employees/get-all').then((response) =>{
-                  console.log('Respuesta de la API:', response.data);
                    this.empleados = response.data;
               })
                .catch(error => {
-                  console.error('Error al obtener empleados', error);
+                  algoSalioMalError();
                 });
            },
            eliminarEmpleado(id) {
-            
               const url = `/employees?id=${id}`;
 
-              this.$http.delete(url)
-              
-                  .then(response => {
-                      console.log('Respuesta de la API:', response.data);
-                      console.log('Empleado eliminado con éxito');
-                      this.getDatosEmpleados();
-                  })
-                  .catch(error => {
-                      console.error('Error al eliminar empleado', error);
-                  });
+              this.$http.delete(url).then(response => {
+                  this.getDatosEmpleados();
+              })
+              .catch(error => {
+                  algoSalioMalError();
+              });
 }
      },
   }

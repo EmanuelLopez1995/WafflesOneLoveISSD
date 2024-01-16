@@ -1,11 +1,12 @@
 <template>
     <div>
-        <Table v-if="proveedores" :contenido="proveedores" :titulos="titulosTabla"/>
+        <Table v-if="proveedores" :contenido="proveedores" :titulos="titulosTabla" @eliminar="eliminarPorId"/>
     </div>
 </template>
 
 <script>
 import Table from '../Table/Table.vue';
+import {algoSalioMalError} from '@/components/Swal/SwalCustom.js';
 
 export default {
     components: {
@@ -25,9 +26,16 @@ export default {
             this.$http.get('/suppliers/get-all').then((response) =>{
                 this.proveedores = response.data;
             }).catch((error)=>{
-                console.error(error);
+                algoSalioMalError();
             })
         },
+        eliminarPorId(id){
+            this.$http.delete(`/suppliers?id=${id}`).then(() =>{
+                this.getDatosProveedor();
+            }).catch(()=>{
+                algoSalioMalError();
+            })
+        }
     }
 }
 </script>
