@@ -17,7 +17,7 @@
           <v-container >
           <h2>Listado de empleados registrados:</h2>
           <br>
-          <listadoEmpleados />  
+          <listadoEmpleados :tabSelected="tab == '1'"/>  
           </v-container >
         </v-window-item> 
 

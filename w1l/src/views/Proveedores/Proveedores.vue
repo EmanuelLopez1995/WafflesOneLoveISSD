@@ -8,7 +8,7 @@
         <v-card-text class="h-screen">
             <v-window v-model="tab">
                 <v-window-item value="1" class="h-screen">
-                    <listado-proveedor />
+                    <listado-proveedor :tabSelected="tab == '1'"/>
                 </v-window-item> 
                 <v-window-item value="2" class="h-screen">
                     <registrar-proveedor />

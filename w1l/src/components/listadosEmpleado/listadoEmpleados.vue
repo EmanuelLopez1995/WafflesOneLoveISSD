@@ -12,6 +12,16 @@ import {algoSalioMalError} from '@/components/Swal/SwalCustom.js';
     components: {
         Table
     },
+    props: {
+        tabSelected: Boolean,
+    },
+    watch: {
+        tabSelected(newValue) {
+            if(newValue) {
+                this.getDatosEmpleados();
+            }
+        },
+    },
     data () {
       return {
         empleados: [],
