@@ -72,7 +72,7 @@ export default {
             this.$router.push('/Login')
         },
         mostrarDatosCuenta() {
-            console.log("nada");
+            
         }
     }
 }

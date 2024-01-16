@@ -109,6 +109,7 @@ namespace Service.Services
             var list = UoW.Suppliers.GetAll();
             return list.Select(Suppliers => new SuppliersModel
             {
+               Id = Suppliers.Id,
                Nombre=Suppliers.Name,
                RazonSocial=Suppliers.SocialReason,
                Direccion=Suppliers.Addrees,

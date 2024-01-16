@@ -64,21 +64,21 @@
         type="checkbox"
     ></v-checkbox>
     <br>
-    <v-btn class="me-10" color="green-darken-4" type="submit"> Registrar </v-btn>
+    <v-btn v-if="!loading" class="me-10" color="green-darken-4" type="submit"> Registrar </v-btn>
 
-    <v-btn @click="resetForm" class="botonLimpiar"> Limpiar </v-btn>
+    <v-btn v-if="!loading" @click="resetForm" class="botonLimpiar"> Limpiar </v-btn>
     </v-form>
     <v-progress-circular v-if="loading"
             :width="5"
             color="green"
             indeterminate
     ></v-progress-circular>
-    <snack-bar v-if="submitFinalizado" :exitoso="esExitoso" @timeout-completado="submitFinalizado = false" />
     </div>
 </template>
 
 <script>
-import SnackBar from '@/components/SnackBar/SnackBar.vue'
+import SnackBar from '@/components/SnackBar/SnackBar.vue';
+import {algoSalioMalError, registroExitosoMensaje} from '@/components/Swal/SwalCustom.js';
 
 export default {
   components: {
@@ -99,7 +99,8 @@ export default {
       'Encargado general',
       'Referente de turno',
       'Colaborador',
-    ]
+    ],
+    loading: false
   }),
   computed: {
     reglas() {
@@ -125,16 +126,11 @@ export default {
                this.loading = true;
                     this.$http.post('/employees', params).then((response) =>{
                         this.loading = false;
-                        if(response.status == 200){
-                            this.esExitoso = true;
-                        }else{
-                            this.esExitoso = false;
-                        }
+                        registroExitosoMensaje('empleado')
                         this.resetForm();
-                        this.submitFinalizado = true
-
                     }).catch((error)=>{
-                        this.esExitoso = false;
+                        this.loading = false;
+                        algoSalioMalError()
                     })
                 }
             });

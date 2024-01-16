@@ -74,7 +74,6 @@ export default {
             console.log("Editar")
         },
         confirmarEliminacion(id) {
-           
             Swal.fire({
                 title: "Estas seguro?",
                 text: " No podrás revertir esta acción!",
@@ -86,11 +85,9 @@ export default {
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Si, eliminar!",
                 cancelButtonText: "Cancelar",
-                showLoaderOnConfirm: true,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        console.log("");
-                        this.$emit("eliminar", id); // Pasar el ID del empleado al emitir el evento
+                        this.$emit("eliminar", id); // Pasar el ID del registro al emitir el evento
                         Swal.fire({
                             title: "Eliminado!",
                             text: `El registro con id ${id} fue eliminado`,

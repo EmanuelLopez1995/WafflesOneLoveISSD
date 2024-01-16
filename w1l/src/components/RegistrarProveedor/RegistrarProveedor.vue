@@ -76,20 +76,15 @@
             color="green"
             indeterminate
         ></v-progress-circular>
-        <snack-bar v-if="submitFinalizado" :exitoso="esExitoso" @timeout-completado="submitFinalizado = false" />
     </div>
 </template>
 
 <script>
 import './RegistrarProveedor.scss'
-import SnackBar from '@/components/SnackBar/SnackBar.vue'
+import {algoSalioMalError, registroExitosoMensaje} from '@/components/Swal/SwalCustom.js';
 
 
 export default {
-
-    components: {
-        SnackBar
-    },
     data: () => ({
         nombreFantasiaProveedor: '',
         razonSocialProveedor: '',
@@ -98,7 +93,6 @@ export default {
         cuitProveedor: '',
         emailProveedor: '',
         detalleProveedor: '',
-        submitFinalizado: false,
         esExitoso: false,
         loading: false
     }),
@@ -126,20 +120,17 @@ export default {
                     this.loading = true;
                     this.$http.post('/suppliers', params).then((response) =>{
                         this.loading = false;
-                        if(response.status == 200){
-                            this.esExitoso = true;
-                        }else{
-                            this.esExitoso = false;
-                        }
+                        registroExitosoMensaje('proveedor')
                         this.resetForm();
-                        this.submitFinalizado = true
 
                     }).catch((error)=>{
-                        this.esExitoso = false;
+                        this.loading = false;
+                        algoSalioMalError();
                     })
                 }
             });
-        }
+        },
+
     }
 }
 </script>
