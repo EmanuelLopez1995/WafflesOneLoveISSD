@@ -9,6 +9,7 @@
         public string Numero { get; set; }
         public string Cuit { get; set; }
         public string Email { get; set; }
-    
+        public string Detalle { get; set; }
+
     }
 }
