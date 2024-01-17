@@ -115,7 +115,8 @@ export default {
                         Direccion: this.domicilioProveedor,
                         Numero: this.telefonoProveedor,
                         Cuit: this.cuitProveedor,
-                        Email: this.emailProveedor
+                        Email: this.emailProveedor,
+                        Detalle: this.detalleProveedor
                     }
                     this.loading = true;
                     this.$http.post('/suppliers', params).then((response) =>{

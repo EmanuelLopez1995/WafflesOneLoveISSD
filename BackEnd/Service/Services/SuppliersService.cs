@@ -3,6 +3,7 @@ using Common.Interfaces.Service;
 using Common.Model;
 using Common.Model.Ack;
 using Common.Repository;
+using System.Reflection;
 
 namespace Service.Services
 {
@@ -30,6 +31,7 @@ namespace Service.Services
                PhoneNumber= model.Numero,
                Cuit=model.Cuit, 
                Email=model.Email,
+               Detail=model.Detalle
             };
 
             UoW.Suppliers.Add(suppliers);
@@ -74,7 +76,8 @@ namespace Service.Services
                 Direccion=suppliers.Addrees,
                 Numero=suppliers.PhoneNumber,
                 Cuit=suppliers.Cuit,
-                Email=suppliers.Email
+                Email=suppliers.Email,
+                Detalle= suppliers.Detail
 
             };
         }
@@ -95,6 +98,7 @@ namespace Service.Services
             suppliers.PhoneNumber = model.Numero;
             suppliers.Cuit = model.Cuit;
             suppliers.Email= model.Email;
+            suppliers.Detail = model.Detalle;
 
             UoW.Complete();
 
@@ -116,6 +120,7 @@ namespace Service.Services
                Email=Suppliers.Email,
                Numero=Suppliers.PhoneNumber,
                Cuit=Suppliers.Cuit,    
+               Detalle=Suppliers.Detail
             }).ToList();
         }
     }

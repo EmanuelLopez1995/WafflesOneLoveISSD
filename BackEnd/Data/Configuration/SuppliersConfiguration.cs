@@ -15,7 +15,7 @@ namespace FC.Data.Configuration
             builder.Property(x => x.PhoneNumber).HasMaxLength(20).IsRequired(false);
             builder.Property(x => x.Cuit).HasMaxLength(255).IsRequired(false);
             builder.Property(x => x.Email).HasMaxLength(255).IsRequired(false);
-          
+            builder.Property(x => x.Detail).HasMaxLength(255).IsRequired(false);
         }
     }
 }

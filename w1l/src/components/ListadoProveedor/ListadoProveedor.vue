@@ -25,7 +25,7 @@ export default {
     data() {
         return {
             proveedores: [],
-            titulosTabla: ['ID', 'Nombre', 'Razón Social', 'Dirección', 'Teléfono', 'CUIT', 'Email']
+            titulosTabla: ['ID', 'Nombre', 'Razón Social', 'Dirección', 'Teléfono', 'CUIT', 'Email', 'Detalles']
         }
     },
     created() {
