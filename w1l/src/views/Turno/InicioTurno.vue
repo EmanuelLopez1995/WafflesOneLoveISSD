@@ -8,17 +8,9 @@
                             <v-text-field
                                 v-model="fecha"
                                 :rules="reglas.notNull"
+                                :disabled="true"
                                 label="Fecha"
                                 type="date"
-                                class="inputsFormProveedor"
-                            ></v-text-field>
-                        </v-col>
-                        <v-col cols="2">
-                            <v-text-field
-                                v-model="hora"
-                                label="Hora"
-                                :rules="reglas.notNull"
-                                type="time"
                                 class="inputsFormProveedor"
                             ></v-text-field>
                         </v-col>
@@ -31,11 +23,18 @@
                                 class="inputsFormEmpleados"
                             ></v-select>
                         </v-col>
+                        <v-col cols="5">
+                            <v-text-field
+                                v-model="notasGenerales"
+                                label="Notas generales"
+                                class="inputsFormProveedor"
+                            ></v-text-field>
+                        </v-col>
                         <v-col class="pt-3 d-flex align-center">
                             <v-checkbox 
                                 hide-details = true
                                 v-model="esFeriado"
-                                label="Feriado"
+                                label="Domingo/Feriado"
                                 value= "1"
                                 type="checkbox"
                             ></v-checkbox>
@@ -158,6 +157,18 @@
                         </v-row>
                     </v-col>
                 </v-row>
+                <v-row class="mt-10">
+                    <v-col>
+                        <v-row>
+                            <v-btn class="me-10 mt-0 d-flex" color="light-blue-darken-4" prepend-icon="mdi-arrow-left" @click="volverAInicioTurno()">Atras</v-btn>
+                        </v-row>
+                    </v-col>
+                    <v-col>
+                        <v-row justify="end" >
+                            <v-btn class="me-10 mt-0 d-flex" color="green-darken-4" type="submit" append-icon="mdi-arrow-right">Finalizar</v-btn>
+                        </v-row>
+                    </v-col>
+                </v-row>
             </v-container>
         </v-form>
     </div>
@@ -248,7 +259,10 @@ export default {
         sumarValores(index) {
             this.sumaBilletes[index] = this.billetes[index] * this.valoresBilletes[index];
             this.valorTotal = this.sumaBilletes.reduce((suma, numero) => suma + numero, 0);
-        }
+        },
+        volverAInicioTurno(){
+            this.siguienteClickeado = false;
+        },
     }
 }
 </script>
