@@ -43,13 +43,15 @@
                     <!-- <hr color="#42b983"> -->
                     <br>
                     <div class="contenedorEmpleadosIniTurno">
-                        <v-row v-for="(empleado, index) in empleados" :key="index" class="mb-0 mt-0">
+                        <v-row v-for="(empleado, index) in empleadosPresentes" :key="index" class="mb-0 mt-0">
                             <v-col cols="3" class="pt-0 pb-0">
                                 <v-select
                                     no-data-text="No hay mas empleados"
                                     density="compact"
                                     v-model="empleado.empleado"
                                     :items="itemsEmpleados"
+                                    item-title="nombreCompleto"
+                                    item-value="id"
                                     :rules="reglas.notNull"
                                     label="Empleado"
                                     class="pt-0"
@@ -180,12 +182,13 @@ import './InicioTurno.scss';
 
 export default {
     data: ()=> ({
-        itemsEmpleados: ['Ema', 'Nacho', 'Yorch'],
-        itemsTurno: ['1', '2'],
-        turno: null,
-        empleados: [
+        itemsEmpleados: [],
+        allEmpleados: [],
+        empleadosPresentes: [
             { empleado: null, horaIngreso: null, notas: null }
         ],
+        itemsTurno: ['1', '2'],
+        turno: null,
         esFeriado: false,
         notas: null,
         fecha: '',
@@ -195,12 +198,14 @@ export default {
         billetes: [10, 20, 50, 100, 500, 1000],
         valoresBilletes: [],
         sumaBilletes: [],
-        valorTotal: 0
+        valorTotal: 0,
+        notasGenerales: ''
         
     }),
     created() {
         this.definirFechaYhora();
         this.establecerTurnoSegunHora();
+        this.getEmpleados();
     },
     computed: {
         reglas() {
@@ -208,6 +213,20 @@ export default {
         }
     },
     methods: {
+        getEmpleados() {
+            this.$http.get('/employees/get-all').then((response) =>{
+                this.allEmpleados = response.data.map((empleado) => {
+                    return {
+                        ...empleado,
+                        nombreCompleto: `${empleado.nombre} ${empleado.apellido}`,
+                    };
+                });
+                this.itemsEmpleados = this.allEmpleados;
+            })
+            .catch(error => {
+                algoSalioMalError();
+            });
+        },
         definirFechaYhora() {
             const fechaActual = new Date();
 
@@ -235,10 +254,10 @@ export default {
 
         },
         agregarFila() {
-            this.empleados.push({ empleado: null, horaIngreso: null, notas: null });
+            this.empleadosPresentes.push({ empleado: null, horaIngreso: null, notas: null });
         },
         eliminarFila(index, empleado) {
-            this.empleados.splice(index, 1);
+            this.empleadosPresentes.splice(index, 1);
             if(empleado != null) {
                 this.itemsEmpleados.push(empleado);
             }
