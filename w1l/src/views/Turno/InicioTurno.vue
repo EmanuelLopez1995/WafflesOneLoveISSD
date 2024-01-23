@@ -49,13 +49,13 @@
                                     no-data-text="No hay mas empleados"
                                     density="compact"
                                     v-model="empleado.empleado"
-                                    :items="itemsEmpleados"
+                                    :items="empleadosDisponibles"
                                     item-title="nombreCompleto"
-                                    item-value="id"
+                                    return-object
                                     :rules="reglas.notNull"
                                     label="Empleado"
                                     class="pt-0"
-                                    @update:modelValue="eliminarItemDeArray(empleado.empleado)"
+                                    @update:modelValue="eliminarAgregarItemDeArray(empleado.empleado)"
                                 ></v-select>
                             </v-col>
                             <v-col cols="3" class="pt-0 pb-0">
@@ -96,14 +96,30 @@
                 <v-row>
                     <v-col>
                         <v-row class="justify-center">
-                            <v-col cols="6">
+                            <v-col cols="7">
                                 <v-select
                                     no-data-text="No hay empleados"
                                     density="compact"
-                                    v-model="encargadoDeCaja"
-                                    :items="itemsEmpleados"
+                                    v-model="encargadoDeAperturaCaja"
+                                    :items="empleadosPresentes"
+                                    item-title="empleado.nombreCompleto"
+                                    return-object
                                     :rules="reglas.notNull"
-                                    label="Encargado de caja"
+                                    label="Encargado de apertura"
+                                ></v-select>
+                            </v-col>
+                        </v-row>
+                        <v-row class="justify-center">
+                            <v-col cols="7">
+                                <v-select
+                                    no-data-text="No hay empleados"
+                                    density="compact"
+                                    v-model="encargadoDeTurno"
+                                    :items="allEmpleados"
+                                    item-title="nombreCompleto"
+                                    return-object
+                                    :rules="reglas.notNull"
+                                    label="Encargado de turno"
                                 ></v-select>
                             </v-col>
                         </v-row>
@@ -182,7 +198,7 @@ import './InicioTurno.scss';
 
 export default {
     data: ()=> ({
-        itemsEmpleados: [],
+        empleadosDisponibles: [],
         allEmpleados: [],
         empleadosPresentes: [
             { empleado: null, horaIngreso: null, notas: null }
@@ -194,7 +210,8 @@ export default {
         fecha: '',
         hora: '',
         siguienteClickeado: false,
-        encargadoDeCaja: null,
+        encargadoDeAperturaCaja: null,
+        encargadoDeTurno: null,
         billetes: [10, 20, 50, 100, 500, 1000],
         valoresBilletes: [],
         sumaBilletes: [],
@@ -221,7 +238,7 @@ export default {
                         nombreCompleto: `${empleado.nombre} ${empleado.apellido}`,
                     };
                 });
-                this.itemsEmpleados = this.allEmpleados;
+                this.empleadosDisponibles = [...this.allEmpleados]; 
             })
             .catch(error => {
                 algoSalioMalError();
@@ -259,14 +276,26 @@ export default {
         eliminarFila(index, empleado) {
             this.empleadosPresentes.splice(index, 1);
             if(empleado != null) {
-                this.itemsEmpleados.push(empleado);
+                this.empleadosDisponibles.push(empleado);
             }
         },
-        eliminarItemDeArray(empleado) {
-            let indiceAEliminar = this.itemsEmpleados.indexOf(empleado);
+        eliminarAgregarItemDeArray(empleado) {
+
+            //se elimina si o si 
+            let indiceAEliminar = this.empleadosDisponibles.indexOf(empleado);
             if (indiceAEliminar !== -1) {
-                this.itemsEmpleados.splice(indiceAEliminar, 1);
-            }
+                this.empleadosDisponibles.splice(indiceAEliminar, 1);
+            } 
+
+            //verificar que este en uno y no en otro - NO TOCAR
+            this.allEmpleados.forEach(empleado => {
+                let estaEnPresentes = this.empleadosPresentes.some(e => e.empleado.id === empleado.id);
+                let estaEnDisponibles = this.empleadosDisponibles.some(e => e.id === empleado.id);
+
+                if(!estaEnPresentes && !estaEnDisponibles) {
+                    this.empleadosDisponibles.push(empleado);
+                }
+            });
         },
         iniciarCaja() {
             this.$refs.form.validate().then(response => {
