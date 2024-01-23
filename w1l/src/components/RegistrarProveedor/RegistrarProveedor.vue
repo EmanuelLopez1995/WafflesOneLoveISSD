@@ -7,7 +7,7 @@
                     <v-col>
                         <v-text-field
                             v-model="nombreFantasiaProveedor"
-                            :rules="reglas.nombre"
+                            :rules="reglas.notNull"
                             label="Nombre de fantasía"
                             class="inputsFormProveedor"
                         ></v-text-field>
@@ -26,6 +26,7 @@
                         <v-text-field
                             v-model="domicilioProveedor"
                             label="Domicilio"
+                            :rules="reglas.notNull"
                             class="inputsFormProveedor"
                         ></v-text-field>
                     </v-col>
@@ -33,6 +34,7 @@
                         <v-text-field
                             v-model="telefonoProveedor"
                             label="Teléfono"
+                            :rules="reglas.notNull"
                             type="tel"
                             class="inputsFormProveedor"
                         ></v-text-field>
