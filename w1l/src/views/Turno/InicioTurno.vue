@@ -100,6 +100,20 @@
                                 <v-select
                                     no-data-text="No hay empleados"
                                     density="compact"
+                                    v-model="encargadoDeTurno"
+                                    :items="allEmpleados"
+                                    item-title="nombreCompleto"
+                                    return-object
+                                    :rules="reglas.notNull"
+                                    label="Encargado de turno"
+                                ></v-select>
+                            </v-col>
+                        </v-row>
+                        <v-row class="justify-center">
+                            <v-col cols="7">
+                                <v-select
+                                    no-data-text="No hay empleados"
+                                    density="compact"
                                     v-model="encargadoDeAperturaCaja"
                                     :items="empleadosPresentes"
                                     item-title="empleado.nombreCompleto"
@@ -111,21 +125,13 @@
                         </v-row>
                         <v-row class="justify-center">
                             <v-col cols="7">
-                                <v-select
-                                    no-data-text="No hay empleados"
-                                    density="compact"
-                                    v-model="encargadoDeTurno"
-                                    :items="allEmpleados"
-                                    item-title="nombreCompleto"
-                                    return-object
-                                    :rules="reglas.notNull"
-                                    label="Encargado de turno"
-                                ></v-select>
+                                <p class="text-h6 text-left">Activo inicial: ${{activoInicial}}</p>
                             </v-col>
                         </v-row>
-                        <v-row>
-                            <v-col>
-                                <p class="text-h6 activoInicial">Activo inicial: $2500</p>
+                        <v-row class="justify-center">
+                            <v-col cols="7" class="apertura">
+                                <v-chip v-if="aperturaCorrecta === true" color="green">Apertura correcta</v-chip>
+                                <v-chip v-if="aperturaCorrecta === false" color="red">Apertura incorrecta</v-chip>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -195,6 +201,7 @@
 <script>
 
 import './InicioTurno.scss';
+import {algoSalioMalError} from '@/components/Swal/SwalCustom.js';
 
 export default {
     data: ()=> ({
@@ -216,7 +223,9 @@ export default {
         valoresBilletes: [],
         sumaBilletes: [],
         valorTotal: 0,
-        notasGenerales: ''
+        notasGenerales: '',
+        activoInicial: 15000,
+        aperturaCorrecta: null
         
     }),
     created() {
@@ -307,6 +316,14 @@ export default {
         sumarValores(index) {
             this.sumaBilletes[index] = this.billetes[index] * this.valoresBilletes[index];
             this.valorTotal = this.sumaBilletes.reduce((suma, numero) => suma + numero, 0);
+            this.verificarAperturaCorrecta();
+        },
+        verificarAperturaCorrecta() {
+            if(this.valorTotal === this.activoInicial) {
+                this.aperturaCorrecta = true;
+            } else {
+                this.aperturaCorrecta = false;
+            }
         },
         volverAInicioTurno(){
             this.siguienteClickeado = false;
