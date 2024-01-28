@@ -1,6 +1,6 @@
 <template>
     <div class="listadoEmpleados">
-        <Table v-if="empleados" :contenido="empleados" :titulos="titulosTabla" @eliminar="eliminarEmpleado"/> 
+        <Table :contenido="empleados" :titulos="titulosTabla" titulo="Empleados" :loading="loading" @eliminar="eliminarEmpleado"/> 
     </div>
 </template>
 
@@ -25,7 +25,18 @@ import {algoSalioMalError} from '@/components/Swal/SwalCustom.js';
     data () {
       return {
         empleados: [],
-        titulosTabla:['ID','Nombre','Apellido','DNI','Telefono','Direccion','Email','Puesto']
+        loading: false,
+        titulosTabla: [
+            {key: 'id', title: 'Id',},
+            {key: 'nombre', title: 'Nombre' },
+            {key: 'apellido', title: 'Apellido' },
+            {key: 'dni', title: 'Dni' },
+            {key: 'numero', title: 'Teléforno' },
+            {key: 'direccion', title: 'Dirección' },
+            {key: 'email', title: 'Email' },
+            {key: 'posicion', title: 'Puesto' },
+            {key: 'opciones', title: 'Opciones' }
+        ],
       }
     },
        mounted() {
@@ -34,8 +45,10 @@ import {algoSalioMalError} from '@/components/Swal/SwalCustom.js';
       },
        methods: {
           getDatosEmpleados() {
+            this.loading = true;
                 this.$http.get('/employees/get-all').then((response) =>{
                    this.empleados = response.data;
+                   this.loading = false;
               })
                .catch(error => {
                   algoSalioMalError();
