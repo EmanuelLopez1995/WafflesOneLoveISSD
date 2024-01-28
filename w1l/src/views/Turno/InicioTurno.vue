@@ -10,8 +10,8 @@
                                 :rules="reglas.notNull"
                                 :disabled="true"
                                 label="Fecha"
+                                hide-details="auto"
                                 type="date"
-                                class="inputsFormProveedor"
                             ></v-text-field>
                         </v-col>
                         <v-col cols="2">
@@ -20,14 +20,12 @@
                                 :items="itemsTurno"
                                 :rules="reglas.notNull"
                                 label="Turno"
-                                class="inputsFormEmpleados"
                             ></v-select>
                         </v-col>
                         <v-col cols="5">
                             <v-text-field
                                 v-model="notasGenerales"
                                 label="Notas generales"
-                                class="inputsFormProveedor"
                             ></v-text-field>
                         </v-col>
                         <v-col class="pt-3 d-flex align-center">
@@ -47,13 +45,13 @@
                             <v-col cols="3" class="pt-0 pb-0">
                                 <v-select
                                     no-data-text="No hay mas empleados"
-                                    density="compact"
                                     v-model="empleado.empleado"
                                     :items="empleadosDisponibles"
                                     item-title="nombreCompleto"
                                     return-object
                                     :rules="reglas.notNull"
                                     label="Empleado"
+                                    density="comfortable"
                                     class="pt-0"
                                     @update:modelValue="eliminarAgregarItemDeArray(empleado.empleado)"
                                 ></v-select>
@@ -64,8 +62,8 @@
                                     label="Hora de ingreso"
                                     :rules="reglas.notNull"
                                     type="time"
-                                    class="pt-0"
                                     density="comfortable"
+                                    class="pt-0"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="5" class="pt-0 pb-0">
@@ -99,7 +97,7 @@
                             <v-col cols="7">
                                 <v-select
                                     no-data-text="No hay empleados"
-                                    density="compact"
+                                    density="comfortable"
                                     v-model="encargadoDeTurno"
                                     :items="allEmpleados"
                                     item-title="nombreCompleto"
@@ -113,7 +111,7 @@
                             <v-col cols="7">
                                 <v-select
                                     no-data-text="No hay empleados"
-                                    density="compact"
+                                    density="comfortable"
                                     v-model="encargadoDeAperturaCaja"
                                     :items="empleadosPresentes"
                                     item-title="empleado.nombreCompleto"
@@ -160,7 +158,7 @@
                                                 v-model="valoresBilletes[index]"
                                                 variant="solo-filled"
                                                 type="number"
-                                                class="pt-0"
+                                                class="pt-0 mt-0 billeteInputs"
                                                 density="compact"
                                                 :hide-details="true"
                                                 @input="sumarValores(index)"
