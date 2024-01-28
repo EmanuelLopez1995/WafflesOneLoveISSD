@@ -1,30 +1,45 @@
 <template>
 
     <div class="contenedorTable">
-        <h3 v-if="contenido.length == 0">No hay datos para mostrar</h3>
-        <v-table v-else hover density="comfortable">
-            <thead>
-            <tr>
-                <th v-for="titulo in titulos" :key="titulo" class="text-center">
-                    {{ titulo }}
-                </th>
-                <th>
-                    Opciones
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item) in contenido" :key="item" >
-                    <td v-for="campo in camposDeContenido" :key="campo">
-                        {{ item[campo] }}
-                    </td>
-                    <td class="options">
-                        <span class="editButton" @click="editar"></span>
-                        <span class="deleteButton" @click="confirmarEliminacion(item.id)"></span>
-                    </td>
-                </tr>
-            </tbody>
-        </v-table>
+        <v-card flat>
+            <v-card-title class="d-flex align-center pe-2">
+                {{titulo}}
+
+                <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
+
+                <v-text-field
+                    v-model="search"
+                    prepend-inner-icon="mdi-magnify"
+                    density="comfortable"
+                    label="Buscar"
+                    single-line
+                    flat
+                    hide-details
+                    variant="solo-filled"
+                    class="searchInput"
+                ></v-text-field>
+            </v-card-title>
+
+
+            <v-data-table
+                :headers="titulos"
+                :items="contenido"
+                :search="search"
+                :loading="loading"
+                no-data-text="No hay datos para mostrar"
+                class="tablaContenido"
+                items-per-page-text="Items por página:"
+                height=600
+                :hover="true"
+                loading-text="Cargando..."
+            >
+                <template v-slot:item.opciones="{ item }">
+                    <span class="editButton" @click="editar(item.id)"></span>
+                    <span class="deleteButton" @click="confirmarEliminacion(item.id)"></span>
+                </template>
+            </v-data-table>
+        </v-card>
     </div>
     
 </template>
@@ -45,33 +60,23 @@ export default {
         titulos: {
             type: Array,
             required: true
-        }
-    },
-    watch: {
-        contenido: {
-            immediate: true,
-            handler() {
-                this.obtenerCamposDeContenido();
-            },
         },
+        loading: {
+            type: Boolean
+        },
+        titulo: {
+            type: String
+        }
     },
     data () {
         return {
-            camposDeContenido: [],
-            mostrarModalConfirmacion: false
+            mostrarModalConfirmacion: false,
+            search: ''
         }
     },
     methods: {
-        obtenerCamposDeContenido(){
-            this.camposDeContenido = [];
-            const primerDato = this.contenido[0];
-
-            for (const key in primerDato) {
-                this.camposDeContenido.push(key);
-            }
-        },
-        editar() {
-            console.log("Editar")
+        editar(id) {
+            console.log(id)
         },
         confirmarEliminacion(id) {
             Swal.fire({

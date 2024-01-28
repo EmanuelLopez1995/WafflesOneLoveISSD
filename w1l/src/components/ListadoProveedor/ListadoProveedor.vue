@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Table v-if="proveedores" :contenido="proveedores" :titulos="titulosTabla" @eliminar="eliminarPorId"/>
+        <Table :contenido="proveedores" :titulos="titulosTabla" titulo="Proveedores" :loading="loading" @eliminar="eliminarPorId"/>
     </div>
 </template>
 
@@ -25,7 +25,19 @@ export default {
     data() {
         return {
             proveedores: [],
-            titulosTabla: ['ID', 'Nombre', 'Razón Social', 'Dirección', 'Teléfono', 'CUIT', 'Email', 'Detalles']
+            search: '',
+            titulosTabla: [
+                {key: 'id', title: 'Id',},
+                {key: 'nombre', title: 'Nombre' },
+                {key: 'razonSocial', title: 'Razón Social' },
+                {key: 'direccion', title: 'Dirección' },
+                {key: 'numero', title: 'Teléforno' },
+                {key: 'cuit', title: 'Cuit' },
+                {key: 'email', title: 'Email' },
+                {key: 'detalle', title: 'Detalles' },
+                {key: 'opciones', title: 'Opciones' },
+            ],
+            loading: false
         }
     },
     created() {
@@ -33,8 +45,10 @@ export default {
     },
     methods: {
         getDatosProveedor() {
+            this.loading = true;
             this.$http.get('/suppliers/get-all').then((response) =>{
                 this.proveedores = response.data;
+                this.loading = false;
             }).catch((error)=>{
                 algoSalioMalError();
             })
