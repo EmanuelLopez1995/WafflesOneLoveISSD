@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Common.Entities;
 using Common.Interfaces.Service;
 using Common.Model;
 using Common.Routes;
@@ -57,7 +58,9 @@ namespace WafflesOneLove.Controllers
         public IActionResult GetAll()
         {
             var employee = employeeService.GetAll();
-            if (employee == null || !employee.Any()) return NotFound();
+            if (employee == null) {
+                return Ok(new List<Employee>());
+            };
 
             return Ok(employee);
         }
