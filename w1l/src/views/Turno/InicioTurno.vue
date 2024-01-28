@@ -1,5 +1,6 @@
 <template>
   <div class="pt-4">
+    <!-- Sección de Inicio de turno -->
         <v-form v-if="!siguienteClickeado" class="formInicioTurno" @submit.prevent="iniciarCaja()" ref="form" border>
                 <v-container >
                     <h1>Iniciar turno</h1>
@@ -38,7 +39,6 @@
                             ></v-checkbox>
                         </v-col>
                     </v-row>
-                    <!-- <hr color="#42b983"> -->
                     <br>
                     <div class="contenedorEmpleadosIniTurno">
                         <v-row v-for="(empleado, index) in empleadosPresentes" :key="index" class="mb-0 mt-0">
@@ -84,6 +84,7 @@
                     </v-row>
                 </v-container>
         </v-form>
+    <!-- Seccion de apertura de caja -->
         <v-form v-else>
             <v-container>
                 <v-row>
@@ -228,7 +229,6 @@ export default {
     }),
     created() {
         this.definirFechaYhora();
-        this.establecerTurnoSegunHora();
         this.getEmpleados();
     },
     computed: {
@@ -274,9 +274,6 @@ export default {
             this.fecha = fechaFormateada;
             this.hora = horaCompleta;
         },
-        establecerTurnoSegunHora() {
-
-        },
         agregarFila() {
             this.empleadosPresentes.push({ empleado: null, horaIngreso: null, notas: null });
         },
@@ -285,9 +282,9 @@ export default {
             if(empleado != null) {
                 this.empleadosDisponibles.push(empleado);
             }
+            this.validarResetInputEncargadoDeApertura(); 
         },
         eliminarAgregarItemDeArray(empleado) {
-
             //se elimina si o si 
             let indiceAEliminar = this.empleadosDisponibles.indexOf(empleado);
             if (indiceAEliminar !== -1) {
@@ -296,13 +293,28 @@ export default {
 
             //verificar que este en uno y no en otro - NO TOCAR
             this.allEmpleados.forEach(empleado => {
-                let estaEnPresentes = this.empleadosPresentes.some(e => e.empleado.id === empleado.id);
-                let estaEnDisponibles = this.empleadosDisponibles.some(e => e.id === empleado.id);
+                let estaEnPresentes = this.empleadosPresentes.some(e => {
+                    if(e.empleado != null) {
+                        return e.empleado.id === empleado.id
+                    }
+                });
+                let estaEnDisponibles = this.empleadosDisponibles.some(e => {
+                    if(e != null) {
+                        return e.id === empleado.id
+                    }
+                });
 
                 if(!estaEnPresentes && !estaEnDisponibles) {
                     this.empleadosDisponibles.push(empleado);
                 }
             });
+
+            this.validarResetInputEncargadoDeApertura(); 
+        },
+        validarResetInputEncargadoDeApertura() {
+            if(this.encargadoDeAperturaCaja != null) {
+                this.encargadoDeAperturaCaja = null;
+            }
         },
         iniciarCaja() {
             this.$refs.form.validate().then(response => {
