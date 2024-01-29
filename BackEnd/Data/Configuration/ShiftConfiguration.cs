@@ -11,6 +11,7 @@ namespace FC.Data.Configuration
             builder.ToTable("Shifts");
             builder.Property(x => x.StartDate).IsRequired();
             builder.Property(x => x.EndDate).IsRequired(false);
+            builder.Property(x => x.TypeShift).IsRequired();
 
             builder.HasOne(x => x.Employee)
                    .WithMany(x => x.Shifts)
