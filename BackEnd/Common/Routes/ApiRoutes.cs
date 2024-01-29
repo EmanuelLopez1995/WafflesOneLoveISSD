@@ -19,6 +19,16 @@
             public const string Delete = BaseEmployee;
         }
 
+        public static class PaymentBox
+        {
+            private const string BasePaymentBox = Api + "/paymentBox";
+            public const string GetAll = BasePaymentBox + "/get-all";
+            public const string Get = BasePaymentBox;
+            public const string Post = BasePaymentBox;
+            public const string Put = BasePaymentBox;
+            public const string Delete = BasePaymentBox;
+        }
+
         public static class EmployeeShift
         {
             private const string BaseEmployeeShift = Api + "/employee-shifts";

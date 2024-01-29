@@ -79,14 +79,57 @@ namespace Data.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("EndTimeHours")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EndTimeMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("StartTimeHours")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StartTimeMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("cashier")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("EmployeeShifts", (string)null);
+                });
+
+            modelBuilder.Entity("Common.Entities.PaymentBox", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<double>("CashWithdrawal")
+                        .HasColumnType("float");
+
+                    b.Property<double>("FinalImport")
+                        .HasColumnType("float");
+
+                    b.Property<double>("InitialActive")
+                        .HasColumnType("float");
+
+                    b.Property<double>("InitialImport")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentBox", (string)null);
                 });
 
             modelBuilder.Entity("Common.Entities.Shift", b =>
@@ -105,6 +148,9 @@ namespace Data.Migrations
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("TypeShift")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

@@ -11,6 +11,16 @@ namespace FC.Data.Configuration
             builder.ToTable("EmployeeShifts");
             builder.Property(x => x.StartDate).IsRequired();
             builder.Property(x => x.EndDate).IsRequired(false);
+            builder.Property(x => x.StartTimeHours).IsRequired();
+            builder.Property(x => x.StartTimeMinutes).IsRequired();
+            builder.Property(x => x.EndTimeHours).IsRequired(false);
+            builder.Property(x => x.EndTimeMinutes).IsRequired(false);
+            builder.Property(x => x.Notes).IsRequired(false);
+            builder.Property(x => x.cashier).IsRequired();
+
+
+            // Nuevas propiedades para la hora
+
 
             builder.HasOne(x => x.Employee)
                    .WithMany(x => x.EmployeeShifts)

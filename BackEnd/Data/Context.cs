@@ -16,6 +16,7 @@ namespace Data
         public DbSet<EmployeeShift> EmployeeShifts { get; set; }
         public DbSet<Suppliers> Suppliers { get; set; }
         public DbSet<Shift> Shift { get; set; }
+        public DbSet<PaymentBox> PaymentBox { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

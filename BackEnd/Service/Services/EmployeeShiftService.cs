@@ -25,11 +25,17 @@ namespace Service.Services
                 return ack;
             }
 
-            employee.EmployeeShifts.Add(new EmployeeShift 
-            { 
-                StartDate = model.StartDate,
-                EndDate = model.EndDate
-            });
+            employee.EmployeeShifts.Add(new EmployeeShift
+            {
+                StartDate = model.StartDate.Date,
+                StartTimeHours=model.StartTimeHours,
+                StartTimeMinutes=model.StartTimeMinutes,
+                EndTimeHours=model.EndTimeHours,
+                EndTimeMinutes=model.EndTimeMinutes,
+                Notes = model.Notes,
+                cashier=model.cashier,
+                EndDate = model.EndDate?.Date 
+            }) ; 
 
             UoW.Complete();
 
@@ -46,10 +52,16 @@ namespace Service.Services
                 ack.Mensaje = "El campo EndDate es obligatorio.";
                 return ack;
             }
+            if (!model.EndTimeHours.HasValue && !model.EndTimeMinutes.HasValue)
+            {
+                ack.Mensaje = "El campo EndTimeHours y EndTimeMinutes es obligatorio.";
+                return ack;
+            }
 
-            var employeeShift = UoW.EmployeeShifts.Obtener(new EmpoyeeShiftQueryModel 
-            { 
+            var employeeShift = UoW.EmployeeShifts.Obtener(new EmpoyeeShiftQueryModel
+            {
                 SinFinalizar = true,
+                SinFinalizarHora = true,
                 EmployeeId = model.EmployeeId
             });
 
@@ -59,7 +71,9 @@ namespace Service.Services
                 return ack;
             }
 
-            employeeShift.EndDate = model.EndDate;
+            employeeShift.EndDate = model.EndDate?.Date;
+            employeeShift.EndTimeHours = model.EndTimeHours;
+            employeeShift.EndTimeMinutes = model.EndTimeMinutes;
             UoW.Complete();
 
             ack.Exito = true;

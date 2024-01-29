@@ -58,9 +58,16 @@ namespace WafflesOneLove.Controllers
         public IActionResult GetAll()
         {
             var employee = employeeService.GetAll();
+<<<<<<< Updated upstream
             if (employee == null) {
                 return Ok(new List<Employee>());
             };
+=======
+           if(employee == null )
+            {
+                return Ok(new List<Employee>());
+            }
+>>>>>>> Stashed changes
 
             return Ok(employee);
         }

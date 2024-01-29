@@ -25,11 +25,14 @@ namespace Service.Services
                 return ack;
             }
 
-            employee.EmployeeShifts.Add(new EmployeeShift
+
+            employee.Shifts.Add(new Shift
             {
-                StartDate = model.StartDate,
-                EndDate = model.EndDate
+                StartDate = model.StartDate.Date,
+                TypeShift = model.TypeShift,
+                EndDate = model.EndDate?.Date
             });
+
 
             UoW.Complete();
 
@@ -47,19 +50,20 @@ namespace Service.Services
                 return ack;
             }
 
-            var employeeShift = UoW.EmployeeShifts.Obtener(new EmpoyeeShiftQueryModel
+
+            var Shift = UoW.Shifts.Obtener(new ShiftQueryModel
             {
                 SinFinalizar = true,
                 EmployeeId = model.EmployeeId
             });
 
-            if (employeeShift == null)
+            if (Shift == null)
             {
-                ack.Mensaje = "El empleado no cuenta con ningún turno para cerrar";
+                ack.Mensaje = "El encargado  no cuenta con ningún turno para cerrar";
                 return ack;
             }
 
-            employeeShift.EndDate = model.EndDate;
+            Shift.EndDate = model.EndDate;
             UoW.Complete();
 
             ack.Exito = true;

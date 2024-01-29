@@ -43,6 +43,29 @@ namespace Data.Repository
                 }
             }
 
+
+            if (queryModel.SinFinalizarHora.HasValue)
+            {
+                if (queryModel.SinFinalizarHora.Value)
+                {
+                    query = query.Where(x => !x.EndTimeHours.HasValue);
+                }
+                else
+                {
+                    query = query.Where(x => x.EndTimeHours.HasValue);
+                }
+            }
+            if (queryModel.SinFinalizarHora.HasValue)
+            {
+                if (queryModel.SinFinalizarHora.Value)
+                {
+                    query = query.Where(x => !x.EndTimeMinutes.HasValue);
+                }
+                else
+                {
+                    query = query.Where(x => x.EndTimeMinutes.HasValue);
+                }
+            }
             return query;
         }
     }
