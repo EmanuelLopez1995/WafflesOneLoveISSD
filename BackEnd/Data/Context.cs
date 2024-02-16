@@ -29,6 +29,11 @@ namespace Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(EmployeeConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(EmployeeShiftConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PaymentBoxConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShiftConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SuppliersConfiguration).Assembly);
+
 
         }
     }

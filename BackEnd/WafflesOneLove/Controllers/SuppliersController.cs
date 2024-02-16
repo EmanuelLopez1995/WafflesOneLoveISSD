@@ -59,18 +59,10 @@ namespace WafflesOneLove.Controllers
         public IActionResult GetAll()
         {
             var suppliers = suppliersService.GetAll();
-<<<<<<< Updated upstream
             if (suppliers == null)
             {
                 return Ok(new List<Suppliers>());
             };
-=======
-            if (suppliers == null) 
-            {
-                return Ok(new List<Suppliers>());
-            }
->>>>>>> Stashed changes
-
             return Ok(suppliers);
         }
     }

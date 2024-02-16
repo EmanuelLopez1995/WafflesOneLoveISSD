@@ -29,7 +29,7 @@ namespace Service.Services
             employee.Shifts.Add(new Shift
             {
                 StartDate = model.StartDate.Date,
-                TypeShift = model.TypeShift,
+                TypeShift = (int)model.TypeShift,
                 EndDate = model.EndDate?.Date
             });
 
