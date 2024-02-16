@@ -30,5 +30,7 @@ msbuild.err
 msbuild.wrn
 appsettings.Local.json
 
+Migrations/
+
 # Visual Studio 2015
 .vs/
