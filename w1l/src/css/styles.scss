@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+@import '@/css/variables.scss';
 
 #app {
     font-family: 'Roboto', sans-serif;;
@@ -27,4 +28,10 @@ body {
   textarea{
     padding: 30px 10px 10px 10px;
   } 
+}
+
+.v-container {
+  border-radius: 10px;
+  background-color: $negro_oscuro;
+  box-shadow: $box_shadow_custom_1;
 }

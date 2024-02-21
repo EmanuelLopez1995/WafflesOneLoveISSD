@@ -32,8 +32,11 @@
                 items-per-page-text="Items por página:"
                 height=600
                 :hover="true"
-                loading-text="Cargando..."
+                
             >
+                <template v-slot:loading>
+                    <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
+                </template>
                 <template v-slot:item.opciones="{ item }">
                     <span class="editButton" @click="editar(item.id)"></span>
                     <span class="deleteButton" @click="confirmarEliminacion(item.id)"></span>
