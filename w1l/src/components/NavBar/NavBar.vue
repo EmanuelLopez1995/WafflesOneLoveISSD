@@ -15,6 +15,7 @@
                 >
                 <template v-slot:activator="{ props }">
                     <img v-bind="props" src="@/assets/img/imagenPerfil.png" alt="Usuario" class="imagenUsuario">
+                    <router-link to="/configuraciones" class="iconGearLink"><span class="gearIcon"></span></router-link>
                 </template>
                 <v-list>
                     <v-list-item
