@@ -8,7 +8,13 @@
         <v-card-text class="h-screen">
             <v-window v-model="tab">
                 <v-window-item value="1" class="h-screen">
+                    <br>
+                    <div class="fondoNegroProveedores">
+                    <br>
+                    <h2>Listado de proveedores registrados</h2>
+                    <br>
                     <listado-proveedor :tabSelected="tab == '1'"/>
+                    </div >
                 </v-window-item> 
                 <v-window-item value="2" class="h-screen">
                     <registrar-proveedor />

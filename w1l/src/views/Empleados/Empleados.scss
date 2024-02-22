@@ -87,10 +87,11 @@
     flex-direction: column;
 }
 
-.v-container {
+.fondoNegro {
     border-radius: 10px;
     background-color: $negro_oscuro;
     box-shadow: $box_shadow_custom_1;
-   
+    padding: 0px 20px 20px 20px;
+    
 }
 

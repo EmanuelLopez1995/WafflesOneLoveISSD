@@ -28,7 +28,6 @@
 .contenedorTable{
     border: 1px solid rgba(128, 128, 128, 0.158);
     border-radius: 10px;
-    padding: 20px 0px 20px 20px;
     background-color: rgb(32, 32, 32);
 }
 
@@ -44,3 +43,9 @@
     }
 }
 
+
+.v-data-table {
+    display: flex;
+    
+    
+  }

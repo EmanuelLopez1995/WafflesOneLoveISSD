@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="listadoProveedores">
         <Table :contenido="proveedores" :titulos="titulosTabla" titulo="Proveedores" :loading="loading" @eliminar="eliminarPorId"/>
     </div>
 </template>
