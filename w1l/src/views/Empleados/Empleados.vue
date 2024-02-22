@@ -14,11 +14,12 @@
        
         <v-window-item value="1" id="windowListado">
           <br>
-          <v-container >
-          <h2>Listado de empleados registrados:</h2>
+          <div class="fondoNegro">
+          <br>
+          <h2>Listado de empleados registrados</h2>
           <br>
           <listadoEmpleados :tabSelected="tab == '1'"/>  
-          </v-container >
+          </div >
         </v-window-item> 
 
         <v-window-item value="2">
