@@ -5,12 +5,12 @@
             <v-tab value="2">Registrar</v-tab>
         </v-tabs>
 
-        <v-card-text class="h-screen">
+        <v-card-text class="">
             <v-window v-model="tab">
-                <v-window-item value="1" class="h-screen">
+                <v-window-item value="1" class="">
                     1
                 </v-window-item> 
-                <v-window-item value="2" class="h-screen">
+                <v-window-item value="2" class="">
                     2
                 </v-window-item> 
             </v-window>

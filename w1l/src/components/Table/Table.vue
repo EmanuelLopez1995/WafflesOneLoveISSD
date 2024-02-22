@@ -30,7 +30,6 @@
                 no-data-text="No hay datos para mostrar"
                 class="tablaContenido"
                 items-per-page-text="Items por página:"
-                height=600
                 :hover="true"
                 
             >

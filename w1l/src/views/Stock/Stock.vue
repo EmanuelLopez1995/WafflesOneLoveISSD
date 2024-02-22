@@ -5,12 +5,12 @@
             <v-tab value="2">Registrar producto</v-tab>
         </v-tabs>
 
-        <v-card-text class="h-screen">
+        <v-card-text class="">
             <v-window v-model="tab">
-                <v-window-item value="1" class="h-screen">
+                <v-window-item value="1" class="">
                     <h1>Listado</h1>
                 </v-window-item> 
-                <v-window-item value="2" class="h-screen">
+                <v-window-item value="2" class="">
                     <registrarStock />
                 </v-window-item> 
             </v-window>

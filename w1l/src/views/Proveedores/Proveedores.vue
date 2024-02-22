@@ -5,9 +5,9 @@
             <v-tab value="2">Registrar Proveedor</v-tab>
         </v-tabs>
 
-        <v-card-text class="h-screen">
+        <v-card-text class="">
             <v-window v-model="tab">
-                <v-window-item value="1" class="h-screen">
+                <v-window-item value="1" class="">
                     <br>
                     <div class="fondoNegroProveedores">
                     <br>
@@ -16,7 +16,7 @@
                     <listado-proveedor :tabSelected="tab == '1'"/>
                     </div >
                 </v-window-item> 
-                <v-window-item value="2" class="h-screen">
+                <v-window-item value="2" class="">
                     <registrar-proveedor />
                 </v-window-item> 
             </v-window>
