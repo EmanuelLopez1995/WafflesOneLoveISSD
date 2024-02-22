@@ -9,7 +9,7 @@
       
     </v-tabs>
 
-    <v-card-text class="h-screen">
+    <v-card-text class="">
       <v-window v-model="tab">
        
         <v-window-item value="1" id="windowListado">
