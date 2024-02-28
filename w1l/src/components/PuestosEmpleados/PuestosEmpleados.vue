@@ -17,7 +17,42 @@
                             <tr class="text-left">
                                 <td>{{ item.puesto }}</td>
                                 <td>
-                                    <span class="editButton" @click="editar(item.id)"></span>
+                                    <v-dialog max-width="500" persistent>
+                                        <template v-slot:activator="{ props: activatorProps }">
+                                            <span
+                                                class="editButton" 
+                                                v-bind="activatorProps"
+                                                @click="setNombrePuestoAEditar(item)"
+                                            ></span>
+                                        </template>
+
+                                        <template v-slot:default="{ isActive }">
+                                            <v-card title="Editar...">
+                                                <v-form @submit.prevent="editarPuestoEmpleado" ref="form">
+                                                    <v-text-field
+                                                        class="inputPuestoEmpleado"
+                                                        v-model="nombrePuestoAEditar"
+                                                        :rules="reglas.notNull"
+                                                        label="Nombre del puesto"
+                                                    ></v-text-field>
+
+                                                    <v-card-actions>
+                                                        <v-spacer></v-spacer>
+                                                        <v-btn
+                                                            text="Cancelar"
+                                                            @click="isActive.value = false"
+                                                        ></v-btn>
+                                                        <v-btn
+                                                            type="submit"
+                                                            text="Confirmar"  
+                                                            variant="tonal"
+                                                            @click="isActive.value = false"
+                                                        ></v-btn>
+                                                    </v-card-actions>
+                                                </v-form>
+                                            </v-card>
+                                        </template>
+                                    </v-dialog>
                                     <span class="deleteButton" @click="confirmarEliminacion(item.id)"></span>
                                 </td>
                             </tr>
@@ -40,7 +75,6 @@
                 
             </v-row>
         </v-container>
-    
   </div>
 </template>
 
@@ -87,12 +121,25 @@ export default {
                 }
             ],
             loading: false,
-            puestoAagregar: ''
+            puestoAagregar: '',
+            nombrePuestoAEditar: ''
         }
     },
     methods: {
         agregarPuesto() {
             console.log('pasó')
+        },
+        editarPuestoEmpleado() { // hacer con datos reales
+            this.$refs.form.validate().then(response => {
+                if (response.valid) {
+                    console.log('form valido')
+                }
+            });
+        },
+        setNombrePuestoAEditar(item) { //validar con datos reales
+            const idPuesto = item.id;
+            const nombrePuesto = item.puesto;
+            this.nombrePuestoAEditar = item.puesto;
         }
     }
 }
