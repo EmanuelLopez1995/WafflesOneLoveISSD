@@ -17,6 +17,8 @@ namespace Data
         public DbSet<Suppliers> Suppliers { get; set; }
         public DbSet<Shift> Shift { get; set; }
         public DbSet<PaymentBox> PaymentBox { get; set; }
+        public DbSet<Salary> Salary { get; set; }
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -33,6 +35,7 @@ namespace Data
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(PaymentBoxConfiguration).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShiftConfiguration).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SuppliersConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SalaryConfiguration).Assembly);
 
 
         }

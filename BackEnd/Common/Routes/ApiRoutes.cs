@@ -56,6 +56,14 @@
             public const string Delete = BaseShifts;
             public const string Close = BaseShifts + "/close";
         }
-
+        public static class Salary
+        {
+            private const string BaseSalary = Api + "/salary";
+            public const string GetAll = BaseSalary + "/get-all";
+            public const string Get = BaseSalary;
+            public const string Post = BaseSalary;
+            public const string Put = BaseSalary;
+            public const string Delete = BaseSalary;
+        }
     }
 }
