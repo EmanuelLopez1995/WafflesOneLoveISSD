@@ -16,6 +16,7 @@ namespace Data
             Suppliers=new SuppliersRepository(context);
             Shifts = new ShiftRepository(context);
             PaymentBox = new PaymentBoxRepository(context);
+            Salary = new SalaryRepository(context);
 
         }
 
@@ -24,6 +25,10 @@ namespace Data
         public ISuppliersRepository Suppliers { get; private set; }
         public IShiftRepository Shifts { get; private set; }
         public IPaymentBoxRepository PaymentBox { get; private set; }
+        public ISalaryRepository Salary { get; private set; }
+
+
+
 
         public int Complete()
         {

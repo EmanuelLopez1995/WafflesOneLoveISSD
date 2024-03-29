@@ -9,7 +9,7 @@ namespace Common.Repository
         ISuppliersRepository Suppliers { get; }
         IShiftRepository Shifts { get; }
         IPaymentBoxRepository PaymentBox {get;}
-
+        ISalaryRepository Salary { get; }
         int Complete();
     }
 }
