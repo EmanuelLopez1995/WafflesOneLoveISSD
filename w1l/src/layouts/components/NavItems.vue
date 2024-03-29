@@ -9,13 +9,32 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
     :item="{
       title: 'Inicio',
       icon: 'ri-layout-4-line',
-      to: '/form-layouts',
+      to: '/dashboard',
     }"
   />
+    <VerticalNavGroup
+    :item="{
+      title: 'Stock',
+      icon: 'ri-archive-stack-line',
+    }"
+  >
+    <VerticalNavLink
+      :item="{
+        title: 'Listado',
+        to: '/listadoStock',
+      }"
+    />
+    <VerticalNavLink
+      :item="{
+        title: 'Registrar producto',
+        to: '/registrarStock',
+      }"
+    />
+  </VerticalNavGroup>
   <VerticalNavGroup
     :item="{
       title: 'Proveedores',
-      icon: 'ri-list-view',
+      icon: 'ri-account-pin-circle-line',
     }"
   >
     <VerticalNavLink
@@ -24,8 +43,51 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
         to: '/listadoProveedores',
       }"
     />
+    <VerticalNavLink
+      :item="{
+        title: 'Registrar proveedor',
+        to: '/registrarProveedor',
+      }"
+    />
   </VerticalNavGroup>
-
+  <VerticalNavGroup
+    :item="{
+      title: 'Empleados',
+      icon: 'ri-team-line',
+    }"
+  >
+    <VerticalNavLink
+      :item="{
+        title: 'Listado',
+        to: '/listadoEmpleados',
+      }"
+    />
+    <VerticalNavLink
+      :item="{
+        title: 'Registrar empleado',
+        to: '/registrarEmpleado',
+      }"
+    />
+  </VerticalNavGroup>
+  <VerticalNavGroup
+    :item="{
+      title: 'Compras',
+      icon: 'ri-bank-card-2-line',
+    }"
+  >
+    <VerticalNavLink
+      :item="{
+        title: 'Listado',
+        to: '/listadoCompras',
+      }"
+    />
+    <VerticalNavLink
+      :item="{
+        title: 'Registrar compra',
+        to: '/registrarCompra',
+      }"
+    />
+  </VerticalNavGroup>
   <!-- Aca empieza lo otro  -->
   <!-- 👉 Dashboards -->
   <VerticalNavGroup
