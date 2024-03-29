@@ -17,7 +17,7 @@ const authThemeMask = computed(() => {
     <ErrorHeader
       status-code="404"
       title="Page Not Found ⚠️"
-      description="We couldn't find the page you are looking for."
+      description="No pudimos encontrar la página que estas buscando"
     />
 
     <!-- 👉 Image -->
@@ -32,7 +32,7 @@ const authThemeMask = computed(() => {
         to="/"
         class="mt-10"
       >
-        Back to Home
+        Regresar al inicio
       </VBtn>
     </div>
 

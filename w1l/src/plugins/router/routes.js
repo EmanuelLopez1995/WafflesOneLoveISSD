@@ -36,6 +36,22 @@ export const routes = [
         path: 'listadoProveedores',
         component: () => import('@/pages/listadoProveedores.vue'),
       },
+      {
+        path: 'registrarProveedor',
+        component: () => import('@/pages/registrarProveedor.vue'),
+      },
+      {
+        path: 'registrarStock',
+        component: () => import('@/pages/registrarStock.vue'),
+      },
+      {
+        path: 'registrarEmpleado',
+        component: () => import('@/pages/registrarEmpleado.vue'),
+      },
+      {
+        path: 'listadoEmpleados',
+        component: () => import('@/pages/listadoEmpleados.vue'),
+      },
     ],
   },
   {

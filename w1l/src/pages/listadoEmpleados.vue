@@ -5,34 +5,33 @@ import { defineAsyncComponent, ref } from 'vue';
 import { eliminarRegistro , algoSalioMalError , registroExitosoMensaje } from '@/components/SwalCustom.js'
 import { useTheme } from 'vuetify'
 
-const proveedores = ref({});
+const empleados = ref({});
 const vuetifyTheme = useTheme()
 
 
 const currentTheme = computed(() => {
-    return ref(vuetifyTheme.current.value.colors) // se accede con currentTheme.value.primary x ej
+    return ref(vuetifyTheme.current.value.colors)
 })
 
 const fetchData = async () => {
   try {
-    axios.get('/suppliers/get-all').then((response) => {
-        proveedores.value = response.data;
+    axios.get('/employees/get-all').then((response) => {
+        empleados.value = response.data;
     })
-  } catch (error) {
+  } catch {
     algoSalioMalError(currentTheme.value)
   }
 };
 
-// Llama a la función fetchData cuando se monta el componente
 onMounted(fetchData);
 
 const eliminar = function (id) {
     try {
-        axios.delete(`/suppliers?id=${id}`).then((response) => {
+        axios.delete(`/employees?id=${id}`).then((response) => {
             fetchData();
         })
-    } catch (error) {
-        console.error('Error fetching data:', error);
+    } catch {
+        algoSalioMalError(currentTheme.value)
     }
 }
 
@@ -50,22 +49,22 @@ const eliminar = function (id) {
           Nombre
         </th>
         <th class="text-uppercase text-center">
-          Razón social
+          Apellido
         </th>
         <th class="text-uppercase text-center">
-          Dirección
+          DNI
         </th>
         <th class="text-uppercase text-center">
           Teléfono
         </th>
         <th class="text-uppercase text-center">
-          CUIT
+          Dirección
         </th>
         <th class="text-uppercase text-center">
           Email
         </th>
         <th class="text-uppercase text-center">
-          Detalle
+          Puesto
         </th>
         <th class="text-uppercase text-center">
           Opciones
@@ -75,7 +74,7 @@ const eliminar = function (id) {
 
     <tbody>
       <tr
-        v-for="item in proveedores"
+        v-for="item in empleados"
         :key="item.id"
       >
         <td>
@@ -85,22 +84,22 @@ const eliminar = function (id) {
           {{ item.nombre }}
         </td>
         <td class="text-center">
-          {{ item.razonSocial }}
+          {{ item.apellido }}
         </td>
         <td class="text-center">
-          {{ item.direccion }}
+          {{ item.dni }}
         </td>
         <td class="text-center">
           {{ item.numero }}
         </td>
         <td class="text-center">
-          {{ item.cuit }}
+          {{ item.direccion }}
         </td>
         <td class="text-center">
           {{ item.email }}
         </td>
         <td class="text-center">
-          {{ item.detalle }}
+          {{ item.posicion }}
         </td>
         <td class="text-center">
             <IconBtn
