@@ -52,6 +52,10 @@ export const routes = [
         path: 'listadoEmpleados',
         component: () => import('@/pages/listadoEmpleados.vue'),
       },
+      {
+        path: 'inicioTurnoYcaja',
+        component: () => import('@/pages/inicioTurnoYcaja.vue'),
+      },
     ],
   },
   {

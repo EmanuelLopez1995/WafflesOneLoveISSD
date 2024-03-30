@@ -9,7 +9,7 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
     :item="{
       title: 'Inicio',
       icon: 'ri-layout-4-line',
-      to: '/dashboard',
+      to: '/inicioTurnoYcaja',
     }"
   />
     <VerticalNavGroup
