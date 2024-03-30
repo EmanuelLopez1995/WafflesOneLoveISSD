@@ -2,12 +2,15 @@
 import { useRoute } from 'vue-router'
 import InicioTurno from '@/pages/InicioTurnoYcaja/inicioDeTurno.vue'
 import AperturaCaja from '@/pages/InicioTurnoYcaja/aperturaDeCaja.vue'
+import Resumen from '@/pages/InicioTurnoYcaja/resumen.vue'
 
 
 const route = useRoute()
 const activeTab = ref(route.params.tab)
 
-const empleadosSeleccionados = ref(null)
+const empleadosSeleccionados = ref([])
+const datosDeInicioTurno = ref({})
+const datosDeAperturaDeCaja = ref({})
 
 // tabs
 let tabs = [
@@ -15,20 +18,54 @@ let tabs = [
     title: 'Inicio de turno',
     icon: 'ri-door-open-line',
     tab: 'inicioTurno',
+    disabled: false
   },
   {
     title: 'Apertura de caja',
     icon: 'ri-money-dollar-box-line',
     tab: 'caja',
     disabled: true
+  },
+  {
+    title: 'Finalizar',
+    icon: 'ri-check-double-line',
+    tab: 'resumen',
+    disabled: true
   }
 ]
 
-const iniciarAperturaDeCaja = (empleados) => {
+const iniciarAperturaDeCaja = (datosInicioTurno) => {
     tabs[1].disabled = false;
+    tabs[0].disabled = true;
+    tabs[2].disabled = true;
     activeTab.value = 'caja';
-    empleadosSeleccionados.value = empleados;
+    empleadosSeleccionados.value = datosInicioTurno.empleadosSeleccionados;
+    datosDeInicioTurno.value = datosInicioTurno;
 }
+
+const backToInicioDeTurno = () => {
+    tabs[0].disabled = false;
+    activeTab.value = 'inicioTurno';
+    tabs[1].disabled = true;
+    tabs[2].disabled = true;
+}
+
+const irAResumen = (datosAperturaDeCaja) => {
+    datosDeAperturaDeCaja.value = datosAperturaDeCaja;
+    tabs[2].disabled = false;
+    tabs[0].disabled = true;
+    activeTab.value = 'resumen';
+    tabs[1].disabled = true;
+}
+
+const backToCaja = () => {
+    tabs[1].disabled = false;
+    tabs[0].disabled = true;
+    tabs[2].disabled = true;
+    activeTab.value = 'caja';
+}
+
+
 </script>
 
 <template>
@@ -64,7 +101,12 @@ const iniciarAperturaDeCaja = (empleados) => {
 
       <!-- Apertura de caja -->
       <VWindowItem value="caja">
-        <AperturaCaja />
+        <AperturaCaja :empleadosPresentes="empleadosSeleccionados.value" @backToInicioDeTurno="backToInicioDeTurno" @irAResumen="irAResumen"/>
+      </VWindowItem>
+
+      <!-- Resumen -->
+      <VWindowItem value="resumen">
+        <Resumen :turno="datosDeInicioTurno" :caja="datosDeAperturaDeCaja" @backToCaja="backToCaja"/>
       </VWindowItem>
     </VWindow>
   </div>

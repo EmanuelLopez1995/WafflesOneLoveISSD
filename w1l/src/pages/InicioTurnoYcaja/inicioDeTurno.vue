@@ -15,6 +15,7 @@ const fecha = ref(null)
 const turno = ref('')
 const notas = ref('')
 const esFeriado = ref(false)
+const encargadoDeTurno = ref(null)
 
 const form = ref(null)
 const vuetifyTheme = useTheme()
@@ -26,7 +27,7 @@ const currentTheme = computed(() => {
 const iniciarTurno = () => {
   form.value.validate().then(response => {
     if (response.valid) {
-        emit('inicioTurno', empleadosSeleccionados)
+        emit('inicioTurno', {empleadosSeleccionados, fecha, turno, notas, esFeriado, encargadoDeTurno})
     } 
   })
 }
@@ -105,7 +106,18 @@ onMounted(() => {
               label="Turno"
             />
           </VCol>
-
+          <VCol
+            cols="12"
+            md="2"
+          >
+            <VSelect
+                v-model="encargadoDeTurno"
+                :items="allEmpleados"
+                item-title="nombreCompletoYid"
+                return-object
+                label="Encargado de turno"
+            />
+          </VCol>
           <VCol
             cols="12"
             md="4"
@@ -118,7 +130,7 @@ onMounted(() => {
 
           <VCol
             cols="12"
-            md="4"
+            md="2"
           >
             <VCheckbox
               v-model="esFeriado"
@@ -129,11 +141,11 @@ onMounted(() => {
 
           <VCol
             cols="12"
-            md="10"
+            md="12"
           >
                 <VCol
                   cols="12"
-                  md="10"
+                  md="12"
                 >
                   <VSelect
                     v-model="empleadosSeleccionados"
@@ -148,6 +160,7 @@ onMounted(() => {
                 </VCol>
                 <VCol
                   cols="12"
+                  md="12"
                   v-for="empleado in empleadosSeleccionados"
                   :key="empleado.id"
                 >
