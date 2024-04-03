@@ -1,10 +1,19 @@
 <script setup>
 import NavItems from '@/layouts/components/NavItems.vue'
-import logo from '@images/logo.svg?raw'
+import logo from '@images/logo.png'
 import VerticalNavLayout from '@layouts/components/VerticalNavLayout.vue'
 import Footer from '@/layouts/components/Footer.vue'
 import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
 import UserProfile from '@/layouts/components/UserProfile.vue'
+import { useTheme } from 'vuetify'
+
+
+const vuetifyTheme = useTheme()
+
+const tema = computed(() => {
+  return vuetifyTheme.global.name.value
+})
+
 </script>
 
 <template>
@@ -38,14 +47,6 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
 
         <VSpacer />
 
-        <IconBtn
-          class="me-2"
-          href="https://github.com/themeselection/materio-vuetify-vuejs-admin-template-free"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <VIcon icon="ri-github-fill" />
-        </IconBtn>
 
         <IconBtn class="me-2">
           <VIcon icon="ri-notification-line" />
@@ -62,14 +63,11 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
         to="/"
         class="app-logo app-title-wrapper"
       >
-        <div
-          class="d-flex"
-          v-html="logo"
-        />
 
-        <h1 class="font-weight-medium leading-normal text-xl text-uppercase">
-          Materio
-        </h1>
+        <div>
+          <img v-if="tema == 'light' " src="../../assets/images/logo.png" width="41%">
+          <img v-else src="../../assets/images/logoOscuro.png" width="41%">
+        </div>
       </RouterLink>
 
       <IconBtn

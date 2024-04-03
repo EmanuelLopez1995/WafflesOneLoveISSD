@@ -29,64 +29,68 @@ const registrarStock = () => {
 </script>
 
 <template>
-  <VForm @submit.prevent="registrarStock" ref="form">
-    <VRow>
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VTextField
-          v-model="nombre"
-          :rules="[reglaObligatoria()]"
-          label="Nombre del producto"
-        />
-      </VCol>
+  <VCard>
+    <VCardItem>
+      <VForm @submit.prevent="registrarStock" ref="form" class="pt-2">
+        <VRow>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VTextField
+              v-model="nombre"
+              :rules="[reglaObligatoria()]"
+              label="Nombre del producto"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VTextField
-          v-model="marca"
-          label="Marca"
-        />
-      </VCol>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VTextField
+              v-model="marca"
+              label="Marca"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VTextField
-          v-model="stockMinimo"
-          type="number"
-          label="Stock mínimo"
-        />
-      </VCol>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VTextField
+              v-model="stockMinimo"
+              type="number"
+              label="Stock mínimo"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VTextField
-          v-model="detalle"
-          label="Detalle"
-        />
-      </VCol>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VTextField
+              v-model="detalle"
+              label="Detalle"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        class="d-flex gap-4"
-      >
-        <VBtn type="submit"> Registrar </VBtn>
+          <VCol
+            cols="12"
+            class="d-flex gap-4"
+          >
+            <VBtn type="submit"> Registrar </VBtn>
 
-        <VBtn
-          type="reset"
-          color="secondary"
-          variant="outlined"
-        >
-          Limpiar
-        </VBtn>
-      </VCol>
-    </VRow>
-  </VForm>
+            <VBtn
+              type="reset"
+              color="secondary"
+              variant="outlined"
+            >
+              Limpiar
+            </VBtn>
+          </VCol>
+        </VRow>
+      </VForm>
+    </VCardItem>
+  </VCard>
 </template>

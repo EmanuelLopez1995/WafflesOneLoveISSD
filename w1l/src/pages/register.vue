@@ -1,4 +1,8 @@
 <script setup>
+
+//////////////////
+// NO NECESITAMOS ESTE COMPONENTE
+/////////// /////
 import { useTheme } from 'vuetify'
 import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 import logo from '@images/logo.svg?raw'
@@ -39,7 +43,7 @@ const isPasswordVisible = ref(false)
         </template>
 
         <VCardTitle class="font-weight-semibold text-2xl text-uppercase">
-          Materio
+          SSLIT
         </VCardTitle>
       </VCardItem>
 

@@ -39,83 +39,88 @@ const eliminar = function (id) {
 </script>
 
 <template>
-  <VTable>
-    <thead>
-      <tr>
-        <th class="text-uppercase">
-          ID
-        </th>
-        <th class="text-uppercase text-center">
-          Nombre
-        </th>
-        <th class="text-uppercase text-center">
-          Apellido
-        </th>
-        <th class="text-uppercase text-center">
-          DNI
-        </th>
-        <th class="text-uppercase text-center">
-          Teléfono
-        </th>
-        <th class="text-uppercase text-center">
-          Dirección
-        </th>
-        <th class="text-uppercase text-center">
-          Email
-        </th>
-        <th class="text-uppercase text-center">
-          Puesto
-        </th>
-        <th class="text-uppercase text-center">
-          Opciones
-        </th>
-      </tr>
-    </thead>
+  <VCard>
+    <VCardItem>
+      <VTable>
+        <thead>
+          <tr>
+            <th class="text-uppercase">
+              ID
+            </th>
+            <th class="text-uppercase text-center">
+              Nombre
+            </th>
+            <th class="text-uppercase text-center">
+              Apellido
+            </th>
+            <th class="text-uppercase text-center">
+              DNI
+            </th>
+            <th class="text-uppercase text-center">
+              Teléfono
+            </th>
+            <th class="text-uppercase text-center">
+              Dirección
+            </th>
+            <th class="text-uppercase text-center">
+              Email
+            </th>
+            <th class="text-uppercase text-center">
+              Puesto
+            </th>
+            <th class="text-uppercase text-center">
+              Opciones
+            </th>
+          </tr>
+        </thead>
 
-    <tbody>
-      <tr
-        v-for="item in empleados"
-        :key="item.id"
-      >
-        <td>
-          {{ item.id }}
-        </td>
-        <td class="text-center">
-          {{ item.nombre }}
-        </td>
-        <td class="text-center">
-          {{ item.apellido }}
-        </td>
-        <td class="text-center">
-          {{ item.dni }}
-        </td>
-        <td class="text-center">
-          {{ item.numero }}
-        </td>
-        <td class="text-center">
-          {{ item.direccion }}
-        </td>
-        <td class="text-center">
-          {{ item.email }}
-        </td>
-        <td class="text-center">
-          {{ item.posicion }}
-        </td>
-        <td class="text-center">
-            <IconBtn
-              icon="ri-edit-2-fill"
-              color="primary"
-              class="me-1"
-            />
-            <IconBtn
-              icon="ri-delete-bin-5-fill"
-              color="error-darken-1"
-              class="me-1"
-              @click="eliminarRegistro(eliminar, item.id, item.nombre, currentTheme.value)"
-            />
+        <tbody>
+          <tr
+            v-for="item in empleados"
+            :key="item.id"
+          >
+            <td>
+              {{ item.id }}
+            </td>
+            <td class="text-center">
+              {{ item.nombre }}
+            </td>
+            <td class="text-center">
+              {{ item.apellido }}
+            </td>
+            <td class="text-center">
+              {{ item.dni }}
+            </td>
+            <td class="text-center">
+              {{ item.numero }}
+            </td>
+            <td class="text-center">
+              {{ item.direccion }}
+            </td>
+            <td class="text-center">
+              {{ item.email }}
+            </td>
+            <td class="text-center">
+              {{ item.posicion }}
+            </td>
+            <td class="text-center">
+                <IconBtn
+                  icon="ri-edit-2-fill"
+                  color="primary"
+                  class="me-1"
+                />
+                <IconBtn
+                  icon="ri-delete-bin-5-fill"
+                  color="error-darken-1"
+                  class="me-1"
+                  @click="eliminarRegistro(eliminar, item.id, item.nombre, currentTheme.value)"
+                />
 
-        </td>
-      </tr>
-    </tbody>
-  </VTable>
+            </td>
+          </tr>
+        </tbody>
+      </VTable>
+
+    </VCardItem>
+  </VCard>
 </template>

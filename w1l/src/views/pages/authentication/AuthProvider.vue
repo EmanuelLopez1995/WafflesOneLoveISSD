@@ -1,4 +1,8 @@
 <script setup>
+
+/////////////
+// NO NECESITAMOS ESTE COMPONENTES
+/////////////
 import { useTheme } from 'vuetify'
 
 const { global } = useTheme()

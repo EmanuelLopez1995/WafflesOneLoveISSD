@@ -48,96 +48,100 @@ const registrarProveedor = () => {
 </script>
 
 <template>
-  <VForm @submit.prevent="registrarProveedor" ref="form">
-    <VRow>
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VTextField
-          v-model="nombre"
-          :rules="[reglaObligatoria()]"
-          label="Nombre"
-        />
-      </VCol>
+  <VCard>
+    <VCardItem>
+      <VForm @submit.prevent="registrarProveedor" ref="form" class="pt-2">
+        <VRow>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VTextField
+              v-model="nombre"
+              :rules="[reglaObligatoria()]"
+              label="Nombre"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VTextField
-          v-model="razonSocial"
-          label="Razón Social"
-        />
-      </VCol>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VTextField
+              v-model="razonSocial"
+              label="Razón Social"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VTextField
-          v-model="direccion"
-          label="Dirección"
-        />
-      </VCol>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VTextField
+              v-model="direccion"
+              label="Dirección"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VTextField
-          v-model="telefono"
-          label="Teléfono"
-        />
-      </VCol>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VTextField
+              v-model="telefono"
+              label="Teléfono"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VTextField
-          v-model="cuit"
-          type="number"
-          label="CUIT"
-        />
-      </VCol>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VTextField
+              v-model="cuit"
+              type="number"
+              label="CUIT"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VTextField
-          v-model="email"
-          type="email"
-          :rules="[validarEmail()]"
-          label="Email"
-        />
-      </VCol>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VTextField
+              v-model="email"
+              type="email"
+              :rules="[validarEmail()]"
+              label="Email"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        md="12"
-      >
-        <VTextField
-          v-model="detalle"
-          label="Detalle"
-        />
-      </VCol>
+          <VCol
+            cols="12"
+            md="12"
+          >
+            <VTextField
+              v-model="detalle"
+              label="Detalle"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        class="d-flex gap-4"
-      >
-        <VBtn type="submit"> Registrar </VBtn>
+          <VCol
+            cols="12"
+            class="d-flex gap-4"
+          >
+            <VBtn type="submit"> Registrar </VBtn>
 
-        <VBtn
-          type="reset"
-          color="secondary"
-          variant="outlined"
-        >
-          Limpiar
-        </VBtn>
-      </VCol>
-    </VRow>
-  </VForm>
+            <VBtn
+              type="reset"
+              color="secondary"
+              variant="outlined"
+            >
+              Limpiar
+            </VBtn>
+          </VCol>
+        </VRow>
+      </VForm>
+    </VCardItem>
+  </VCard>
 </template>

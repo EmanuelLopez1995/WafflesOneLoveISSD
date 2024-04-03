@@ -64,7 +64,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
               />
             </template>
 
-            <VListItemTitle>Profile</VListItemTitle>
+            <VListItemTitle>Perfil</VListItemTitle>
           </VListItem>
 
           <!-- 👉 Settings -->
@@ -77,20 +77,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
               />
             </template>
 
-            <VListItemTitle>Settings</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 Pricing -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="ri-money-dollar-circle-line"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>Pricing</VListItemTitle>
+            <VListItemTitle>Configuraciones</VListItemTitle>
           </VListItem>
 
           <!-- 👉 FAQ -->
@@ -119,7 +106,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
               />
             </template>
 
-            <VListItemTitle>Logout</VListItemTitle>
+            <VListItemTitle>Salir</VListItemTitle>
           </VListItem>
         </VList>
       </VMenu>

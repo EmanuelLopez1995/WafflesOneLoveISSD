@@ -1,7 +1,6 @@
 <script setup>
 import { useTheme } from 'vuetify'
 import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
-import logo from '@images/logo.svg?raw'
 import authV1MaskDark from '@images/pages/auth-v1-mask-dark.png'
 import authV1MaskLight from '@images/pages/auth-v1-mask-light.png'
 import authV1Tree2 from '@images/pages/auth-v1-tree-2.png'
@@ -19,6 +18,10 @@ const authThemeMask = computed(() => {
   return vuetifyTheme.global.name.value === 'light' ? authV1MaskLight : authV1MaskDark
 })
 
+const theme = computed(() => {
+  return vuetifyTheme.global.name.value
+})
+
 const isPasswordVisible = ref(false)
 </script>
 
@@ -31,23 +34,19 @@ const isPasswordVisible = ref(false)
       max-width="448"
     >
       <VCardItem class="justify-center">
-        <template #prepend>
-          <div class="d-flex">
-            <div v-html="logo" />
-          </div>
-        </template>
 
-        <VCardTitle class="font-weight-semibold text-2xl text-uppercase">
-          Materio
+        <VCardTitle class="d-flex justify-center">
+          <img v-if="theme == 'light' " src="../assets/images/logoFondoBlanco.png" width="70%">
+          <img v-else src="../assets/images/logoOscuroFondoClaro.png" width="70%">
         </VCardTitle>
       </VCardItem>
 
       <VCardText class="pt-2">
         <h5 class="text-h5 font-weight-semibold mb-1">
-          Welcome to Materio! 👋🏻
+          Bienvenid@ a SSLIT! 👋🏻
         </h5>
         <p class="mb-0">
-          Please sign-in to your account and start the adventure
+          Inserte usuario y contraseña para ingresar 
         </p>
       </VCardText>
 
@@ -67,7 +66,7 @@ const isPasswordVisible = ref(false)
             <VCol cols="12">
               <VTextField
                 v-model="form.password"
-                label="Password"
+                label="Contraseña"
                 placeholder="············"
                 :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="isPasswordVisible ? 'ri-eye-off-line' : 'ri-eye-line'"
@@ -78,14 +77,14 @@ const isPasswordVisible = ref(false)
               <div class="d-flex align-center justify-space-between flex-wrap mt-1 mb-4">
                 <VCheckbox
                   v-model="form.remember"
-                  label="Remember me"
+                  label="Recordar"
                 />
 
                 <a
                   class="ms-2 mb-1"
                   href="javascript:void(0)"
                 >
-                  Forgot Password?
+                  Olvidaste tu contraseña?
                 </a>
               </div>
 
@@ -94,13 +93,14 @@ const isPasswordVisible = ref(false)
                 block
                 type="submit"
                 to="/"
+                class="mt-15"
               >
-                Login
+                Ingresar
               </VBtn>
             </VCol>
 
             <!-- create account -->
-            <VCol
+            <!-- <VCol
               cols="12"
               class="text-center text-base"
             >
@@ -111,24 +111,24 @@ const isPasswordVisible = ref(false)
               >
                 Create an account
               </RouterLink>
-            </VCol>
+            </VCol> -->
 
-            <VCol
+            <!-- <VCol
               cols="12"
               class="d-flex align-center"
             >
               <VDivider />
               <span class="mx-4">or</span>
               <VDivider />
-            </VCol>
+            </VCol> -->
 
             <!-- auth providers -->
-            <VCol
+            <!-- <VCol
               cols="12"
               class="text-center"
             >
               <AuthProvider />
-            </VCol>
+            </VCol> -->
           </VRow>
         </VForm>
       </VCardText>

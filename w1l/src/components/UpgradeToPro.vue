@@ -1,3 +1,10 @@
+<script>
+// 
+// NO NECESITAMOS ESTE COMPONENTES
+// 
+</script>
+
+
 <template>
   <a
     color="error"

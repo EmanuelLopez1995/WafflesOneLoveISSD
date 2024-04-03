@@ -8,7 +8,7 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
   <VerticalNavLink
     :item="{
       title: 'Inicio de Turno',
-      icon: 'ri-layout-4-line',
+      icon: 'ri-door-open-line',
       to: '/inicioTurnoYcaja',
     }"
   />

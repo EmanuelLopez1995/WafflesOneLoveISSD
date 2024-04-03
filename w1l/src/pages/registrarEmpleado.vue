@@ -55,101 +55,105 @@ const registrarEmpleado = () => {
 </script>
 
 <template>
-  <VForm @submit.prevent="registrarEmpleado" ref="form">
-    <VRow>
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VTextField
-          v-model="nombre"
-          :rules="[reglaObligatoria()]"
-          label="Nombre"
-        />
-      </VCol>
+  <VCard>
+    <VCardItem>
+      <VForm @submit.prevent="registrarEmpleado" ref="form" class="pt-2">
+        <VRow>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VTextField
+              v-model="nombre"
+              :rules="[reglaObligatoria()]"
+              label="Nombre"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VTextField
-          v-model="apellido"
-          :rules="[reglaObligatoria()]"
-          label="Apellido"
-        />
-      </VCol>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VTextField
+              v-model="apellido"
+              :rules="[reglaObligatoria()]"
+              label="Apellido"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VTextField
-          v-model="dni"
-          :rules="[reglaObligatoria()]"
-          label="DNI"
-        />
-      </VCol>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VTextField
+              v-model="dni"
+              :rules="[reglaObligatoria()]"
+              label="DNI"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VTextField
-          v-model="telefono"
-          :rules="[reglaObligatoria()]"
-          label="Teléfono"
-        />
-      </VCol>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VTextField
+              v-model="telefono"
+              :rules="[reglaObligatoria()]"
+              label="Teléfono"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VTextField
-          v-model="direccion"
-          :rules="[reglaObligatoria()]"
-          label="Dirección"
-        />
-      </VCol>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VTextField
+              v-model="direccion"
+              :rules="[reglaObligatoria()]"
+              label="Dirección"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VTextField
-          v-model="email"
-          type="email"
-          :rules="[validarEmail(), reglaObligatoria()]"
-          label="Email"
-        />
-      </VCol>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VTextField
+              v-model="email"
+              type="email"
+              :rules="[validarEmail(), reglaObligatoria()]"
+              label="Email"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <VSelect
-            v-model="puesto"
-            :rules="[reglaObligatoria()]"
-            :items="itemsPuestos"
-            label="Puesto"
-        />
-      </VCol>
+          <VCol
+            cols="12"
+            md="6"
+          >
+            <VSelect
+                v-model="puesto"
+                :rules="[reglaObligatoria()]"
+                :items="itemsPuestos"
+                label="Puesto"
+            />
+          </VCol>
 
-      <VCol
-        cols="12"
-        class="d-flex gap-4"
-      >
-        <VBtn type="submit"> Registrar </VBtn>
+          <VCol
+            cols="12"
+            class="d-flex gap-4"
+          >
+            <VBtn type="submit"> Registrar </VBtn>
 
-        <VBtn
-          type="reset"
-          color="secondary"
-          variant="outlined"
-        >
-          Limpiar
-        </VBtn>
-      </VCol>
-    </VRow>
-  </VForm>
+            <VBtn
+              type="reset"
+              color="secondary"
+              variant="outlined"
+            >
+              Limpiar
+            </VBtn>
+          </VCol>
+        </VRow>
+      </VForm>
+    </VCardItem>
+  </VCard>
 </template>
