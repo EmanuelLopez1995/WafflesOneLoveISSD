@@ -44,7 +44,11 @@ const verificarAperturaCorrecta = () => {
 }
 
 const irAResumen = () => {
-    emit('irAResumen', {valorTotal, encargadoDeAperturaDeCaja, activoInicial, aperturaCorrecta })
+    form.value.validate().then(response => {
+        if (response.valid) {
+            emit('irAResumen', {valorTotal, encargadoDeAperturaDeCaja, activoInicial, aperturaCorrecta })
+        } 
+    })
 }
 
 </script>

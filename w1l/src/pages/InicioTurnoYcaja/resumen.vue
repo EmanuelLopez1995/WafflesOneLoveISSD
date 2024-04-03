@@ -80,7 +80,7 @@ const comenzarTurno = () => {
                                 {{ turno.turno }}
                             </td>
                             <td class="text-center">
-                                {{ turno.encargadoDeTurno.nombreCompletoYid }}
+                                {{ turno.encargadoDeTurno ? turno.encargadoDeTurno.nombreCompletoYid : '-' }}
                             </td>
                             <td class="text-center">
                                 {{ turno.notas ? turno.notas : '-' }}

@@ -89,6 +89,19 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
     />
   </VerticalNavGroup>
   <!-- Aca empieza lo otro  -->
+    <VerticalNavLink
+      :item="{
+        title: '----------',
+        to: '/',
+      }"
+    />
+    <VerticalNavLink
+      :item="{
+        title: '----------',
+        to: '/',
+      }"
+    />
+
   <!-- 👉 Dashboards -->
   <VerticalNavGroup
     :item="{
