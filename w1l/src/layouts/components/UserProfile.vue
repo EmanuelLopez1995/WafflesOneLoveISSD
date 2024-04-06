@@ -1,5 +1,11 @@
 <script setup>
 import avatar1 from '@images/avatars/avatar-1.png'
+import { router } from '@/plugins/router';
+
+const logout = () => {
+  localStorage.removeItem('usuarioAutenticado')
+  router.push('/login')
+}
 </script>
 
 <template>
@@ -97,7 +103,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
           <VDivider class="my-2" />
 
           <!-- 👉 Logout -->
-          <VListItem to="/login">
+          <VListItem @click="logout">
             <template #prepend>
               <VIcon
                 class="me-2"

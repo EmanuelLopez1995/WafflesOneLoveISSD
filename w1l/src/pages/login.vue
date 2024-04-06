@@ -5,6 +5,7 @@ import authV1MaskDark from '@images/pages/auth-v1-mask-dark.png'
 import authV1MaskLight from '@images/pages/auth-v1-mask-light.png'
 import authV1Tree2 from '@images/pages/auth-v1-tree-2.png'
 import authV1Tree from '@images/pages/auth-v1-tree.png'
+import { router } from '@/plugins/router';
 
 const form = ref({
   email: '',
@@ -23,6 +24,14 @@ const theme = computed(() => {
 })
 
 const isPasswordVisible = ref(false)
+
+
+const login = () => {
+  const { email, password } = form.value;
+  localStorage.setItem('usuarioAutenticado', JSON.stringify({ email, password }));
+  router.push('/dashboard');
+}
+
 </script>
 
 <template>
@@ -51,7 +60,7 @@ const isPasswordVisible = ref(false)
       </VCardText>
 
       <VCardText>
-        <VForm @submit.prevent="() => {}">
+        <VForm @submit.prevent="login">
           <VRow>
             <!-- email -->
             <VCol cols="12">
@@ -92,7 +101,6 @@ const isPasswordVisible = ref(false)
               <VBtn
                 block
                 type="submit"
-                to="/"
                 class="mt-15"
               >
                 Ingresar
