@@ -147,7 +147,7 @@ onMounted(() => {
                   cols="12"
                   md="12"
                 >
-                  <VSelect
+                  <VAutocomplete
                     v-model="empleadosSeleccionados"
                     :items="allEmpleados"
                     item-title="nombreCompletoYid"
