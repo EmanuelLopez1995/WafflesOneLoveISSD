@@ -1,7 +1,7 @@
 <template>
     <VDialog
         v-model="props.dialog"
-        width="auto"
+        width="50%"
     >
         <VCard
             prepend-icon="ri-edit-2-fill"

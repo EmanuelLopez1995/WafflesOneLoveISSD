@@ -79,10 +79,10 @@ const guardarEdicionEmpleado = () => {
       <VTable>
         <thead>
           <tr>
-            <th v-for="titulo in titulosTabla" :key="titulo.ID" class="text-uppercase">
+            <th v-for="titulo in titulosTabla" :key="titulo.ID" class="text-uppercase text-center">
               {{titulo}}
             </th>
-            <th>
+            <th class="text-center">
               OPCIONES
             </th>
           </tr>
@@ -93,7 +93,7 @@ const guardarEdicionEmpleado = () => {
             v-for="item in empleados"
             :key="item.id"
           >
-            <td>
+            <td class="text-center">
               {{ item.id }}
             </td>
             <td class="text-center">
@@ -138,67 +138,78 @@ const guardarEdicionEmpleado = () => {
 
     </VCardItem>
 
+    <!-- MODAL EDITAR -->
     <EditModal :dialog="dialog" @cerrarDialogo="closeDialog" @confirmarDialogo="guardarEdicionEmpleado">
-        <VRow>
-          <VCol
-            cols="12"
-            class="d-flex gap-4"
-          >
-              <VTextField
-                v-model="itemEditar.id"
-                :rules="[reglaObligatoria()]"
-                label="ID"
-                disabled
-              />
-              <VTextField
-                v-model="itemEditar.nombre"
-                :rules="[reglaObligatoria()]"
-                label="Nombre"
-              />
-              <VTextField
-                v-model="itemEditar.apellido"
-                :rules="[reglaObligatoria()]"
-                label="Apellido"
-              />
-          </VCol>
-          <VCol
-            cols="12"
-            class="d-flex gap-4"
-          >
-              <VTextField
-                v-model="itemEditar.dni"
-                :rules="[reglaObligatoria()]"
-                label="DNI"
-                type="number"
-              />
-              <VTextField
-                v-model="itemEditar.numero"
-                :rules="[reglaObligatoria()]"
-                label="Teléfono"
-              />
-              <VTextField
-                v-model="itemEditar.direccion"
-                :rules="[reglaObligatoria()]"
-                label="Dirección"
-              />
-          </VCol>
-          <VCol
-            cols="12"
-            class="d-flex gap-4"
-          >
-              <VTextField
-                v-model="itemEditar.email"
-                :rules="[reglaObligatoria()]"
-                label="Email"
-                type="email"
-              />
-              <VSelect
-                v-model="itemEditar.posicion"
-                :rules="[reglaObligatoria()]"
-                label="Puesto"
-              />
-          </VCol>
-        </VRow>
+      <!-- Primera fila -->
+      <VRow>
+        <VCol cols="4">
+          <VTextField
+            v-model="itemEditar.id"
+            :rules="[reglaObligatoria()]"
+            label="ID"
+            disabled
+          />
+        </VCol>
+        <VCol cols="4">
+          <VTextField
+            v-model="itemEditar.nombre"
+            :rules="[reglaObligatoria()]"
+            label="Nombre"
+          />
+        </VCol>
+        <VCol cols="4">
+          <VTextField
+            v-model="itemEditar.apellido"
+            :rules="[reglaObligatoria()]"
+            label="Apellido"
+          />
+        </VCol>
+      </VRow>
+
+      <!-- Segunda fila -->
+      <VRow>
+        <VCol cols="4">
+          <VTextField
+            v-model="itemEditar.dni"
+            :rules="[reglaObligatoria()]"
+            label="DNI"
+            type="number"
+          />
+        </VCol>
+        <VCol cols="4">
+          <VTextField
+            v-model="itemEditar.numero"
+            :rules="[reglaObligatoria()]"
+            label="Teléfono"
+          />
+        </VCol>
+        <VCol cols="4">
+          <VTextField
+            v-model="itemEditar.direccion"
+            :rules="[reglaObligatoria()]"
+            label="Dirección"
+          />
+        </VCol>
+      </VRow>
+
+      <!-- Tercera fila -->
+      <VRow>
+        <VCol cols="6">
+          <VTextField
+            v-model="itemEditar.email"
+            :rules="[reglaObligatoria()]"
+            label="Email"
+            type="email"
+          />
+        </VCol>
+        <VCol cols="6">
+          <VSelect
+            v-model="itemEditar.posicion"
+            :rules="[reglaObligatoria()]"
+            label="Puesto"
+          />
+        </VCol>
+      </VRow>
     </EditModal>
 
   </VCard>
