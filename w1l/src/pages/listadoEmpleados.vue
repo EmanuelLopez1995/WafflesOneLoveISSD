@@ -8,9 +8,9 @@ import { useTheme } from 'vuetify'
 import EditModal from '@/components/editModal/EditModal.vue';
 
 const empleados = ref({});
-const dialog = ref(false);
 const vuetifyTheme = useTheme();
 const titulosTabla = ['ID', 'Nombre', 'Apellido', 'DNI', 'Teléfono', 'Dirección', 'Email', 'Puesto']
+const dialog = ref(false);
 const itemEditar = ref({})
 
 
@@ -142,7 +142,7 @@ const guardarEdicionEmpleado = () => {
     <EditModal :dialog="dialog" @cerrarDialogo="closeDialog" @confirmarDialogo="guardarEdicionEmpleado">
       <!-- Primera fila -->
       <VRow>
-        <VCol cols="4">
+        <VCol cols="12" md="4" class="flex-sm-column">
           <VTextField
             v-model="itemEditar.id"
             :rules="[reglaObligatoria()]"
@@ -150,14 +150,14 @@ const guardarEdicionEmpleado = () => {
             disabled
           />
         </VCol>
-        <VCol cols="4">
+        <VCol cols="12" md="4">
           <VTextField
             v-model="itemEditar.nombre"
             :rules="[reglaObligatoria()]"
             label="Nombre"
           />
         </VCol>
-        <VCol cols="4">
+        <VCol cols="12" md="4">
           <VTextField
             v-model="itemEditar.apellido"
             :rules="[reglaObligatoria()]"
@@ -168,7 +168,7 @@ const guardarEdicionEmpleado = () => {
 
       <!-- Segunda fila -->
       <VRow>
-        <VCol cols="4">
+        <VCol cols="12" md="4" class="flex-sm-column">
           <VTextField
             v-model="itemEditar.dni"
             :rules="[reglaObligatoria()]"
@@ -176,14 +176,14 @@ const guardarEdicionEmpleado = () => {
             type="number"
           />
         </VCol>
-        <VCol cols="4">
+        <VCol cols="12" md="4">
           <VTextField
             v-model="itemEditar.numero"
             :rules="[reglaObligatoria()]"
             label="Teléfono"
           />
         </VCol>
-        <VCol cols="4">
+        <VCol cols="12" md="4">
           <VTextField
             v-model="itemEditar.direccion"
             :rules="[reglaObligatoria()]"
@@ -194,7 +194,7 @@ const guardarEdicionEmpleado = () => {
 
       <!-- Tercera fila -->
       <VRow>
-        <VCol cols="6">
+        <VCol cols="12" md="6" class="flex-sm-column">
           <VTextField
             v-model="itemEditar.email"
             :rules="[reglaObligatoria()]"
@@ -202,7 +202,7 @@ const guardarEdicionEmpleado = () => {
             type="email"
           />
         </VCol>
-        <VCol cols="6">
+        <VCol cols="12" md="6">
           <VSelect
             v-model="itemEditar.posicion"
             :rules="[reglaObligatoria()]"

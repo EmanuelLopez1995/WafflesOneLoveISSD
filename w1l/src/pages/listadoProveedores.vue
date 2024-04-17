@@ -4,9 +4,12 @@ import axios from 'axios';
 import { defineAsyncComponent, ref } from 'vue';
 import { eliminarRegistro , algoSalioMalError , registroExitosoMensaje } from '@/components/SwalCustom.js'
 import { useTheme } from 'vuetify'
+import { reglaObligatoria , validarEmail } from '@/components/validaciones.js'
 
 const proveedores = ref({});
-const vuetifyTheme = useTheme()
+const vuetifyTheme = useTheme();
+const dialog = ref(false);
+const itemEditar = ref({})
 
 
 const currentTheme = computed(() => {
@@ -34,6 +37,36 @@ const eliminar = function (id) {
     } catch (error) {
         console.error('Error fetching data:', error);
     }
+}
+
+const openDialog = (item) => {
+  itemEditar.value = {...item};
+  dialog.value = true;
+
+}
+const closeDialog = () => {
+  dialog.value = false;
+}
+
+const guardarEdicionProveedor = () => {
+  dialog.value = false;
+  try {
+    let params = {
+        id: itemEditar.value.id,
+        nombre: itemEditar.value.nombre,
+        razonSocial: itemEditar.value.razonSocial,
+        direccion: itemEditar.value.direccion,
+        numero: itemEditar.value.numero,
+        cuit: itemEditar.value.cuit,
+        email: itemEditar.value.email,
+        detalle: itemEditar.value.detalle
+      }
+      axios.put(`/suppliers`, params).then((response) => {
+        fetchData();
+      })
+  } catch {
+    algoSalioMalError(currentTheme.value)
+  }
 }
 
 
@@ -109,6 +142,7 @@ const eliminar = function (id) {
                   icon="ri-edit-2-fill"
                   color="primary"
                   class="me-1"
+                  @click="openDialog(item)"
                 />
                 <IconBtn
                   icon="ri-delete-bin-5-fill"
@@ -122,5 +156,79 @@ const eliminar = function (id) {
         </tbody>
       </VTable>
     </VCardItem>
+
+    <!-- MODAL EDITAR -->
+    <EditModal :dialog="dialog" @cerrarDialogo="closeDialog" @confirmarDialogo="guardarEdicionProveedor">
+      <!-- Primera fila -->
+      <VRow>
+        <VCol cols="12" md="4" class="flex-sm-column">
+          <VTextField
+            v-model="itemEditar.id"
+            :rules="[reglaObligatoria()]"
+            label="ID"
+            disabled
+          />
+        </VCol>
+        <VCol cols="12" md="4">
+          <VTextField
+            v-model="itemEditar.nombre"
+            :rules="[reglaObligatoria()]"
+            label="Nombre"
+          />
+        </VCol>
+        <VCol cols="12" md="4">
+          <VTextField
+            v-model="itemEditar.razonSocial"
+            :rules="[reglaObligatoria()]"
+            label="Razón Social"
+          />
+        </VCol>
+      </VRow>
+
+      <!-- Segunda fila -->
+      <VRow>
+        <VCol cols="12" md="4" class="flex-sm-column">
+          <VTextField
+            v-model="itemEditar.direccion"
+            :rules="[reglaObligatoria()]"
+            label="Dirección"
+          />
+        </VCol>
+        <VCol cols="12" md="4">
+          <VTextField
+            v-model="itemEditar.numero"
+            :rules="[reglaObligatoria()]"
+            label="Teléfono"
+          />
+        </VCol>
+        <VCol cols="12" md="4">
+          <VTextField
+            v-model="itemEditar.cuit"
+            :rules="[reglaObligatoria()]"
+            label="CUIT"
+            type="number"
+          />
+        </VCol>
+      </VRow>
+
+      <!-- Tercera fila -->
+      <VRow>
+        <VCol cols="12" md="6" class="flex-sm-column">
+          <VTextField
+            v-model="itemEditar.email"
+            :rules="[reglaObligatoria()]"
+            label="Email"
+            type="email"
+          />
+        </VCol>
+        <VCol cols="12" md="6">
+          <VTextField
+            v-model="itemEditar.detalle"
+            :rules="[reglaObligatoria()]"
+            label="Detalle"
+          />
+        </VCol>
+      </VRow>
+    </EditModal>
   </VCard>
 </template>
