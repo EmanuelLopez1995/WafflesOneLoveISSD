@@ -5,6 +5,7 @@ import { defineAsyncComponent, ref } from 'vue';
 import { eliminarRegistro , algoSalioMalError , registroExitosoMensaje } from '@/components/SwalCustom.js'
 import { useTheme } from 'vuetify'
 import { reglaObligatoria , validarEmail } from '@/components/validaciones.js'
+import descargarPDF from '@/components/pdfHelper.js';
 
 const proveedores = ref({});
 const vuetifyTheme = useTheme();
@@ -69,7 +70,11 @@ const guardarEdicionProveedor = () => {
   }
 }
 
+const descargarListado = () => {
+  descargarPDF(titulosTabla, proveedores.value, "proveedores")
+}
 
+const titulosTabla = ["ID", "Nombre", "Razón Social", "Dirección", "Teléfono", "CUIT", "Email", "Detalle"]
 </script>
 
 <template>
@@ -78,29 +83,8 @@ const guardarEdicionProveedor = () => {
       <VTable>
         <thead>
           <tr>
-            <th class="text-uppercase">
-              ID
-            </th>
-            <th class="text-uppercase text-center">
-              Nombre
-            </th>
-            <th class="text-uppercase text-center">
-              Razón social
-            </th>
-            <th class="text-uppercase text-center">
-              Dirección
-            </th>
-            <th class="text-uppercase text-center">
-              Teléfono
-            </th>
-            <th class="text-uppercase text-center">
-              CUIT
-            </th>
-            <th class="text-uppercase text-center">
-              Email
-            </th>
-            <th class="text-uppercase text-center">
-              Detalle
+            <th v-for="titulo in titulosTabla" :key="titulo.ID" class="text-uppercase text-center">
+              {{titulo}}
             </th>
             <th class="text-uppercase text-center">
               Opciones
@@ -156,7 +140,12 @@ const guardarEdicionProveedor = () => {
         </tbody>
       </VTable>
     </VCardItem>
-
+    <VCol
+      cols="12"
+      class="d-flex gap-4 justify-end"
+    >
+      <VBtn prepend-icon="ri-download-fill" @click="descargarListado"> Descargar PDF</VBtn>
+    </VCol>
     <!-- MODAL EDITAR -->
     <EditModal :dialog="dialog" @cerrarDialogo="closeDialog" @confirmarDialogo="guardarEdicionProveedor">
       <!-- Primera fila -->
