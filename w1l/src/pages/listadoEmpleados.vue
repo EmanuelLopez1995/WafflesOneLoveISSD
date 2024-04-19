@@ -6,6 +6,7 @@ import { eliminarRegistro , algoSalioMalError , registroExitosoMensaje } from '@
 import { reglaObligatoria , validarEmail } from '@/components/validaciones.js'
 import { useTheme } from 'vuetify'
 import EditModal from '@/components/editModal/EditModal.vue';
+import descargarPDF from '@/components/pdfHelper.js';
 
 const empleados = ref({});
 const vuetifyTheme = useTheme();
@@ -68,6 +69,10 @@ const guardarEdicionEmpleado = () => {
   } catch {
     algoSalioMalError(currentTheme.value)
   }
+}
+
+const descargarListado = () => {
+  descargarPDF(titulosTabla, empleados.value, "empleados")
 }
 
 
@@ -135,8 +140,14 @@ const guardarEdicionEmpleado = () => {
           </tr>
         </tbody>
       </VTable>
-
     </VCardItem>
+    <VCol
+      cols="12"
+      class="d-flex gap-4 justify-end"
+    >
+      <VBtn prepend-icon="ri-download-fill" @click="descargarListado"> Descargar PDF</VBtn>
+    </VCol>
+    
 
     <!-- MODAL EDITAR -->
     <EditModal :dialog="dialog" @cerrarDialogo="closeDialog" @confirmarDialogo="guardarEdicionEmpleado">
