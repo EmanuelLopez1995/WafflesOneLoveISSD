@@ -13,6 +13,7 @@ const vuetifyTheme = useTheme();
 const dialog = ref(false);
 const itemEditar = ref({});
 const search = ref('');
+const loading = ref(false);
 const titulosTabla = [          
     {
       key: 'id',
@@ -74,12 +75,15 @@ const currentTheme = computed(() => {
 })
 
 const fetchData = async () => {
+  loading.value = true;
   try {
     axios.get('/employees/get-all').then((response) => {
         empleados.value = response.data;
+        loading.value = false;
     })
   } catch {
-    algoSalioMalError(currentTheme.value)
+    algoSalioMalError(currentTheme.value);
+    loading.value = false;
   }
 };
 
@@ -137,8 +141,7 @@ const descargarListado = () => {
     <VCardItem>
       <VCardTitle class="d-flex align-center pe-2">
         <VIcon icon="ri-list-unordered"></VIcon> &nbsp;
-        Listado de proveedores
-
+        Listado de empleados
         <VSpacer></VSpacer>
         <VSpacer></VSpacer>
 
@@ -162,6 +165,8 @@ const descargarListado = () => {
         :items-per-page-options="paginas"
         items-per-page-text="Items por página:"
         no-data-text="No hay registros"
+        :loading="loading"
+        loading-text="Cargando..."
       >
         <template v-slot:[`item.opciones`]="{ item }">
             <IconBtn

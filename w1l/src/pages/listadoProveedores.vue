@@ -12,6 +12,7 @@ const vuetifyTheme = useTheme();
 const dialog = ref(false);
 const itemEditar = ref({});
 const search = ref('');
+const loading = ref(false);
 
 
 const currentTheme = computed(() => {
@@ -19,12 +20,15 @@ const currentTheme = computed(() => {
 })
 
 const fetchData = async () => {
+  loading.value = true;
   try {
     axios.get('/suppliers/get-all').then((response) => {
         proveedores.value = response.data;
+        loading.value = false;
     })
   } catch (error) {
-    algoSalioMalError(currentTheme.value)
+    algoSalioMalError(currentTheme.value);
+    loading.value = false;
   }
 };
 
@@ -162,6 +166,8 @@ const paginas = [
         :items-per-page-options="paginas"
         items-per-page-text="Items por página:"
         no-data-text="No hay registros"
+        :loading="loading"
+        loading-text="Cargando..."
       >
         <template v-slot:[`item.opciones`]="{ item }">
             <IconBtn
