@@ -7,10 +7,11 @@ import { useTheme } from 'vuetify'
 import { reglaObligatoria , validarEmail } from '@/components/validaciones.js'
 import descargarPDF from '@/components/pdfHelper.js';
 
-const proveedores = ref({});
+const proveedores = ref([]);
 const vuetifyTheme = useTheme();
 const dialog = ref(false);
-const itemEditar = ref({})
+const itemEditar = ref({});
+const search = ref('');
 
 
 const currentTheme = computed(() => {
@@ -74,71 +75,109 @@ const descargarListado = () => {
   descargarPDF(titulosTabla, proveedores.value, "proveedores")
 }
 
-const titulosTabla = ["ID", "Nombre", "Razón Social", "Dirección", "Teléfono", "CUIT", "Email", "Detalle"]
+const titulosTabla = [          
+    {
+      key: 'id',
+      sortable: false,
+      title: 'ID',
+    },
+    {
+      key: 'nombre',
+      sortable: false,
+      title: 'NOMBRE',
+    },
+    {
+      key: 'razonSocial',
+      sortable: false,
+      title: 'RAZÓN SOCIAL',
+    },
+    {
+      key: 'direccion',
+      sortable: false,
+      title: 'DIRECCIÓN',
+    },      
+    {
+      key: 'numero',
+      sortable: false,
+      title: 'TELÉFONO',
+    },
+    {
+      key: 'cuit',
+      sortable: false,
+      title: 'CUIT',
+    }, 
+    {
+      key: 'email',
+      sortable: false,
+      title: 'EMAIL',
+    },
+    {
+      key: 'detalle',
+      sortable: false,
+      title: 'DETALLE',
+    },
+    {
+      key: 'opciones',
+      sortable: false,
+      title: 'OPCIONES',
+    }
+]
+
+const paginas = [
+    {value: 10, title: '10'},
+    {value: 25, title: '25'},
+    {value: 50, title: '50'},
+    {value: 100, title: '100'},
+    {value: -1, title: 'Todos'}
+]
 </script>
 
 <template>
   <VCard>
     <VCardItem>
-      <VTable>
-        <thead>
-          <tr>
-            <th v-for="titulo in titulosTabla" :key="titulo.ID" class="text-uppercase text-center">
-              {{titulo}}
-            </th>
-            <th class="text-uppercase text-center">
-              Opciones
-            </th>
-          </tr>
-        </thead>
+      <VCardTitle class="d-flex align-center pe-2">
+        <VIcon icon="ri-list-unordered"></VIcon> &nbsp;
+        Listado de proveedores
 
-        <tbody>
-          <tr
-            v-for="item in proveedores"
-            :key="item.id"
-          >
-            <td>
-              {{ item.id }}
-            </td>
-            <td class="text-center">
-              {{ item.nombre }}
-            </td>
-            <td class="text-center">
-              {{ item.razonSocial }}
-            </td>
-            <td class="text-center">
-              {{ item.direccion }}
-            </td>
-            <td class="text-center">
-              {{ item.numero }}
-            </td>
-            <td class="text-center">
-              {{ item.cuit }}
-            </td>
-            <td class="text-center">
-              {{ item.email }}
-            </td>
-            <td class="text-center">
-              {{ item.detalle }}
-            </td>
-            <td class="text-center">
-                <IconBtn
-                  icon="ri-edit-2-fill"
-                  color="primary"
-                  class="me-1"
-                  @click="openDialog(item)"
-                />
-                <IconBtn
-                  icon="ri-delete-bin-5-fill"
-                  color="error-darken-1"
-                  class="me-1"
-                  @click="eliminarRegistro(eliminar, item.id, item.nombre, currentTheme.value)"
-                />
+        <VSpacer></VSpacer>
+        <VSpacer></VSpacer>
 
-            </td>
-          </tr>
-        </tbody>
-      </VTable>
+        <VTextField
+          v-model="search"
+          density="compact"
+          label="Buscar"
+          prepend-inner-icon="ri-search-line"
+          variant="solo-filled"
+          flat
+          hide-details
+          single-line
+        ></VTextField>
+      </VCardTitle>
+
+
+      <VDataTable class="mt-5" 
+        :search="search" 
+        :items="proveedores" 
+        :headers="titulosTabla"
+        :items-per-page-options="paginas"
+        items-per-page-text="Items por página:"
+        no-data-text="No hay registros"
+      >
+        <template v-slot:[`item.opciones`]="{ item }">
+            <IconBtn
+              icon="ri-edit-2-fill"
+              color="primary"
+              class="me-1"
+              @click="openDialog(item)"
+            />
+            <IconBtn
+              icon="ri-delete-bin-5-fill"
+              color="error-darken-1"
+              class="me-1"
+              @click="eliminarRegistro(eliminar, item.id, item.nombre, currentTheme.value)"
+            />
+        </template>
+      </VDataTable>
     </VCardItem>
     <VCol
       cols="12"

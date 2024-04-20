@@ -8,12 +8,66 @@ import { useTheme } from 'vuetify'
 import EditModal from '@/components/editModal/EditModal.vue';
 import descargarPDF from '@/components/pdfHelper.js';
 
-const empleados = ref({});
+const empleados = ref([]);
 const vuetifyTheme = useTheme();
-const titulosTabla = ['ID', 'Nombre', 'Apellido', 'DNI', 'Teléfono', 'Dirección', 'Email', 'Puesto']
 const dialog = ref(false);
-const itemEditar = ref({})
+const itemEditar = ref({});
+const search = ref('');
+const titulosTabla = [          
+    {
+      key: 'id',
+      sortable: false,
+      title: 'ID',
+    },
+    {
+      key: 'nombre',
+      sortable: false,
+      title: 'NOMBRE',
+    },
+    {
+      key: 'apellido',
+      sortable: false,
+      title: 'APELLIDO',
+    },
+    {
+      key: 'dni',
+      sortable: false,
+      title: 'DNI',
+    },      
+    {
+      key: 'numero',
+      sortable: false,
+      title: 'TELÉFONO',
+    },
+    {
+      key: 'direccion',
+      sortable: false,
+      title: 'DIRECCIÓN',
+    }, 
+    {
+      key: 'email',
+      sortable: false,
+      title: 'EMAIL',
+    },
+    {
+      key: 'posicion',
+      sortable: false,
+      title: 'PUESTO',
+    },
+    {
+      key: 'opciones',
+      sortable: false,
+      title: 'OPCIONES',
+    }
+]
 
+const paginas = [
+    {value: 10, title: '10'},
+    {value: 25, title: '25'},
+    {value: 50, title: '50'},
+    {value: 100, title: '100'},
+    {value: -1, title: 'Todos'}
+]
 
 const currentTheme = computed(() => {
     return ref(vuetifyTheme.current.value.colors)
@@ -81,65 +135,49 @@ const descargarListado = () => {
 <template>
   <VCard>
     <VCardItem>
-      <VTable>
-        <thead>
-          <tr>
-            <th v-for="titulo in titulosTabla" :key="titulo.ID" class="text-uppercase text-center">
-              {{titulo}}
-            </th>
-            <th class="text-center">
-              OPCIONES
-            </th>
-          </tr>
-        </thead>
+      <VCardTitle class="d-flex align-center pe-2">
+        <VIcon icon="ri-list-unordered"></VIcon> &nbsp;
+        Listado de proveedores
 
-        <tbody>
-          <tr
-            v-for="item in empleados"
-            :key="item.id"
-          >
-            <td class="text-center">
-              {{ item.id }}
-            </td>
-            <td class="text-center">
-              {{ item.nombre }}
-            </td>
-            <td class="text-center">
-              {{ item.apellido }}
-            </td>
-            <td class="text-center">
-              {{ item.dni }}
-            </td>
-            <td class="text-center">
-              {{ item.numero }}
-            </td>
-            <td class="text-center">
-              {{ item.direccion }}
-            </td>
-            <td class="text-center">
-              {{ item.email }}
-            </td>
-            <td class="text-center">
-              {{ item.posicion }}
-            </td>
-            <td class="text-center">
-                <IconBtn
-                  icon="ri-edit-2-fill"
-                  color="primary"
-                  class="me-1"
-                  @click="openDialog(item)"
-                />
-                <IconBtn
-                  icon="ri-delete-bin-5-fill"
-                  color="error-darken-1"
-                  class="me-1"
-                  @click="eliminarRegistro(eliminar, item.id, item.nombre, currentTheme.value)"
-                />
+        <VSpacer></VSpacer>
+        <VSpacer></VSpacer>
 
-            </td>
-          </tr>
-        </tbody>
-      </VTable>
+        <VTextField
+          v-model="search"
+          density="compact"
+          label="Buscar"
+          prepend-inner-icon="ri-search-line"
+          variant="solo-filled"
+          flat
+          hide-details
+          single-line
+        ></VTextField>
+      </VCardTitle>
+
+
+      <VDataTable class="mt-5" 
+        :search="search" 
+        :items="empleados" 
+        :headers="titulosTabla"
+        :items-per-page-options="paginas"
+        items-per-page-text="Items por página:"
+        no-data-text="No hay registros"
+      >
+        <template v-slot:[`item.opciones`]="{ item }">
+            <IconBtn
+              icon="ri-edit-2-fill"
+              color="primary"
+              class="me-1"
+              @click="openDialog(item)"
+            />
+            <IconBtn
+              icon="ri-delete-bin-5-fill"
+              color="error-darken-1"
+              class="me-1"
+              @click="eliminarRegistro(eliminar, item.id, item.nombre, currentTheme.value)"
+            />
+        </template>
+      </VDataTable>
     </VCardItem>
     <VCol
       cols="12"

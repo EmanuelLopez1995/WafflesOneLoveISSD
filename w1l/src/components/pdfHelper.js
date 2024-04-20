@@ -3,13 +3,17 @@ import 'jspdf-autotable';
 
 
 export default function descargarPDF(titulosArray, contenidoArray, titulo){
-    console.log(contenidoArray)
     const doc = new jsPDF({
       orientation: 'landscape'
     });
 
     const datosTabla = [];
-    datosTabla.push(titulosArray);
+    const titulosTabla = titulosArray.map(item => {
+      if(item.title != 'OPCIONES'){
+        return item.title
+      }
+    })
+    datosTabla.push(titulosTabla);
   
     contenidoArray.forEach(item => {
       const fila = [];
