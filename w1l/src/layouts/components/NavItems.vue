@@ -88,6 +88,13 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
       }"
     />
   </VerticalNavGroup>
+  <VerticalNavLink
+    :item="{
+      title: 'Admin',
+      icon: 'ri-settings-5-line',
+      to: '/admin',
+    }"
+  />
   <!-- Aca empieza lo otro  -->
     <VerticalNavLink
       :item="{
