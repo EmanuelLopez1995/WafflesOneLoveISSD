@@ -83,20 +83,6 @@ const logout = () => {
               />
             </template>
 
-            <VListItemTitle>Configuraciones</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 FAQ -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="ri-question-line"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>FAQ</VListItemTitle>
           </VListItem>
 
           <!-- Divider -->

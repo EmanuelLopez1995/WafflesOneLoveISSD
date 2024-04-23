@@ -56,6 +56,10 @@ export const routes = [
         path: 'inicioTurnoYcaja',
         component: () => import('@/pages/inicioTurnoYcaja.vue'),
       },
+      {
+        path: 'admin',
+        component: () => import('@/pages/admin.vue'),
+      },
     ],
   },
   {
