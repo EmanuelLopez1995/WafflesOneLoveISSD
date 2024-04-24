@@ -60,6 +60,10 @@ export const routes = [
         path: 'admin',
         component: () => import('@/pages/admin.vue'),
       },
+      {
+        path: 'registrarCompra',
+        component: () => import('@/pages/registrarCompra.vue'),
+      },
     ],
   },
   {
