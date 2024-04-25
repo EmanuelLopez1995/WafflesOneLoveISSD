@@ -61,7 +61,11 @@ const registrarCompra = () => {
 
 const calcularSubtotal = (cantidad, precioUnitario, id) => {
   if (cantidad !== undefined && precioUnitario !== undefined) {
-    console.log(id) // establecer subtotal con el id
+    productosSeleccionados.value.forEach((item)=>{
+      if(item.id == id){
+        item.subtotal = cantidad * precioUnitario;
+      }
+    })
     calcularTotal();
     return cantidad * precioUnitario;
   } else {
@@ -78,7 +82,8 @@ const deseleccionarProducto = producto => {
 }
 
 const calcularTotal = () => {
-  // const total = productosSeleccionados
+  const subtotales = productosSeleccionados.value.map(item => item.subtotal)
+  return subtotales.reduce((acumulador, elemento) => acumulador + elemento, 0);
 }
 </script>
 
@@ -112,7 +117,7 @@ const calcularTotal = () => {
 
           <VCol
             cols="12"
-            md="1"
+            md="2"
           >
             <VSelect
                 v-model="tipoFactura"
@@ -143,104 +148,116 @@ const calcularTotal = () => {
                 type="number"
             ></VTextField>
           </VCol>
+          <VCol
+            cols="12"
+          >
+              <VRow>
+                <VCol cols="12">
+                    <VFileInput label="Cargue la factura" variant="outlined" :rules="[reglaObligatoria()]"></VFileInput>
+                </VCol>
+              </VRow>
+          </VCol>
+          <VDivider/>
 
           <VCol
             cols="12"
             md="12"
           >
-            <VCol
-              cols="12"
-              md="12"
-            >
-              <VAutocomplete
-                v-model="productosSeleccionados"
-                :items="productos"
-                item-title="nombreProducto"
-                multiple
-                return-object
-                :rules="[reglaObligatoria()]"
-                label="Productos"
-                placeholder="Seleccione los productos comprados"
-              />
-            </VCol>
+            <VAutocomplete
+              v-model="productosSeleccionados"
+              :items="productos"
+              item-title="nombreProducto"
+              multiple
+              return-object
+              :rules="[reglaObligatoria()]"
+              label="Productos"
+              placeholder="Seleccione los productos comprados"
+            />
+          </VCol>
 
-            <VCol
-              cols="12"
-              md="12"
-              v-for="(producto) in productosSeleccionados"
-              :key="producto.id"
-            >
-              <VRow>
-                <VCol cols="1">
-                  <VTextField
-                    v-model="producto.cantidad"
-                    label="Cantidad"
+          <VCol
+            cols="12"
+            md="12"
+            v-for="(producto) in productosSeleccionados"
+            :key="producto.id"
+          >
+            <VRow>
+              <VCol cols="2">
+                <VTextField
+                  v-model="producto.cantidad"
+                  label="Cantidad"
+                  active
+                  :rules="[reglaObligatoria()]"
+                  type="number"
+                >
+                </VTextField>
+              </VCol>
+              <VCol cols="5">
+                <VTextField
+                  active
+                  v-model="producto.nombreProducto"
+                  label="Producto"
+                  :rules="[reglaObligatoria()]"
+                  readonly
+                >
+                </VTextField>
+              </VCol>
+              <VCol cols="2">
+                <VTextField
+                  v-model="producto.precioUnitario"
+                  active
+                  label="Precio unitario"
+                  :rules="[reglaObligatoria()]"
+                  prefix="$"
+                  type="number"
+                >
+                </VTextField>
+              </VCol>
+              <VCol cols="2">
+                <VTextField
+                  v-model="producto.subtotal"
+                  active
+                  label="Subtotal"
+                  :value="calcularSubtotal(producto.cantidad, producto.precioUnitario, producto.id)"
+                  readonly
+                  prefix="$"
+                  type="number"
+                >
+                </VTextField>
+              </VCol>
+              <VCol cols="1">
+                <VBtn
+                  size="small"
+                  color="error-darken-1"
+                  class="mt-1"
+                  @click="deseleccionarProducto(producto)"
+                >
+                  X
+                </VBtn>
+              </VCol>
+            </VRow>
+          </VCol>
+          <VCol
+            cols="12"
+            md="12"
+            v-if="productosSeleccionados.length != 0"
+          >
+            <VRow>
+              <VCol cols="9">
+              </VCol>
+              <VCol cols="2">
+                <VTextField 
+                    v-model="totalFactura"
                     active
-                    :rules="[reglaObligatoria()]"
-                    type="number"
-                  >
-                  </VTextField>
-                </VCol>
-                <VCol cols="5">
-                  <VTextField
-                    active
-                    v-model="producto.nombreProducto"
-                    label="Producto"
-                    :rules="[reglaObligatoria()]"
+                    label="TOTAL"
+                    :value="calcularTotal()"
                     readonly
-                  >
-                  </VTextField>
-                </VCol>
-                <VCol cols="2">
-                  <VTextField
-                    v-model="producto.precioUnitario"
-                    active
-                    label="Precio unitario"
-                    :rules="[reglaObligatoria()]"
                     prefix="$"
                     type="number"
-                  >
-                  </VTextField>
-                </VCol>
-                <VCol cols="2">
-                  <VTextField
-                    v-model="producto.subtotal"
-                    active
-                    label="Subtotal"
-                    :value="calcularSubtotal(producto.cantidad, producto.precioUnitario, producto.id)"
-                    readonly
-                    prefix="$"
-                    type="number"
-                  >
-                  </VTextField>
-                </VCol>
-                <VCol cols="2">
-                  <VBtn
-                    size="small"
-                    color="error-darken-1"
-                    class="mt-1"
-                    @click="deseleccionarProducto(producto)"
-                  >
-                    X
-                  </VBtn>
-                </VCol>
-              </VRow>
-              <VRow>
-                <VCol cols="8">
-                </VCol>
-                <VCol cols="2">
-                  <VTextField 
-                      v-model="totalFactura"
-                      active
-                      label="TOTAL"
-                      :value="calcularTotal()"
-                      readonly
-                      prefix="$"
-                      type="number"
-                  />
-                </VCol>
-              </VRow>
-            </VCol>
+                    class="bold"
+                />
+              </VCol>
+            </VRow>
           </VCol>
 
           <VCol
