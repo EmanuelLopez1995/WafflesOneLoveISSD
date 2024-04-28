@@ -50,6 +50,7 @@ const registrarProveedor = () => {
 <template>
   <VCard>
     <VCardItem>
+      <h2 class="pb-3 mt-3">Registrar proveedor</h2>
       <VForm @submit.prevent="registrarProveedor" ref="form" class="pt-2">
         <VRow>
           <VCol

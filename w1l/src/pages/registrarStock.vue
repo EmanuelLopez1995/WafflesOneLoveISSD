@@ -31,6 +31,7 @@ const registrarStock = () => {
 <template>
   <VCard>
     <VCardItem>
+      <h2 class="pb-3 mt-3">Registrar producto</h2>
       <VForm @submit.prevent="registrarStock" ref="form" class="pt-2">
         <VRow>
           <VCol

@@ -57,6 +57,7 @@ const registrarEmpleado = () => {
 <template>
   <VCard>
     <VCardItem>
+      <h2 class="pb-3 mt-3">Registrar Empleado</h2>
       <VForm @submit.prevent="registrarEmpleado" ref="form" class="pt-2">
         <VRow>
           <VCol
