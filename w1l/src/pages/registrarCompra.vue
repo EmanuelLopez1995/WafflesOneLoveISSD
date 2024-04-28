@@ -31,6 +31,10 @@ const productos = ref([
 
 const dialogRegistrarProducto = ref(false)
 
+// Editar
+const esEditar = ref(false);
+const indexAEditar = ref(null);
+
 // Principal
 const proveedor = ref('')
 const fecha = ref(null)
@@ -45,27 +49,7 @@ const currentTheme = computed(() => {
 })
 
 const registrarCompra = () => {
-  // form.value.validate().then(response => {
-  //     if (response.valid) {
-  //         let params = {
-  //           nombre: nombre.value,
-  //           apellido: apellido.value,
-  //           dni: dni.value,
-  //           numero: telefono.value,
-  //           direccion: direccion.value,
-  //           email: email.value,
-  //           posicion: puesto.value
-  //         }
-  //         try {
-  //             axios.post('/employees', params).then(() => {
-  //                 registroExitosoMensaje('empleado', currentTheme.value)
-  //                 form.value.reset();
-  //             })
-  //         } catch {
-  //             algoSalioMalError(currentTheme.value)
-  //         }
-  //     }
-  // })
+
 }
 
 const obtenerFechaActual = () => {
@@ -113,8 +97,14 @@ const agregarProducto = () => {
     if (response.valid) {
       productoSeleccionado.value.subtotal =
         productoSeleccionado.value.cantidad * productoSeleccionado.value.precioUnitario
-      const copiaProducto = { ...productoSeleccionado.value }
-      productosSeleccionados.value.push(copiaProducto)
+        const copiaProducto = { ...productoSeleccionado.value }
+      if(!esEditar.value) {
+        //AGREGAR NUEVO PRODUCTO A LISTA
+        productosSeleccionados.value.push(copiaProducto)
+      } else {
+        // MODIFICAR PRODUCTO DE LISTA 
+        productosSeleccionados.value[indexAEditar.value] = copiaProducto;
+      }
       productoSeleccionado.value = {}
       calcularTotal()
       dialog.value = !dialog
@@ -123,6 +113,7 @@ const agregarProducto = () => {
 }
 
 const abrirModalAgregarProducto = () => {
+  esEditar.value = false;
   dialog.value = !dialog.value
 }
 
@@ -134,7 +125,14 @@ const eliminarProductoDeLista = index => {
 } 
 
 const editarRegistro = index => {
-  productoSeleccionado.value = productosSeleccionados.value[index];
+  esEditar.value = true;
+  indexAEditar.value = index; 
+  productoSeleccionado.value = {...productosSeleccionados.value[index]};
+  dialog.value = !dialog.value
+}
+
+const cancelarDialog = () => {
+  productoSeleccionado.value = {}
   dialog.value = !dialog.value
 }
 
@@ -266,6 +264,7 @@ onMounted(() => {
 
     <!-- Modal carga producto -->
     <VDialog
+      persistent
       v-model="dialog"
       width="60%"
     >
@@ -344,13 +343,13 @@ onMounted(() => {
                 <VBtn
                   color="secondary"
                   variant="outlined"
-                  @click="dialog = !dialog"
+                  @click="cancelarDialog"
                 >
                   CANCELAR
                 </VBtn>
+                <VBtn v-if="esEditar" type="submit"> MODIFICAR </VBtn>
                 <VBtn
-                  color="primary"
-                  variant="elevated"
+                  v-else
                   type="submit"
                 >
                   AGREGAR

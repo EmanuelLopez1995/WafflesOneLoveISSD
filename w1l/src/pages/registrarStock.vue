@@ -11,6 +11,7 @@ const marca = ref('')
 const stockMinimo = ref('')
 const detalle = ref('')
 const form = ref(null)
+const unidadDeMedida = ref(null)
 
 const vuetifyTheme = useTheme()
 
@@ -69,6 +70,17 @@ const registrarStock = () => {
           <VCol
             cols="12"
             md="6"
+          >
+            <VSelect
+              :items="['Litros', 'Mililitros', 'Gramos', 'Kilogramos', 'Unidad']"
+              v-model="unidadDeMedida"
+              label="Unidad de medida"
+            />
+          </VCol>
+
+          <VCol
+            cols="12"
+            md="12"
           >
             <VTextField
               v-model="detalle"
