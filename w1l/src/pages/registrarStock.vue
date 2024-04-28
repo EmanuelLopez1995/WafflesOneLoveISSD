@@ -6,6 +6,9 @@ import { ref } from 'vue'
 import { useTheme } from 'vuetify'
 import axios from 'axios';
 
+const props = defineProps(['esModal']);
+const emit = defineEmits(['cerrarDialogo']);
+
 const nombre = ref('')
 const marca = ref('')
 const stockMinimo = ref('')
@@ -25,6 +28,10 @@ const registrarStock = () => {
             console.log('formulario valido')
         }
     })
+}
+
+const cerrarModal = () => {
+  emit('cerrarDialogo');
 }
 
 </script>
@@ -90,17 +97,26 @@ const registrarStock = () => {
 
           <VCol
             cols="12"
-            class="d-flex gap-4"
+            class="d-flex justify-end gap-4"
           >
-            <VBtn type="submit"> Registrar </VBtn>
 
+            <VBtn 
+              v-if="props.esModal"
+              color="secondary"
+              variant="outlined"
+              @click="cerrarModal"
+            >
+              CANCELAR
+            </VBtn>
             <VBtn
+              v-else
               type="reset"
               color="secondary"
               variant="outlined"
             >
               Limpiar
             </VBtn>
+            <VBtn type="submit"> Registrar </VBtn>
           </VCol>
         </VRow>
       </VForm>
