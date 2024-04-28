@@ -41,6 +41,7 @@ const fecha = ref(null)
 const totalFactura = ref(0)
 const productosSeleccionados = ref([])
 const formAgregarProducto = ref(null)
+const proveedores = ref([])
 
 const vuetifyTheme = useTheme()
 
@@ -136,7 +137,23 @@ const cancelarDialog = () => {
   dialog.value = !dialog.value
 }
 
+const obtenerProveedores = () => {
+  try {
+    axios.get('/suppliers/get-all').then((response) => {
+      proveedores.value = response.data.map(proveedor => {
+        return {
+          ...proveedor,
+          nombreYid: `${proveedor.nombre} (${proveedor.id})`,
+        }
+      })
+    })
+  } catch (error) {
+    algoSalioMalError(currentTheme.value);
+  }
+}
+
 onMounted(() => {
+  obtenerProveedores();
   obtenerFechaActual()
 })
 </script>
@@ -170,7 +187,9 @@ onMounted(() => {
             <VSelect
               v-model="proveedor"
               :rules="[reglaObligatoria()]"
-              :items="['Proveedor X']"
+              :items="proveedores"
+              item-title="nombreYid"
+              return-object
               label="Proveedor"
             />
           </VCol>
@@ -365,7 +384,7 @@ onMounted(() => {
       v-model="dialogRegistrarProducto"
       width="60%"
     >
-      <RegistrarStock />
+      <RegistrarStock :esModal="true" @cerrarDialogo="dialogRegistrarProducto = !dialogRegistrarProducto"/>
     </VDialog>
   </VCard>
 </template>
