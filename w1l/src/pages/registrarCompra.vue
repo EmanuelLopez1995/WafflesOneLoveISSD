@@ -1,76 +1,98 @@
 <script setup>
-
-import { reglaObligatoria , validarEmail } from '@/components/validaciones.js'
-import { algoSalioMalError , registroExitosoMensaje } from '@/components/SwalCustom.js'
+import { reglaObligatoria, validarEmail } from '@/components/validaciones.js'
+import { algoSalioMalError, registroExitosoMensaje } from '@/components/SwalCustom.js'
 import { ref, computed } from 'vue'
 import { useTheme } from 'vuetify'
-import axios from 'axios';
+import axios from 'axios'
+import RegistrarStock from '@/pages/registrarStock.vue'
 
-const proveedor = ref('');
-const fechaEmision = ref(null);
-const nroFactura = ref(null);
-const tipoFactura = ref('');
-const puntoDeVenta = ref('');
-const totalFactura = ref(0);
+//TODO: Sacar de la lista de agregar productos a los productos que ya se han agregado, sino va a funcionar mal el eliminar de la lista
+
+// Agregar producto
+
+const dialog = ref(false)
+const productoSeleccionado = ref({})
 const productos = ref([
   {
     id: 1,
-    nombreProducto: 'Queso', 
+    nombreProducto: 'Queso',
   },
   {
     id: 2,
-    nombreProducto: 'Coca Cola', 
+    nombreProducto: 'Coca Cola',
   },
   {
     id: 3,
-    nombreProducto: 'Harina 000', 
+    nombreProducto: 'Harina 000',
   },
 ])
-const productosSeleccionados = ref([])
 
+// Registrar prodcuto nuevo
+
+const dialogRegistrarProducto = ref(false)
+
+// Principal
+const proveedor = ref('')
+const fecha = ref(null)
+const totalFactura = ref(0)
+const productosSeleccionados = ref([])
+const formAgregarProducto = ref(null)
 
 const vuetifyTheme = useTheme()
 
 const currentTheme = computed(() => {
-    return ref(vuetifyTheme.current.value.colors)
+  return ref(vuetifyTheme.current.value.colors)
 })
 
 const registrarCompra = () => {
-    // form.value.validate().then(response => {
-    //     if (response.valid) {
-    //         let params = {
-    //           nombre: nombre.value,
-    //           apellido: apellido.value,
-    //           dni: dni.value,
-    //           numero: telefono.value,
-    //           direccion: direccion.value,
-    //           email: email.value,
-    //           posicion: puesto.value
-    //         }
-    //         try {
-    //             axios.post('/employees', params).then(() => {
-    //                 registroExitosoMensaje('empleado', currentTheme.value)
-    //                 form.value.reset();
-    //             })
-    //         } catch {
-    //             algoSalioMalError(currentTheme.value)
-    //         }
-    //     }
-    // })
+  // form.value.validate().then(response => {
+  //     if (response.valid) {
+  //         let params = {
+  //           nombre: nombre.value,
+  //           apellido: apellido.value,
+  //           dni: dni.value,
+  //           numero: telefono.value,
+  //           direccion: direccion.value,
+  //           email: email.value,
+  //           posicion: puesto.value
+  //         }
+  //         try {
+  //             axios.post('/employees', params).then(() => {
+  //                 registroExitosoMensaje('empleado', currentTheme.value)
+  //                 form.value.reset();
+  //             })
+  //         } catch {
+  //             algoSalioMalError(currentTheme.value)
+  //         }
+  //     }
+  // })
+}
+
+const obtenerFechaActual = () => {
+  const fechaActual = new Date()
+
+  const dia = fechaActual.getDate()
+  const mes = fechaActual.getMonth() + 1
+  const anio = fechaActual.getFullYear()
+
+  const diaFormateado = dia < 10 ? '0' + dia : dia
+  const mesFormateado = mes < 10 ? '0' + mes : mes
+
+  fecha.value = `${anio}-${mesFormateado}-${diaFormateado}`
 }
 
 const calcularSubtotal = (cantidad, precioUnitario, id) => {
   if (cantidad !== undefined && precioUnitario !== undefined) {
-    productosSeleccionados.value.forEach((item)=>{
-      if(item.id == id){
-        item.subtotal = cantidad * precioUnitario;
+    productosSeleccionados.value.forEach(item => {
+      if (item.id == id) {
+        item.subtotal = cantidad * precioUnitario
       }
     })
-    calcularTotal();
-    return cantidad * precioUnitario;
+    calcularTotal()
+    return cantidad * precioUnitario
   } else {
-    calcularTotal();
-    return 0;
+    calcularTotal()
+    return 0
   }
 }
 
@@ -83,18 +105,69 @@ const deseleccionarProducto = producto => {
 
 const calcularTotal = () => {
   const subtotales = productosSeleccionados.value.map(item => item.subtotal)
-  return subtotales.reduce((acumulador, elemento) => acumulador + elemento, 0);
+  return subtotales.reduce((acumulador, elemento) => acumulador + elemento, 0)
 }
+
+const agregarProducto = () => {
+  formAgregarProducto.value.validate().then(response => {
+    if (response.valid) {
+      productoSeleccionado.value.subtotal =
+        productoSeleccionado.value.cantidad * productoSeleccionado.value.precioUnitario
+      const copiaProducto = { ...productoSeleccionado.value }
+      productosSeleccionados.value.push(copiaProducto)
+      productoSeleccionado.value = {}
+      calcularTotal()
+      dialog.value = !dialog
+    }
+  })
+}
+
+const abrirModalAgregarProducto = () => {
+  dialog.value = !dialog.value
+}
+
+const eliminarProductoDeLista = index => {
+  if (index !== -1) {
+    productosSeleccionados.value.splice(index, 1)
+    calcularTotal()
+  }
+} 
+
+const editarRegistro = index => {
+  productoSeleccionado.value = productosSeleccionados.value[index];
+  dialog.value = !dialog.value
+}
+
+onMounted(() => {
+  obtenerFechaActual()
+})
 </script>
 
 <template>
   <VCard>
     <VCardItem>
-      <VForm @submit.prevent="registrarCompra" ref="form" class="pt-2">
+      <h2 class="pb-5">Registrar compra</h2>
+      <VForm
+        @submit.prevent="registrarCompra"
+        ref="form"
+        class="pt-2"
+      >
         <VRow>
           <VCol
             cols="12"
-            md="3"
+            md="2"
+          >
+            <VTextField
+              v-model="fecha"
+              type="date"
+              :rules="[reglaObligatoria()]"
+              readonly
+              label="Fecha"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            md="5"
           >
             <VSelect
               v-model="proveedor"
@@ -105,86 +178,117 @@ const calcularTotal = () => {
           </VCol>
           <VCol
             cols="12"
-            md="2"
-          >
-            <VTextField
-              v-model="fechaEmision"
-              type="date"
-              :rules="[reglaObligatoria()]"
-              label="Fecha de emisión"
-            />
-          </VCol>
-
-          <VCol
-            cols="12"
-            md="2"
-          >
-            <VSelect
-                v-model="tipoFactura"
-                :label="`Tipo`"
-                :items="['A', 'B', 'C', 'E', 'M', 'T']"
-                :rules="[reglaObligatoria()]"
-            ></VSelect>
-          </VCol>
-          <VCol
-            cols="12"
-            md="2"
-          >
-            <VTextField
-                v-model="puntoDeVenta"
-                :label="`Punto de venta`"
-                :rules="[reglaObligatoria()]"
-                type="number"
-            ></VTextField>
-          </VCol>
-          <VCol
-            cols="12"
-            md="3"
-          >
-            <VTextField
-                v-model="nroFactura"
-                :label="`Número de factura`"
-                :rules="[reglaObligatoria()]"
-                type="number"
-            ></VTextField>
-          </VCol>
-          <VCol
-            cols="12"
-          >
-              <VRow>
-                <VCol cols="12">
-                    <VFileInput label="Cargue la factura" variant="outlined" :rules="[reglaObligatoria()]"></VFileInput>
-                </VCol>
-              </VRow>
-          </VCol>
-          <VDivider/>
-
-          <VCol
-            cols="12"
-            md="12"
-          >
-            <VAutocomplete
-              v-model="productosSeleccionados"
-              :items="productos"
-              item-title="nombreProducto"
-              multiple
-              return-object
-              :rules="[reglaObligatoria()]"
-              label="Productos"
-              placeholder="Seleccione los productos comprados"
-            />
-          </VCol>
-
-          <VCol
-            cols="12"
-            md="12"
-            v-for="(producto) in productosSeleccionados"
-            :key="producto.id"
+            md="5"
           >
             <VRow>
-              <VCol cols="2">
+              <VCol cols="12">
+                <VFileInput
+                  label="Cargue el comprobante"
+                  variant="outlined"
+                ></VFileInput>
+              </VCol>
+            </VRow>
+          </VCol>
+
+          <VCol cols="12">
+            <h2>Productos</h2>
+          </VCol>
+          <VCol
+            v-if="productosSeleccionados.length != 0"
+            cols="12"
+          >
+            <VTable>
+              <thead>
+                <tr>
+                  <th class="text-uppercase">Cantidad</th>
+                  <th class="text-uppercase">Producto</th>
+                  <th class="text-uppercase">Precio unitario</th>
+                  <th class="text-uppercase">Subtotal</th>
+                  <th class="text-uppercase">Acciones</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr
+                  v-for="(item, index) in productosSeleccionados"
+                  :key="item.producto.id"
+                >
+                  <td>
+                    {{ item.cantidad }}
+                  </td>
+                  <td>
+                    {{ item.producto.nombreProducto }}
+                  </td>
+                  <td>$ {{ item.precioUnitario }}</td>
+                  <td>$ {{ item.subtotal }}</td>
+                  <td>
+                    <IconBtn
+                      icon="ri-edit-2-fill"
+                      color="primary"
+                      class="me-1"
+                      @click="editarRegistro(index)"
+                    />
+                    <IconBtn
+                      icon="ri-delete-bin-5-fill"
+                      color="error-darken-1"
+                      class="me-1"
+                      @click="eliminarProductoDeLista(index)"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    <b>$ {{ calcularTotal() }}</b>
+                  </td>
+                </tr>
+              </tbody>
+            </VTable>
+          </VCol>
+          <VCol
+            cols="12"
+            class="d-flex gap-4"
+          >
+            <VBtn @click="abrirModalAgregarProducto"> Agregar producto </VBtn>
+          </VCol>
+          <VCol
+            v-if="productosSeleccionados.length != 0"
+            cols="12"
+            class="d-flex justify-end gap-4"
+          >
+            <VBtn type="submit"> REGISTRAR </VBtn>
+          </VCol>
+        </VRow>
+      </VForm>
+    </VCardItem>
+
+    <!-- Modal carga producto -->
+    <VDialog
+      v-model="dialog"
+      width="60%"
+    >
+      <VCard
+        prepend-icon="ri-add-large-fill"
+        title="Agregar producto"
+        class="px-5"
+      >
+        <VForm
+          @submit.prevent="agregarProducto"
+          ref="formAgregarProducto"
+        >
+          <VCol
+            cols="12"
+            class="d-flex gap-4 justify-end"
+          >
+            <VRow>
+              <VCol
+                cols="12"
+                md="3"
+              >
                 <VTextField
-                  v-model="producto.cantidad"
+                  v-model="productoSeleccionado.cantidad"
                   label="Cantidad"
                   active
                   :rules="[reglaObligatoria()]"
@@ -192,90 +296,77 @@ const calcularTotal = () => {
                 >
                 </VTextField>
               </VCol>
-              <VCol cols="5">
-                <VTextField
-                  active
-                  v-model="producto.nombreProducto"
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VSelect
+                  v-model="productoSeleccionado.producto"
+                  :items="productos"
+                  item-title="nombreProducto"
+                  return-object
+                  :rules="[reglaObligatoria()]"
                   label="Producto"
-                  :rules="[reglaObligatoria()]"
-                  readonly
+                  placeholder="Seleccione los productos comprados"
                 >
-                </VTextField>
+                </VSelect>
               </VCol>
-              <VCol cols="2">
+              <VCol
+                cols="12"
+                md="3"
+              >
                 <VTextField
-                  v-model="producto.precioUnitario"
+                  v-model="productoSeleccionado.precioUnitario"
                   active
-                  label="Precio unitario"
                   :rules="[reglaObligatoria()]"
+                  label="Precio Unitario"
                   prefix="$"
                   type="number"
                 >
                 </VTextField>
               </VCol>
-              <VCol cols="2">
-                <VTextField
-                  v-model="producto.subtotal"
-                  active
-                  label="Subtotal"
-                  :value="calcularSubtotal(producto.cantidad, producto.precioUnitario, producto.id)"
-                  readonly
-                  prefix="$"
-                  type="number"
+              <VCol
+                cols="12"
+                class="d-flex"
+              >
+                <p><b>Desea registrar un producto nuevo?</b></p>
+                <b
+                  class="text-primary px-3 cursor-pointer"
+                  @click="dialogRegistrarProducto = !dialogRegistrarProducto"
+                  >CLICK AQUÍ</b
                 >
-                </VTextField>
               </VCol>
-              <VCol cols="1">
+              <VCol
+                cols="12"
+                md="12"
+                class="d-flex gap-4 justify-end"
+              >
                 <VBtn
-                  size="small"
-                  color="error-darken-1"
-                  class="mt-1"
-                  @click="deseleccionarProducto(producto)"
+                  color="secondary"
+                  variant="outlined"
+                  @click="dialog = !dialog"
                 >
-                  X
+                  CANCELAR
+                </VBtn>
+                <VBtn
+                  color="primary"
+                  variant="elevated"
+                  type="submit"
+                >
+                  AGREGAR
                 </VBtn>
               </VCol>
             </VRow>
           </VCol>
-          <VCol
-            cols="12"
-            md="12"
-            v-if="productosSeleccionados.length != 0"
-          >
-            <VRow>
-              <VCol cols="9">
-              </VCol>
-              <VCol cols="2">
-                <VTextField 
-                    v-model="totalFactura"
-                    active
-                    label="TOTAL"
-                    :value="calcularTotal()"
-                    readonly
-                    prefix="$"
-                    type="number"
-                    class="bold"
-                />
-              </VCol>
-            </VRow>
-          </VCol>
+        </VForm>
+      </VCard>
+    </VDialog>
 
-          <VCol
-            cols="12"
-            class="d-flex gap-4"
-          >
-            <VBtn type="submit"> Registrar </VBtn>
-
-            <VBtn
-              type="reset"
-              color="secondary"
-              variant="outlined"
-            >
-              Limpiar
-            </VBtn>
-          </VCol>
-        </VRow>
-      </VForm>
-    </VCardItem>
+    <VDialog
+      v-model="dialogRegistrarProducto"
+      width="60%"
+    >
+      <RegistrarStock />
+    </VDialog>
   </VCard>
 </template>
