@@ -30,6 +30,8 @@ namespace Service.Services
             {
                 StartDate = model.StartDate.Date,
                 TypeShift = (int)model.TypeShift,
+                TypeShiftHoliday = (int)model.TypeShiftHoliday,
+                Notes = model.Notes,
                 EndDate = model.EndDate?.Date
             });
 

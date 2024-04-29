@@ -8,6 +8,10 @@ namespace Common.Model
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public TypeShiftEnum TypeShift { get; set; }
+        public TypeShiftHolidayEnum? TypeShiftHoliday { get; set; }
+        public String Notes { get; set; }
+
+
 
     }
 }

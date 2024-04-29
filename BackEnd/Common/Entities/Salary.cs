@@ -2,6 +2,7 @@
 {
     public class Salary
     {
+
         public int Id { get; set; }
 
         public float HourValue { get; set; }

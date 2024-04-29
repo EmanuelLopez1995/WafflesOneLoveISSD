@@ -9,6 +9,8 @@ namespace FC.Data.Configuration
         public void Configure(EntityTypeBuilder<Salary> builder)
         {
             builder.ToTable("Salary");
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.HoursWorked).HasColumnType("float").IsRequired();
             builder.Property(x => x.HourValue).HasColumnType("float").IsRequired();
             builder.Property(x => x.SalaryTotal).HasColumnType("float").IsRequired();

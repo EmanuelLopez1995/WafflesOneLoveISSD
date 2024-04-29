@@ -9,7 +9,8 @@
         public int StartTimeMinutes { get; set; }
         public int? EndTimeHours { get; set; }
         public int? EndTimeMinutes { get; set; }
-        public string Notes { get; set; }
+        public string NotesAdmission { get; set; }
+        public string NotesEnd { get; set; }
         public bool cashier { get; set; }
 
 

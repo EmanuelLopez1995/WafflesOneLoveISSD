@@ -32,8 +32,9 @@ namespace Service.Services
                 StartTimeMinutes=model.StartTimeMinutes,
                 EndTimeHours=model.EndTimeHours,
                 EndTimeMinutes=model.EndTimeMinutes,
-                Notes = model.Notes,
-                cashier=model.cashier,
+                NotesAdmission = model.NotesAdmission,
+                NotesEnd = model.NotesEnd,
+                cashier =model.cashier,
                 EndDate = model.EndDate?.Date 
             }) ; 
 

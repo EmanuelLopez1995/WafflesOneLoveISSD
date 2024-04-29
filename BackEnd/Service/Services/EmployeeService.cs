@@ -111,7 +111,7 @@ namespace Service.Services
             }
 
             employee.Direction = model.Direccion;
-            employee.Dni = model.Direccion;
+            employee.Dni = model.Dni;
             employee.Email = model.Email;
             employee.LastName = model.Apellido;
             employee.Name = model.Nombre;

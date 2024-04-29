@@ -9,6 +9,8 @@ namespace FC.Data.Configuration
         public void Configure(EntityTypeBuilder<PaymentBox> builder)
         {
             builder.ToTable("PaymentBox");
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.CashWitdrawal).HasColumnType("float").IsRequired(); 
             builder.Property(x => x.InitialActive).HasColumnType("float").IsRequired();
             builder.Property(x => x.InitialImport).HasColumnType("float").IsRequired();
