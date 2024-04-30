@@ -9,13 +9,16 @@ namespace FC.Data.Configuration
         public void Configure(EntityTypeBuilder<EmployeeShift> builder)
         {
             builder.ToTable("EmployeeShifts");
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.StartDate).IsRequired();
             builder.Property(x => x.EndDate).IsRequired(false);
             builder.Property(x => x.StartTimeHours).IsRequired();
             builder.Property(x => x.StartTimeMinutes).IsRequired();
             builder.Property(x => x.EndTimeHours).IsRequired(false);
             builder.Property(x => x.EndTimeMinutes).IsRequired(false);
-            builder.Property(x => x.Notes).IsRequired(false);
+            builder.Property(x => x.NotesAdmission).IsRequired(false);
+            builder.Property(x => x.NotesEnd).IsRequired(false);
             builder.Property(x => x.cashier).IsRequired();
 
 

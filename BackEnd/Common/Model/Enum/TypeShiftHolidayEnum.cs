@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Common.Model.Enum
 {
-    public enum TypeShiftEnum
+    public enum TypeShiftHolidayEnum
     {
-        manana=1,
-        tarde=2
+        feriado=3
 
     }
 }

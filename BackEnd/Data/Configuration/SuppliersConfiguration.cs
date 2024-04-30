@@ -9,6 +9,8 @@ namespace FC.Data.Configuration
         public void Configure(EntityTypeBuilder<Suppliers> builder)
         {
             builder.ToTable("Suppliers");
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Name).HasMaxLength(255).IsRequired();
             builder.Property(x => x.SocialReason).HasMaxLength(255).IsRequired();
             builder.Property(x => x.Addrees).HasMaxLength(20).IsRequired(false);

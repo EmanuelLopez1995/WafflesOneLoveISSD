@@ -2,6 +2,7 @@
 {
 	public class PaymentBox
 	{
+
 		public int Id { get; set; }
 		public float InitialActive { get; set; }
 		public float CashWitdrawal { get; set; }
