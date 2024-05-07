@@ -5,6 +5,7 @@ import { ref, defineEmits, defineProps } from 'vue'
 import { useTheme } from 'vuetify'
 import axios from 'axios'
 import { router } from '@/plugins/router';
+import { obtenerHoraActualUTC, formatearHoraUTC } from '@/components/fechaYHora.js'
 
 const emit = defineEmits(['backToCaja'])
 
@@ -27,7 +28,52 @@ const currentTheme = computed(() => {
 })
 
 const comenzarTurno = () => {
-    router.push('/dashboard');
+    let hora = obtenerHoraActualUTC();
+
+    // Registro del turno
+    // try {
+    //     let paramsTurno = {
+    //         employeeId : props.turno.encargadoDeTurno.id,
+    //         startDate : props.turno.fecha + hora,
+    //         typeShift : props.turno.turno,
+    //         typeShiftHoliday : props.turno.esFeriado ? 3 : 0, 
+    //         notes : props.turno.notas
+    //     }
+    //     axios.post('/shifts', paramsTurno).then((response) => {})
+    // } catch(error) {
+    //     algoSalioMalError(currentTheme.value)
+    // }
+
+    //Regustro de los empleados
+    // try { //ERROR
+        // props.turno.empleadosSeleccionados.forEach(empleado => {
+        //     let [hora, minutos] = empleado.horaLlegada.split(':');;
+        //     let paramsEmpleado = {
+        //         employeeId: empleado.id,
+        //         startDate: props.turno.fecha + formatearHoraUTC(empleado.horaLlegada),
+        //         startTimeHours: parseInt(hora),
+        //         startTimeMinutes: parseInt(minutos),
+        //         notesAdmission: empleado.notas || '',
+        //         cashier: props.caja.encargadoDeAperturaDeCaja.id == empleado.id ? true : false
+        //     }
+        //     axios.post('/employee-shifts', paramsEmpleado).then((response) => {})
+        // });
+    // } catch(error) {
+    //     algoSalioMalError(currentTheme.value)
+    // }
+
+    //Registro de caja
+    // try {
+    //     let paramsCaja = {
+    //         initialActive: props.caja.activoInicial,
+    //         initialImport: props.caja.valorTotal,
+    //     }
+    //     axios.post('/paymentbox', paramsCaja).then((response) => {})
+    // } catch(error) {
+    //     algoSalioMalError(currentTheme.value)
+    // }
+
+    // router.push('/dashboard');
 }
 
 </script>

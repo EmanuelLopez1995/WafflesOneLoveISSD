@@ -1,7 +1,5 @@
 <script setup>
 
-import EmpleadosAdmin from '@/pages/admin/empleados/adminEmpleados.vue'
-
 import { useRoute } from 'vue-router'
 
 
@@ -10,19 +8,19 @@ const activeTab = ref(route.params.tab)
 // tabs
 let tabs = [
   {
-    title: 'Empleados',
+    title: 'Puestos',
     icon: 'ri-team-line',
-    tab: 'empleados',
+    tab: 'puestos',
   },
   {
-    title: 'Finanzas',
+    title: 'otro',
     icon: 'ri-money-dollar-box-line',
-    tab: 'finanzas',
+    tab: 'otro',
   },
   {
-    title: 'Usuarios',
+    title: 'otrox2',
     icon: 'ri-check-double-line',
-    tab: 'usuarios',
+    tab: 'otrox2',
   }
 ]
 </script>
@@ -55,18 +53,18 @@ let tabs = [
       :touch="false"
     >
       <!-- Resumen -->
-      <VWindowItem value="empleados">
-        <EmpleadosAdmin />
+      <VWindowItem value="puestos">
+        
       </VWindowItem>
 
       <!-- Inicio de turno -->
-      <VWindowItem value="usuarios" to="/asd">
-        <h1>Usuarios</h1>
+      <VWindowItem value="otrox2" to="/asd">
+        <h1>otrox2</h1>
       </VWindowItem>
 
       <!-- Apertura de caja -->
-      <VWindowItem value="finanzas">
-        <h1>Finanzas</h1>
+      <VWindowItem value="otro">
+        <h1>otro</h1>
       </VWindowItem>
 
     </VWindow>

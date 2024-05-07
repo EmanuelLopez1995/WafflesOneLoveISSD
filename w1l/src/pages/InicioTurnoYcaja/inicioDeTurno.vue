@@ -114,6 +114,7 @@ onMounted(() => {
                 v-model="encargadoDeTurno"
                 :items="allEmpleados"
                 item-title="nombreCompletoYid"
+                :rules="[reglaObligatoria()]"
                 return-object
                 label="Encargado de turno"
             />
