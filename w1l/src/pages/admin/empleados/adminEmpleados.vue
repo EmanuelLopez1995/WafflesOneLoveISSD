@@ -1,27 +1,22 @@
 <script setup>
-
 import { useRoute } from 'vue-router'
-
+import RegistrarSueldos from '@/pages/admin/empleados/registrarSueldos.vue'
+import RegistrarAdelantos from '@/pages/admin/empleados/registrarAdelantos.vue'
 
 const route = useRoute()
 const activeTab = ref(route.params.tab)
-// tabs
-let tabs = [
+const contenidoActivoSueldos = ref(0)
+
+//Contenidos sueldos
+const contenidos = [
   {
-    title: 'Puestos',
-    icon: 'ri-team-line',
-    tab: 'puestos',
+    title: 'Registrar sueldos',
+    id: 1,
   },
   {
-    title: 'otro',
-    icon: 'ri-money-dollar-box-line',
-    tab: 'otro',
+    title: 'Registrar adelantos',
+    id: 2,
   },
-  {
-    title: 'otrox2',
-    icon: 'ri-check-double-line',
-    tab: 'otrox2',
-  }
 ]
 </script>
 
@@ -32,18 +27,41 @@ let tabs = [
       v-model="activeTab"
       show-arrows
     >
+      <VMenu open-on-hover>
+        <template v-slot:activator="{ props }">
+          <VTab
+            value="sueldos"
+            :disabled="false"
+            v-bind="props"
+          >
+            <VIcon
+              size="20"
+              start
+              icon="ri-wallet-3-line"
+            />
+            Sueldos
+          </VTab>
+        </template>
+        <VList>
+          <VListItem
+            v-for="item in contenidos"
+            :key="item.id"
+            :value="item.id"
+          >
+            <VListItemTitle @click="contenidoActivoSueldos = item.id">{{ item.title }}</VListItemTitle>
+          </VListItem>
+        </VList>
+      </VMenu>
       <VTab
-        v-for="item in tabs"
-        :key="item.icon"
-        :value="item.tab"
-        :disabled="item.disabled"
+        value="otro"
+        :disabled="false"
       >
         <VIcon
           size="20"
           start
-          :icon="item.icon"
+          icon="ri-wallet-3-line"
         />
-        {{ item.title }}
+        asdasd
       </VTab>
     </VTabs>
 
@@ -52,21 +70,16 @@ let tabs = [
       class="mt-5 disable-tab-transition"
       :touch="false"
     >
-      <!-- Resumen -->
-      <VWindowItem value="puestos">
-        
+      <!-- Sueldos -->
+      <VWindowItem value="sueldos">
+        <RegistrarSueldos v-if="contenidoActivoSueldos == 1" />
+        <RegistrarAdelantos v-if="contenidoActivoSueldos == 2" />
       </VWindowItem>
 
-      <!-- Inicio de turno -->
-      <VWindowItem value="otrox2" to="/asd">
-        <h1>otrox2</h1>
-      </VWindowItem>
-
-      <!-- Apertura de caja -->
+      <!-- Otro -->
       <VWindowItem value="otro">
-        <h1>otro</h1>
+        <h1>Otro</h1>
       </VWindowItem>
-
     </VWindow>
   </div>
 </template>
