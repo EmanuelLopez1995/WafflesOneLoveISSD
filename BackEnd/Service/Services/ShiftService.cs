@@ -56,7 +56,8 @@ namespace Service.Services
             var Shift = UoW.Shifts.Obtener(new ShiftQueryModel
             {
                 SinFinalizar = true,
-                EmployeeId = model.EmployeeId
+                EmployeeId = model.EmployeeId,
+
             });
 
             if (Shift == null)

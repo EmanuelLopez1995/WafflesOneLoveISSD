@@ -16,11 +16,7 @@ namespace Service.Services
         public AckEntity<PaymentBoxModel> Crear(PaymentBoxModel model)
         {
             var ack = new AckEntity<PaymentBoxModel>();
-            //if (model.Email != "asdasdas")
-            //{
-            //    ack.Mensaje = "El Email No Es Valido";
-            //    return ack;
-            //}
+       
 
             var paymentBox = new PaymentBox
             {

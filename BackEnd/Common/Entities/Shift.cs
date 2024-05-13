@@ -12,5 +12,7 @@
         public int? TypeShiftHoliday { get; set; }
         public String Notes { get; set; }
 
+      
+
     }
 }

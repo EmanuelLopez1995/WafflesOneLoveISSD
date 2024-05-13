@@ -10,6 +10,7 @@ namespace Common.Repository
         IShiftRepository Shifts { get; }
         IPaymentBoxRepository PaymentBox {get;}
         ISalaryRepository Salary { get; }
+        IPaymentBoxInitialActiveRepository PaymentBoxInitialActive  { get; }
         int Complete();
     }
 }

@@ -24,6 +24,8 @@ namespace FC.Data.Configuration
                    .HasForeignKey(x => x.EmployeeId)
                    .IsRequired(true)
                    .OnDelete(DeleteBehavior.Restrict);
+
+            
         }
     }
 }
