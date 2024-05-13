@@ -65,5 +65,15 @@
             public const string Put = BaseSalary;
             public const string Delete = BaseSalary;
         }
+
+        public static class PaymentBoxInitialActive
+        {
+            private const string BasePaymentBoxInitialActive = Api + "/paymentBoxInitialActive";
+            public const string GetAll = BasePaymentBoxInitialActive + "/get-all";
+            public const string Get = BasePaymentBoxInitialActive;
+            public const string Post = BasePaymentBoxInitialActive;
+            public const string Put = BasePaymentBoxInitialActive;
+            public const string Delete = BasePaymentBoxInitialActive;
+        }
     }
 }

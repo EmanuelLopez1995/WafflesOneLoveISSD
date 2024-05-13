@@ -18,6 +18,8 @@ namespace Data
         public DbSet<Shift> Shift { get; set; }
         public DbSet<PaymentBox> PaymentBox { get; set; }
         public DbSet<Salary> Salary { get; set; }
+        public DbSet<PaymentBoxInitialActive> PaymentBoxInitialActive { get; set; }
+
 
 
 
@@ -36,6 +38,8 @@ namespace Data
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShiftConfiguration).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SuppliersConfiguration).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SalaryConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PaymentBoxInitialActive).Assembly);
+
 
 
         }

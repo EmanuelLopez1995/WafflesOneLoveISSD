@@ -31,6 +31,7 @@ namespace Data.Repository
             var query = context.Shift.AsQueryable();
 
             if (queryModel.EmployeeId.HasValue) query = query.Where(x => x.EmployeeId == queryModel.EmployeeId);
+
             if (queryModel.SinFinalizar.HasValue)
             {
                 if (queryModel.SinFinalizar.Value)
