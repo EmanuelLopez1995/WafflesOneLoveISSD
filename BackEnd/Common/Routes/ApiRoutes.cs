@@ -45,6 +45,15 @@
             public const string Put = BaseSuppliers;
             public const string Delete = BaseSuppliers;
         }
+        public static class Stock
+        {
+            private const string BaseStock = Api + "/stock";
+            public const string GetAll = BaseStock + "/get-all";
+            public const string Get = BaseStock;
+            public const string Post = BaseStock;
+            public const string Put = BaseStock;
+            public const string Delete = BaseStock;
+        }
 
         public static class Shift
         {

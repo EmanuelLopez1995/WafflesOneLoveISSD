@@ -19,6 +19,7 @@ namespace Data
         public DbSet<PaymentBox> PaymentBox { get; set; }
         public DbSet<Salary> Salary { get; set; }
         public DbSet<PaymentBoxInitialActive> PaymentBoxInitialActive { get; set; }
+        public DbSet<Stock> Stock { get; set; }
 
 
 
@@ -39,6 +40,8 @@ namespace Data
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SuppliersConfiguration).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SalaryConfiguration).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(PaymentBoxInitialActive).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(Stock).Assembly);
+
 
 
 
