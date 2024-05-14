@@ -64,6 +64,10 @@ export const routes = [
         path: 'registrarCompra',
         component: () => import('@/pages/registrarCompra.vue'),
       },
+      {
+        path: 'recetas',
+        component: () => import('@/pages/recetas.vue'),
+      },
     ],
   },
   {

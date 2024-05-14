@@ -88,6 +88,19 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
       }"
     />
   </VerticalNavGroup>
+  <VerticalNavGroup
+    :item="{
+      title: 'Producción',
+      icon: 'ri-restaurant-2-line',
+    }"
+  >
+    <VerticalNavLink
+      :item="{
+        title: 'Recetas',
+        to: '/recetas',
+      }"
+    />
+  </VerticalNavGroup>
   <VerticalNavLink
     :item="{
       title: 'Admin',
