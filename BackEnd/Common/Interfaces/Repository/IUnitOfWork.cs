@@ -11,6 +11,7 @@ namespace Common.Repository
         IPaymentBoxRepository PaymentBox {get;}
         ISalaryRepository Salary { get; }
         IPaymentBoxInitialActiveRepository PaymentBoxInitialActive  { get; }
+        IStockRepository Stock { get; }
         int Complete();
     }
 }

@@ -18,6 +18,7 @@ namespace Data
             PaymentBox = new PaymentBoxRepository(context);
             Salary = new SalaryRepository(context);
             PaymentBoxInitialActive=new PaymentBoxInitialActiveRepository(context);
+            Stock=new StockRepository(context);
 
         }
 
@@ -29,6 +30,7 @@ namespace Data
         public IPaymentBoxInitialActiveRepository PaymentBoxInitialActive { get; private set; }
 
         public ISalaryRepository Salary { get; private set; }
+        public IStockRepository Stock { get; private set; }
 
 
 
