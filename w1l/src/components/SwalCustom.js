@@ -50,3 +50,14 @@ export function eliminarRegistro(eliminarFuncion, id, nombre, theme) {
             }
     });
 }
+
+export function warningMessage(mensaje, theme) {
+    Swal.fire({
+        title: "Atención!",
+        text: mensaje, 
+        icon: "warning",
+        color: theme['letras'],
+        background: theme['background'],
+        confirmButtonColor: theme['primary'],
+    });
+}

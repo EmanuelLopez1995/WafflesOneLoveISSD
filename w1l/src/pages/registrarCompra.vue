@@ -1,8 +1,8 @@
 <script setup>
+import { useTheme } from 'vuetify'
 import { reglaObligatoria, validarEmail } from '@/components/validaciones.js'
 import { algoSalioMalError, registroExitosoMensaje } from '@/components/SwalCustom.js'
 import { ref, computed } from 'vue'
-import { useTheme } from 'vuetify'
 import axios from 'axios'
 import RegistrarStock from '@/pages/registrarStock.vue'
 
