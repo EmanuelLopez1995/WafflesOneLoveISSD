@@ -27,7 +27,7 @@ const contenidos = [
       v-model="activeTab"
       show-arrows
     >
-      <VMenu open-on-hover>
+      <VMenu>
         <template v-slot:activator="{ props }">
           <VTab
             value="sueldos"
