@@ -16,7 +16,8 @@ builder.Services.AddEntityFrameworkSqlServer()
                 .AddScoped<ISuppliersService, SuppliersService>()
                 .AddScoped<IShiftService, ShiftService>()
                 .AddScoped<IPaymentBoxService, PaymentBoxService>()
-                .AddScoped<ISalaryService, SalaryService>();
+                .AddScoped<ISalaryService, SalaryService>()
+                .AddScoped<IStockService, StockService>();
 
 
 builder.Services.AddControllers();
