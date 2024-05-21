@@ -16,6 +16,22 @@ const detalle = ref('')
 const form = ref(null)
 const unidadDeMedida = ref(null)
 
+const unidadesDeMedida = [
+  {
+    id: 1,
+    nombre: 'Kilogramos'
+  },
+  {
+    id: 2,
+    nombre: 'Gramos'
+  },
+  {
+    id: 3,
+    nombre: 'Litros'
+  }
+  //CONTINUAR
+]
+
 const vuetifyTheme = useTheme()
 
 const currentTheme = computed(() => {
@@ -25,7 +41,22 @@ const currentTheme = computed(() => {
 const registrarStock = () => {
     form.value.validate().then(response => {
         if (response.valid) {
-            console.log('formulario valido')
+            // let params = {
+            //   productName: nombre,
+            //   productBrand: marca,
+            //   actualStock: 0,
+            //   minimunStock: stockMinimo,
+            //   unitOfMeasurement: unidadDeMedida.id,
+            //   detail: detalle
+            // }
+            // try {
+            //     axios.post('/stock', params).then(() => {
+            //         registroExitosoMensaje('stock', currentTheme.value)
+            //         form.value.reset();
+            //     })
+            // } catch {
+            //     algoSalioMalError(currentTheme.value)
+            // }
         }
     })
 }
@@ -59,6 +90,7 @@ const cerrarModal = () => {
           >
             <VTextField
               v-model="marca"
+              :rules="[reglaObligatoria()]"
               label="Marca"
             />
           </VCol>
@@ -69,6 +101,7 @@ const cerrarModal = () => {
           >
             <VTextField
               v-model="stockMinimo"
+              :rules="[reglaObligatoria()]"
               type="number"
               label="Stock mínimo"
             />
@@ -79,7 +112,10 @@ const cerrarModal = () => {
             md="6"
           >
             <VSelect
-              :items="['Litros', 'Mililitros', 'Gramos', 'Kilogramos', 'Unidad']"
+              :items="unidadesDeMedida"
+              item-title="nombre"
+              return-object
+              :rules="[reglaObligatoria()]"
               v-model="unidadDeMedida"
               label="Unidad de medida"
             />
