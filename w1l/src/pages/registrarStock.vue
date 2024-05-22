@@ -28,8 +28,15 @@ const unidadesDeMedida = [
   {
     id: 3,
     nombre: 'Litros'
+  },
+  {
+    id:5,
+    nombre: 'Mililitros'
+  },
+  {
+    id:4,
+    nombre: 'Unidad'
   }
-  //CONTINUAR
 ]
 
 const vuetifyTheme = useTheme()
@@ -41,22 +48,22 @@ const currentTheme = computed(() => {
 const registrarStock = () => {
     form.value.validate().then(response => {
         if (response.valid) {
-            // let params = {
-            //   productName: nombre,
-            //   productBrand: marca,
-            //   actualStock: 0,
-            //   minimunStock: stockMinimo,
-            //   unitOfMeasurement: unidadDeMedida.id,
-            //   detail: detalle
-            // }
-            // try {
-            //     axios.post('/stock', params).then(() => {
-            //         registroExitosoMensaje('stock', currentTheme.value)
-            //         form.value.reset();
-            //     })
-            // } catch {
-            //     algoSalioMalError(currentTheme.value)
-            // }
+            let params = {
+              productName: nombre.value,
+              productBrand: marca.value,
+              actualStock: 0,
+              minimunStock: stockMinimo.value,
+              unitOfMeasurement: unidadDeMedida.value.id,
+              detail: detalle.value
+            }
+            try {
+                axios.post('/stock', params).then(() => {
+                    registroExitosoMensaje('stock', currentTheme.value)
+                    form.value.reset();
+                })
+            } catch {
+                algoSalioMalError(currentTheme.value)
+            }
         }
     })
 }

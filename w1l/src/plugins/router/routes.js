@@ -68,6 +68,10 @@ export const routes = [
         path: 'recetas',
         component: () => import('@/pages/recetas.vue'),
       },
+      {
+        path: 'listadoStock',
+        component: () => import('@/pages/listadoStock.vue'),
+      },
     ],
   },
   {
