@@ -38,7 +38,7 @@ export function eliminarRegistro(eliminarFuncion, id, nombre, theme) {
         cancelButtonText: "Cancelar",
         }).then(async (result) => {
             if (result.isConfirmed) {
-                await eliminarFuncion(id);
+                eliminarFuncion(id);
                 Swal.fire({
                     title: "Eliminado!",
                     text: `El registro con nombre ${nombre} fue eliminado`,
