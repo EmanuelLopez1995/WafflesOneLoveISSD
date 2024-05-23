@@ -236,7 +236,6 @@ const descargarListado = () => {
         <VCol cols="12" md="4" class="flex-sm-column">
           <VTextField
             v-model="itemEditar.id"
-            :rules="[reglaObligatoria()]"
             label="ID"
             disabled
           />
@@ -260,17 +259,12 @@ const descargarListado = () => {
       <!-- Segunda fila -->
       <VRow>
         <VCol cols="12" md="4" class="flex-sm-column">
-          <VTextField
+          <VSelect
             v-model="itemEditar.unitOfMeasurement"
+            :items="unidadesDeMedida"
+            item-title="nombre"
             :rules="[reglaObligatoria()]"
             label="Unidad de medida"
-          />
-        </VCol>
-        <VCol cols="12" md="4">
-          <VTextField
-            v-model="itemEditar.detail"
-            :rules="[reglaObligatoria()]"
-            label="Detalle"
           />
         </VCol>
         <VCol cols="12" md="4">
@@ -281,16 +275,22 @@ const descargarListado = () => {
             type="number"
           />
         </VCol>
-      </VRow>
-
-      <!-- Tercera fila -->
-      <VRow>
         <VCol cols="12" md="4" class="flex-sm-column">
           <VTextField
             v-model="itemEditar.actualStock"
             :rules="[reglaObligatoria()]"
             label="Stock actual"
             type="number"
+          />
+        </VCol>
+      </VRow>
+
+      <!-- Tercera fila -->
+      <VRow>
+        <VCol cols="12" md="12">
+          <VTextField
+            v-model="itemEditar.detail"
+            label="Detalle"
           />
         </VCol>
       </VRow>
