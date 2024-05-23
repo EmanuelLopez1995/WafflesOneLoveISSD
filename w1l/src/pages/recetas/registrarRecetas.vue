@@ -100,6 +100,12 @@ const eliminarProductoDeLista = (index) => {
             />
           </VCol>
           <VCol cols="12" md="8"></VCol>
+          <VCol
+            cols="12"
+            md="8"
+          >
+            <VTextarea label="Procedimiento" placeholder="Ingrese los pasos a seguir"></VTextarea>
+          </VCol>
           <VCol cols="12" md="12">
             <VForm @submit.prevent="agregarIngrediente" ref="formIngredientes">
               <VRow>
