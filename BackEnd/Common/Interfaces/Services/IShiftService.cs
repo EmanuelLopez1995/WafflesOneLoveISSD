@@ -12,8 +12,9 @@ namespace Common.Interfaces.Service
 {
     public interface IShiftService
     {
-       
+
         Ack CloseShift(ShiftModel model);
         Ack Create(ShiftModel model);
+        AckEntity<ShiftModel> GetShift(ShiftModel model);
     }
 }

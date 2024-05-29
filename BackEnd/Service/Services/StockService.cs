@@ -66,6 +66,7 @@ namespace Service.Services
 
             return new StockModel
             {
+                Id=stock.Id,
                 ProductName = stock.ProductName,
                 ProductBrand = stock.ProductBrand,
                 ActualStock = stock.ActualStock,
@@ -83,6 +84,7 @@ namespace Service.Services
             var list = UoW.Stock.GetAll();
             return list.Select(stock => new StockModel
             {
+                Id = stock.Id, 
                 ProductName = stock.ProductName,
                 ProductBrand = stock.ProductBrand,
                 ActualStock = stock.ActualStock,

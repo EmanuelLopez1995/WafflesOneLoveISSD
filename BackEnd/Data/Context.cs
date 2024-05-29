@@ -33,14 +33,9 @@ namespace Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(EmployeeConfiguration).Assembly);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(EmployeeShiftConfiguration).Assembly);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PaymentBoxConfiguration).Assembly);
+     
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShiftConfiguration).Assembly);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SuppliersConfiguration).Assembly);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SalaryConfiguration).Assembly);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PaymentBoxInitialActive).Assembly);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(Stock).Assembly);
+       
 
 
 

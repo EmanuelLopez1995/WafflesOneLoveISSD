@@ -17,15 +17,19 @@ namespace FC.Data.Configuration
             builder.Property(x => x.TypeShiftHoliday).IsRequired(false);
             builder.Property(x => x.Notes).IsRequired(false);
 
+            builder.HasOne(x => x.ClosedByEmployee)
+                   .WithMany(x => x.ShiftsClosed)
+                   .HasForeignKey(x => x.ClosedByEmployeeId)
+                   .IsRequired(false)
+                   .OnDelete(DeleteBehavior.Restrict);
 
-
-            builder.HasOne(x => x.Employee)
-                   .WithMany(x => x.Shifts)
-                   .HasForeignKey(x => x.EmployeeId)
+            builder.HasOne(x => x.OpenByEmployee)
+                   .WithMany(x => x.ShiftsOpen)
+                   .HasForeignKey(x => x.OpenByEmployeeId)
                    .IsRequired(true)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            
+
         }
     }
 }
