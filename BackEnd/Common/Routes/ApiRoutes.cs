@@ -4,14 +4,14 @@
     {
         private const string Api = "api";
 
-		public static class Root
-		{
-			public const string BaseRoot = "/";
-		}
+        public static class Root
+        {
+            public const string BaseRoot = "/";
+        }
 
-		public static class Employee
-		{
-			private const string BaseEmployee = Api + "/employees";
+        public static class Employee
+        {
+            private const string BaseEmployee = Api + "/employees";
             public const string GetAll = BaseEmployee + "/get-all";
             public const string Get = BaseEmployee;
             public const string Post = BaseEmployee;

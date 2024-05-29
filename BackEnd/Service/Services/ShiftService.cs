@@ -2,6 +2,7 @@
 using Common.Interfaces.Service;
 using Common.Model;
 using Common.Model.Ack;
+using Common.Model.Enum;
 using Common.Model.query;
 using Common.Repository;
 
@@ -18,23 +19,22 @@ namespace Service.Services
         {
             var ack = new Ack();
 
-            var employee = UoW.Employees.Obtener(model.EmployeeId);
+            var employee = UoW.Employees.Obtener(model.OpenEmployeeId);
             if (employee == null)
             {
                 ack.Mensaje = "El empleado no existe";
                 return ack;
             }
 
-
-            employee.Shifts.Add(new Shift
+            UoW.Shifts.Add(new Shift
             {
                 StartDate = model.StartDate.Date,
                 TypeShift = (int)model.TypeShift,
-                TypeShiftHoliday = (int)model.TypeShiftHoliday,
+                TypeShiftHoliday = (int?)model.TypeShiftHoliday,
                 Notes = model.Notes,
-                EndDate = model.EndDate?.Date
+                EndDate = model.EndDate?.Date,
+                OpenByEmployeeId = employee.Id
             });
-
 
             UoW.Complete();
 
@@ -52,11 +52,16 @@ namespace Service.Services
                 return ack;
             }
 
+            if (model.Id <= 0)
+            {
+                ack.Mensaje = "El campo Id es obligatorio.";
+                return ack;
+            }
 
             var Shift = UoW.Shifts.Obtener(new ShiftQueryModel
             {
                 SinFinalizar = true,
-                EmployeeId = model.EmployeeId,
+                Id = model.Id,
 
             });
 
@@ -69,6 +74,54 @@ namespace Service.Services
             Shift.EndDate = model.EndDate;
             UoW.Complete();
 
+            ack.Exito = true;
+            return ack;
+        }
+
+        public AckEntity<ShiftModel> GetShift(ShiftModel model)
+        {
+            var ack = new AckEntity<ShiftModel>();
+            if (model == null || model.Id <= 0)
+            {
+                ack.Mensaje = "El shift no existe";
+                return ack;
+            }
+
+            var shift = UoW.Shifts.Obtener(model.Id);
+            if (shift == null)
+            {
+                ack.Mensaje = "El shift no existe";
+                return ack;
+            }
+
+            var employeeShifts = UoW.EmployeeShifts.ConsultarListado(new EmpoyeeShiftQueryModel { shiftId = shift.Id });
+
+            var response = new ShiftModel
+            {
+                ClosedEmployeeId = shift.ClosedByEmployeeId,
+                OpenEmployeeId = shift.OpenByEmployeeId,
+                EndDate = shift.EndDate,
+                Id = shift.Id,
+                Notes = shift.Notes,
+                StartDate = shift.StartDate,
+                TypeShift = (TypeShiftEnum)shift.TypeShift,
+                TypeShiftHoliday = (TypeShiftHolidayEnum?)shift.TypeShiftHoliday,
+                EmployeeShifts = employeeShifts.Select(x => new EmployeeShiftModel
+                {
+                    cashier = x.cashier,
+                    EmployeeId = x.EmployeeId,
+                    EndDate = x.EndDate,
+                    EndTimeHours = x.EndTimeHours,
+                    EndTimeMinutes = x.EndTimeMinutes,
+                    NotesAdmission = x.NotesAdmission,
+                    NotesEnd = x.NotesEnd,
+                    StartDate = x.StartDate,
+                    StartTimeHours = x.StartTimeHours,
+                    StartTimeMinutes = x.StartTimeMinutes
+                })
+            };
+
+            ack.Entity = response;
             ack.Exito = true;
             return ack;
         }

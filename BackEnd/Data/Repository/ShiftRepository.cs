@@ -30,7 +30,8 @@ namespace Data.Repository
         {
             var query = context.Shift.AsQueryable();
 
-            if (queryModel.EmployeeId.HasValue) query = query.Where(x => x.EmployeeId == queryModel.EmployeeId);
+            if (queryModel.OpenEmployeeId.HasValue) query = query.Where(x => x.OpenByEmployeeId == queryModel.OpenEmployeeId);
+            if (queryModel.Id.HasValue) query = query.Where(x => x.Id == queryModel.Id.Value);
 
             if (queryModel.SinFinalizar.HasValue)
             {
@@ -48,4 +49,3 @@ namespace Data.Repository
         }
     }
 }
- 
