@@ -11,10 +11,10 @@ namespace FC.Data.Configuration
             builder.ToTable("PaymentBox");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.CashWitdrawal).HasColumnType("float").IsRequired(); 
-            builder.Property(x => x.InitialActive).HasColumnType("float").IsRequired();
-            builder.Property(x => x.InitialImport).HasColumnType("float").IsRequired();
-            builder.Property(x => x.FinalImport).HasColumnType("float").IsRequired();
+            builder.Property(x => x.CashWitdrawal).HasColumnType("float").IsRequired(false); 
+            builder.Property(x => x.InitialActive).HasColumnType("float").IsRequired(false);
+            builder.Property(x => x.InitialImport).HasColumnType("float").IsRequired(false);
+            builder.Property(x => x.FinalImport).HasColumnType("float").IsRequired(false);
            
             
           
