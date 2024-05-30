@@ -26,7 +26,7 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
     />
     <VerticalNavLink
       :item="{
-        title: 'Registrar producto',
+        title: 'Registrar Stock',
         to: '/registrarStock',
       }"
     />
