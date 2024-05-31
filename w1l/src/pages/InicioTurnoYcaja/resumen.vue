@@ -33,7 +33,7 @@ const comenzarTurno = () => {
     // Registro del turno
     // try {
     //     let paramsTurno = {
-    //         employeeId : props.turno.encargadoDeTurno.id,
+    //         openEmployeeId : props.turno.encargadoDeTurno.id,
     //         startDate : props.turno.fecha + hora,
     //         typeShift : props.turno.turno,
     //         typeShiftHoliday : props.turno.esFeriado ? 3 : 0, 
@@ -44,36 +44,36 @@ const comenzarTurno = () => {
     //     algoSalioMalError(currentTheme.value)
     // }
 
-    //Regustro de los empleados
+    // Regustro de los empleados
     // try { //ERROR
-        // props.turno.empleadosSeleccionados.forEach(empleado => {
-        //     let [hora, minutos] = empleado.horaLlegada.split(':');;
-        //     let paramsEmpleado = {
-        //         employeeId: empleado.id,
-        //         startDate: props.turno.fecha + formatearHoraUTC(empleado.horaLlegada),
-        //         startTimeHours: parseInt(hora),
-        //         startTimeMinutes: parseInt(minutos),
-        //         notesAdmission: empleado.notas || '',
-        //         cashier: props.caja.encargadoDeAperturaDeCaja.id == empleado.id ? true : false
-        //     }
-        //     axios.post('/employee-shifts', paramsEmpleado).then((response) => {})
-        // });
+    //     props.turno.empleadosSeleccionados.forEach(empleado => {
+    //         let [hora, minutos] = empleado.horaLlegada.split(':');
+    //         let paramsEmpleado = {
+    //             employeeId: empleado.id,
+    //             startDate: props.turno.fecha + formatearHoraUTC(empleado.horaLlegada),
+    //             startTimeHours: parseInt(hora),
+    //             startTimeMinutes: parseInt(minutos),
+    //             notesAdmission: empleado.notas || '',
+    //             cashier: props.caja.encargadoDeAperturaDeCaja.id == empleado.id ? true : false
+    //         }
+    //         axios.post('/employee-shifts', paramsEmpleado).then((response) => {})
+    //     });
     // } catch(error) {
     //     algoSalioMalError(currentTheme.value)
     // }
 
     //Registro de caja
-    // try {
-    //     let paramsCaja = {
-    //         initialActive: props.caja.activoInicial,
-    //         initialImport: props.caja.valorTotal,
-    //     }
-    //     axios.post('/paymentbox', paramsCaja).then((response) => {})
-    // } catch(error) {
-    //     algoSalioMalError(currentTheme.value)
-    // }
+    try {
+        let paramsCaja = {
+            initialActive: props.caja.activoInicial,
+            initialImport: props.caja.valorTotal,
+        }
+        axios.post('/paymentbox', paramsCaja).then((response) => {})
+    } catch(error) {
+        algoSalioMalError(currentTheme.value)
+    }
 
-    // router.push('/dashboard');
+    router.push('/dashboard');
 }
 
 </script>

@@ -1,6 +1,7 @@
 <script setup>
 
-import EmpleadosAdmin from '@/pages/admin/empleados/adminEmpleados.vue'
+import EmpleadosAdmin from '@/pages/admin/empleados/adminEmpleados.vue';
+import FinanzasAdmin from '@/pages/admin/finanzas/adminFinanzas.vue';
 
 import { useRoute } from 'vue-router'
 
@@ -66,7 +67,7 @@ let tabs = [
 
       <!-- Apertura de caja -->
       <VWindowItem value="finanzas">
-        <h1>Finanzas</h1>
+        <FinanzasAdmin />
       </VWindowItem>
 
     </VWindow>
