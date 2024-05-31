@@ -16,7 +16,7 @@ let tabs = [
   },
   {
     title: 'Registrar Artículo',
-    icon: 'ri-menu-search-line',
+    icon: 'ri-draft-line',
     tab: 'registrarArticulo'
   }
 ]
