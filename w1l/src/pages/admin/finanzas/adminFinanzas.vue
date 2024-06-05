@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute } from 'vue-router'
-import ActivoInicial from '@/pages/admin/finanzas/activoInicial.vue'
+import CajaAdmin from '@/pages/admin/finanzas/cajaAdmin.vue'
 
 const route = useRoute()
 const activeTab = ref(route.params.tab)
@@ -8,9 +8,9 @@ const contenidoActivoSueldos = ref(0)
 
 let tabs = [
   {
-    title: 'Activo inicial',
-    icon: 'ri-hand-coin-line',
-    tab: 'activoInicial',
+    title: 'Caja',
+    icon: 'ri-door-lock-box-line',
+    tab: 'cajaAdmin',
   }
 ]
 
@@ -44,8 +44,8 @@ let tabs = [
       :touch="false"
     >
       <!-- Activo inicial -->
-      <VWindowItem value="activoInicial">
-        <ActivoInicial />
+      <VWindowItem value="cajaAdmin">
+        <CajaAdmin />
       </VWindowItem>
     </VWindow>
   </div>
