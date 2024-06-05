@@ -19,7 +19,7 @@ const cantidadBilletes = ref([])
 const sumaBilletes = ref([])
 const valorTotal = ref(0)
 const encargadoDeAperturaDeCaja = ref(null)
-const activoInicial = ref(20000)
+const activoInicial = ref(0)
 const aperturaCorrecta = ref(null)
 
 const form = ref(null)
@@ -27,6 +27,20 @@ const vuetifyTheme = useTheme()
 
 const currentTheme = computed(() => {
   return ref(vuetifyTheme.current.value.colors)
+})
+
+const obtenerActivoInicial = () => {
+  axios.get('/paymentBoxInitialActive?id=1')
+    .then((response) => {
+      activoInicial.value = response.data.initialActive;
+    })
+    .catch((error) => {
+      algoSalioMalError(currentTheme.value);
+    });
+}
+
+onMounted(() => {
+  obtenerActivoInicial();
 })
 
 const sumarValores = (index) => {
