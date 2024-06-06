@@ -35,12 +35,21 @@ namespace Service.Services
                 NotesAdmission = model.NotesAdmission,
                 NotesEnd = model.NotesEnd,
                 cashier =model.cashier,
-                EndDate = model.EndDate?.Date 
-            }) ; 
+                EndDate = model.EndDate?.Date
+              
+            }) ;
 
-            UoW.Complete();
+            try
+            {
+                UoW.Complete();
+                ack.Exito = true;
+            }
+            catch (Exception ex)
+            {
+                ack.Mensaje = $"Ocurrió un error al agregar el turno del empleado {ex.Message}";
+                ack.Exito = false;
+            }
 
-            ack.Exito = true;
             return ack;
         }
 

@@ -70,11 +70,20 @@ namespace Service.Services
                 ack.Mensaje = "El encargado  no cuenta con ningún turno para cerrar";
                 return ack;
             }
-
+            Shift.ClosedByEmployeeId = model.ClosedEmployeeId;
             Shift.EndDate = model.EndDate;
-            UoW.Complete();
+            try
+            {
+                UoW.Complete();
+                ack.Exito = true;
+            }
+            catch (Exception ex)
+            {
+                // Manejar cualquier excepción que pueda ocurrir durante el guardado
+                ack.Mensaje = $"Ocurrió un error al cerrar el turno: {ex.Message}";
+                ack.Exito = false;
+            }
 
-            ack.Exito = true;
             return ack;
         }
 
