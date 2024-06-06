@@ -65,9 +65,7 @@ namespace Service.Services
 
             return new PaymentBoxInitialActiveModel
             {
-                InitialActive = paymentBoxInitialActive.InitialActive
-               
-
+                InitialActive = (float?)paymentBoxInitialActive.InitialActive
             };
         }
 
@@ -76,7 +74,7 @@ namespace Service.Services
             var list = UoW.PaymentBoxInitialActive.GetAll();
             return list.Select(paymentBoxInitialActive => new PaymentBoxInitialActiveModel
             {
-                InitialActive = paymentBoxInitialActive.InitialActive
+                InitialActive =(float?) paymentBoxInitialActive.InitialActive
                
 
             }).ToList();

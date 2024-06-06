@@ -11,7 +11,7 @@ namespace FC.Data.Configuration
             builder.ToTable("PaymentBoxInitialActive");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.InitialActive).HasColumnType("float").IsRequired();
+            builder.Property(x => x.InitialActive).HasColumnType("float").IsRequired(false);
 
         }
     }

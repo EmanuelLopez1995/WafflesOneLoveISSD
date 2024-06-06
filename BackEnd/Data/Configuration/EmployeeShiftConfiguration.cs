@@ -30,6 +30,12 @@ namespace FC.Data.Configuration
                    .HasForeignKey(x => x.EmployeeId)
                    .IsRequired(true)
                    .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.Shift)
+                   .WithMany(x => x.EmployeeShifts)
+                   .HasForeignKey(x => x.ShiftId)
+                   .IsRequired(true)
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
