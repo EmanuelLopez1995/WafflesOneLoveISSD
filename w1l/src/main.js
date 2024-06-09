@@ -12,7 +12,7 @@ import '@layouts/styles/index.scss'
 // Create vue app
 const app = createApp(App)
 
-axios.defaults.baseURL = 'https://localhost:7192/api';
+axios.defaults.baseURL = 'https://localhost:7037/api';
 app.config.globalProperties.$axios = axios;
 
 // Register plugins

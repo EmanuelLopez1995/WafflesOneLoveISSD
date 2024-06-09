@@ -6,9 +6,11 @@ import { useTheme } from 'vuetify'
 import axios from 'axios'
 import { router } from '@/plugins/router';
 import { obtenerHoraActualHHMMSS } from '@/components/fechaYHora.js'
-import { generalStore } from '@/store/generalStore'
+import { useGeneralStore } from '@/store/store.js';
 
 const emit = defineEmits(['backToCaja'])
+
+const store = useGeneralStore();
 
 const props = defineProps({
   turno: {
@@ -34,7 +36,7 @@ const comenzarTurno = () => {
     let empleadosParams = props.turno.empleadosSeleccionados.map((empleado) => ({
         idEmpleado: empleado.idEmpleado,
         horaIngresoEmpleado: empleado.horaLlegada + ':00',
-        descripcionIngreso: empleado.notas,
+        descripcionIngreso: empleado.notas || '',
         esRespDeApertCaja: props.caja.encargadoDeAperturaDeCaja.idEmpleado == empleado.idEmpleado ? true : false,
         esEncargadoTurno: props.turno.encargadoDeTurno.idEmpleado == empleado.idEmpleado ? true : false,
     }));
@@ -48,7 +50,7 @@ const comenzarTurno = () => {
         tipoTurno: props.turno.turno,
         fechaTurno: props.turno.fecha,
         horaDelInicio: horaActual,
-        notasInicio: props.turno.notas,
+        notasInicio: props.turno.notas || '',
         esFeriado: props.turno.esFeriado,
         empleados: empleadosParams,
         caja: cajaParams
@@ -57,7 +59,6 @@ const comenzarTurno = () => {
     try {
         axios.post('/Turno/IniciarTurno', params)
             .then((response) => {
-                generalStore.setTurnoEnCurso(true)
                 router.push('/dashboard');
             })
             .catch((error) => {
