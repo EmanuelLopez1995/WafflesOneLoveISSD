@@ -34,11 +34,11 @@ const iniciarTurno = () => {
 
 const getEmpleados = async () => {
   try {
-    await axios.get('/employees/get-all').then(response => {
+    await axios.get('/Empleado/GetAllEmpleados').then(response => {
       allEmpleados.value = response.data.map(empleado => {
         return {
           ...empleado,
-          nombreCompletoYid: `${empleado.nombre} ${empleado.apellido} (${empleado.id})`,
+          nombreCompletoYid: `${empleado.nombreEmpleado} ${empleado.apellidoEmpleado} (${empleado.idEmpleado})`,
         }
       })
     })
@@ -163,12 +163,12 @@ onMounted(() => {
                   cols="12"
                   md="12"
                   v-for="empleado in empleadosSeleccionados"
-                  :key="empleado.id"
+                  :key="empleado.idEmpleado"
                 >
                   <VRow>
                     <VCol cols="3">
                       <VTextField readonly>
-                        {{ `${empleado.nombre} ${empleado.apellido}` }}
+                        {{ `${empleado.nombreEmpleado} ${empleado.apellidoEmpleado}` }}
                       </VTextField>
                     </VCol>
                     <VCol cols="2">

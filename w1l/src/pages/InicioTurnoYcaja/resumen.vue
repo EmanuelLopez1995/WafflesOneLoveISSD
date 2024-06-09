@@ -5,7 +5,8 @@ import { ref, defineEmits, defineProps } from 'vue'
 import { useTheme } from 'vuetify'
 import axios from 'axios'
 import { router } from '@/plugins/router';
-import { obtenerHoraActualUTC, formatearHoraUTC } from '@/components/fechaYHora.js'
+import { obtenerHoraActualHHMMSS } from '@/components/fechaYHora.js'
+import { generalStore } from '@/store/generalStore'
 
 const emit = defineEmits(['backToCaja'])
 
@@ -28,52 +29,45 @@ const currentTheme = computed(() => {
 })
 
 const comenzarTurno = () => {
-    let hora = obtenerHoraActualUTC();
+    let horaActual = obtenerHoraActualHHMMSS();
 
-    // Registro del turno
-    // try {
-    //     let paramsTurno = {
-    //         openEmployeeId : props.turno.encargadoDeTurno.id,
-    //         startDate : props.turno.fecha + hora,
-    //         typeShift : props.turno.turno,
-    //         typeShiftHoliday : props.turno.esFeriado ? 3 : 0, 
-    //         notes : props.turno.notas
-    //     }
-    //     axios.post('/shifts', paramsTurno).then((response) => {})
-    // } catch(error) {
-    //     algoSalioMalError(currentTheme.value)
-    // }
+    let empleadosParams = props.turno.empleadosSeleccionados.map((empleado) => ({
+        idEmpleado: empleado.idEmpleado,
+        horaIngresoEmpleado: empleado.horaLlegada + ':00',
+        descripcionIngreso: empleado.notas,
+        esRespDeApertCaja: props.caja.encargadoDeAperturaDeCaja.idEmpleado == empleado.idEmpleado ? true : false,
+        esEncargadoTurno: props.turno.encargadoDeTurno.idEmpleado == empleado.idEmpleado ? true : false,
+    }));
 
-    // Regustro de los empleados
-    // try { //ERROR
-    //     props.turno.empleadosSeleccionados.forEach(empleado => {
-    //         let [hora, minutos] = empleado.horaLlegada.split(':');
-    //         let paramsEmpleado = {
-    //             employeeId: empleado.id,
-    //             startDate: props.turno.fecha + formatearHoraUTC(empleado.horaLlegada),
-    //             startTimeHours: parseInt(hora),
-    //             startTimeMinutes: parseInt(minutos),
-    //             notesAdmission: empleado.notas || '',
-    //             cashier: props.caja.encargadoDeAperturaDeCaja.id == empleado.id ? true : false
-    //         }
-    //         axios.post('/employee-shifts', paramsEmpleado).then((response) => {})
-    //     });
-    // } catch(error) {
-    //     algoSalioMalError(currentTheme.value)
-    // }
-
-    //Registro de caja
-    try {
-        let paramsCaja = {
-            initialActive: props.caja.activoInicial,
-            initialImport: props.caja.valorTotal,
-        }
-        axios.post('/paymentbox', paramsCaja).then((response) => {})
-    } catch(error) {
-        algoSalioMalError(currentTheme.value)
+    let cajaParams = {
+        activoInicial: props.caja.activoInicial,
+        importeInicial: props.caja.valorTotal
     }
 
-    router.push('/dashboard');
+    let params = {
+        tipoTurno: props.turno.turno,
+        fechaTurno: props.turno.fecha,
+        horaDelInicio: horaActual,
+        notasInicio: props.turno.notas,
+        esFeriado: props.turno.esFeriado,
+        empleados: empleadosParams,
+        caja: cajaParams
+    }
+
+    try {
+        axios.post('/Turno/IniciarTurno', params)
+            .then((response) => {
+                generalStore.setTurnoEnCurso(true)
+                router.push('/dashboard');
+            })
+            .catch((error) => {
+                console.log(error);
+                algoSalioMalError(currentTheme.value);
+            });
+    } catch (error) {
+        console.log(error);
+    }
+
 }
 
 </script>

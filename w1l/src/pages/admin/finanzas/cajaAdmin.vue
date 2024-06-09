@@ -19,9 +19,9 @@ const currentTheme = computed(() => {
 
 
 const obtenerActivoInicial = () => {
-  axios.get('/paymentBoxInitialActive?id=1')
+  axios.get('/ActivoInicial/GetActivoInicial/1')
     .then((response) => {
-      activoInicial.value = response.data.initialActive;
+      activoInicial.value = response.data.montoActivoInicial;
     })
     .catch((error) => {
       algoSalioMalError(currentTheme.value);
@@ -35,9 +35,9 @@ const modificarActivoInicial = () => {
         try {
           let params = {
             id: 1,
-            initialActive: activoInicialAmodificar.value
+            montoActivoInicial: activoInicialAmodificar.value
           }
-          axios.put('/paymentBoxInitialActive', params).then((response) => {
+          axios.put('/ActivoInicial/UpdateActivoInicial/1', params).then((response) => {
               obtenerActivoInicial();
               cancelarDialogActivoInicial();
               registroExitosoMensaje('activo inicial', currentTheme.value)
