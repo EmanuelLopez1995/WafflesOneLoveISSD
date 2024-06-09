@@ -30,9 +30,9 @@ const currentTheme = computed(() => {
 })
 
 const obtenerActivoInicial = () => {
-  axios.get('/paymentBoxInitialActive?id=1')
+  axios.get('/ActivoInicial/GetActivoInicial/1')
     .then((response) => {
-      activoInicial.value = response.data.initialActive;
+      activoInicial.value = response.data.montoActivoInicial;
     })
     .catch((error) => {
       algoSalioMalError(currentTheme.value);
@@ -139,7 +139,7 @@ const irAResumen = () => {
                         cols="12"
                         md="12"
                     >
-                        <h3>Activo inicial: {{activoInicial}}</h3>
+                        <h3>Activo inicial: ${{activoInicial}}</h3>
                     </VCol>
                     <VCol
                         cols="12"

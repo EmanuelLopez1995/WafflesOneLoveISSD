@@ -25,16 +25,16 @@ const registrarProveedor = () => {
     form.value.validate().then(response => {
         if (response.valid) {
             let params = {
-                Nombre: nombre.value,
-                RazonSocial: razonSocial.value,
-                Direccion: direccion.value,
-                Numero: telefono.value,
-                Cuit: cuit.value,
-                Email: email.value,
-                Detalle: detalle.value
+                nombre: nombre.value,
+                razonSocial: razonSocial.value,
+                direccion: direccion.value,
+                numero: telefono.value,
+                cuit: cuit.value,
+                email: email.value,
+                detalle: detalle.value
             }
             try {
-                axios.post('/suppliers', params).then(() => {
+                axios.post('/Proveedor/AddProveedor', params).then(() => {
                     registroExitosoMensaje('proveedor', currentTheme.value)
                     form.value.reset();
                 })

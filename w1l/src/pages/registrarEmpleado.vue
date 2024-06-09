@@ -16,10 +16,18 @@ const puesto = ref('')
 const form = ref(null)
 
 const itemsPuestos = [
-    'Dueño',
-    'Encargado general',
-    'Referente de turno',
-    'Colaborador',
+    {
+      id: 1,
+      nombre: 'Colaborador'
+    },
+    {
+      id: 2,
+      nombre: 'Encargado general'
+    },
+    {
+      id: 3,
+      nombre: 'Dueño'
+    }
 ]
 
 const vuetifyTheme = useTheme()
@@ -32,16 +40,16 @@ const registrarEmpleado = () => {
     form.value.validate().then(response => {
         if (response.valid) {
             let params = {
-              nombre: nombre.value,
-              apellido: apellido.value,
-              dni: dni.value,
-              numero: telefono.value,
-              direccion: direccion.value,
-              email: email.value,
-              posicion: puesto.value
+              nombreEmpleado: nombre.value,
+              apellidoEmpleado: apellido.value,
+              dniEmpleado: dni.value,
+              telefonoEmpleado: telefono.value,
+              direccionEmpleado: direccion.value,
+              mailEmpleado: email.value,
+              idPuestoEmpleado: puesto.value.id
             }
             try {
-                axios.post('/employees', params).then(() => {
+                axios.post('/Empleado/AddEmpleado', params).then(() => {
                     registroExitosoMensaje('empleado', currentTheme.value)
                     form.value.reset();
                 })
@@ -132,10 +140,12 @@ const registrarEmpleado = () => {
             md="6"
           >
             <VSelect
-                v-model="puesto"
-                :rules="[reglaObligatoria()]"
-                :items="itemsPuestos"
-                label="Puesto"
+              v-model="puesto"
+              :rules="[reglaObligatoria()]"
+              :items="itemsPuestos"
+              item-title="nombre"
+              return-object
+              label="Puesto"
             />
           </VCol>
 

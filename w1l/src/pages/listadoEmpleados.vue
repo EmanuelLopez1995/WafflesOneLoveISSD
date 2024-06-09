@@ -16,42 +16,42 @@ const search = ref('');
 const loading = ref(false);
 const titulosTabla = [          
     {
-      key: 'id',
+      key: 'idEmpleado',
       sortable: false,
       title: 'ID',
     },
     {
-      key: 'nombre',
+      key: 'nombreEmpleado',
       sortable: false,
       title: 'NOMBRE',
     },
     {
-      key: 'apellido',
+      key: 'apellidoEmpleado',
       sortable: false,
       title: 'APELLIDO',
     },
     {
-      key: 'dni',
+      key: 'dniEmpleado',
       sortable: false,
       title: 'DNI',
     },      
     {
-      key: 'numero',
+      key: 'telefonoEmpleado',
       sortable: false,
       title: 'TELÉFONO',
     },
     {
-      key: 'direccion',
+      key: 'direccionEmpleado',
       sortable: false,
       title: 'DIRECCIÓN',
     }, 
     {
-      key: 'email',
+      key: 'mailEmpleado',
       sortable: false,
       title: 'EMAIL',
     },
     {
-      key: 'posicion',
+      key: 'puesto',
       sortable: false,
       title: 'PUESTO',
     },
@@ -59,6 +59,21 @@ const titulosTabla = [
       key: 'opciones',
       sortable: false,
       title: 'OPCIONES',
+    }
+]
+
+const itemsPuestos = [
+    {
+      id: 1,
+      nombre: 'Colaborador'
+    },
+    {
+      id: 2,
+      nombre: 'Encargado general'
+    },
+    {
+      id: 3,
+      nombre: 'Dueño'
     }
 ]
 
@@ -76,23 +91,31 @@ const currentTheme = computed(() => {
 
 const fetchData = async () => {
   loading.value = true;
-  try {
-    axios.get('/employees/get-all').then((response) => {
-        empleados.value = response.data;
+  axios.get('/Empleado/GetAllEmpleados')
+    .then((response) => {
+        empleados.value = response.data.map(empleado => {
+            const puesto = itemsPuestos.find(p => p.id === empleado.idPuestoEmpleado);
+            return {
+                ...empleado,
+                puesto: puesto ? puesto.nombre : 'Puesto desconocido'
+            };
+        });
         loading.value = false;
     })
-  } catch {
-    algoSalioMalError(currentTheme.value);
-    loading.value = false;
-  }
+    .catch((error) => {
+        console.error('Error fetching empleados:', error);
+        loading.value = false;
+    });
 };
 
 onMounted(fetchData);
 
 const eliminar = function (id) {
     try {
-        axios.delete(`/employees?id=${id}`).then((response) => {
+        axios.delete(`/Empleado/DeleteEmpleado/${id}`).then((response) => {
             fetchData();
+        }).catch(() => {
+          algoSalioMalError(currentTheme.value)
         })
     } catch {
         algoSalioMalError(currentTheme.value)
@@ -112,16 +135,15 @@ const guardarEdicionEmpleado = () => {
   dialog.value = false;
   try {
     let params = {
-        id: itemEditar.value.id,
-        nombre: itemEditar.value.nombre,
-        apellido: itemEditar.value.apellido,
-        dni: itemEditar.value.dni,
-        numero: itemEditar.value.numero,
-        direccion: itemEditar.value.direccion,
-        email: itemEditar.value.email,
-        posicion: itemEditar.value.posicion
+        nombreEmpleado: itemEditar.value.nombreEmpleado,
+        apellidoEmpleado: itemEditar.value.apellidoEmpleado,
+        DNIEmpleado: itemEditar.value.dniEmpleado,
+        telefonoEmpleado: itemEditar.value.telefonoEmpleado,
+        direccionEmpleado: itemEditar.value.direccionEmpleado,
+        mailEmpleado: itemEditar.value.mailEmpleado,
+        idPuestoEmpleado: itemEditar.value.puesto.id || itemEditar.value.idPuestoEmpleado
       }
-      axios.put(`/employees`, params).then((response) => {
+      axios.put(`/Empleado/UpdateEmpleado/${itemEditar.value.idEmpleado}`, params).then((response) => {
         fetchData();
       })
   } catch {
@@ -179,7 +201,7 @@ const descargarListado = () => {
               icon="ri-delete-bin-5-fill"
               color="error-darken-1"
               class="me-1"
-              @click="eliminarRegistro(eliminar, item.id, item.nombre, currentTheme.value)"
+              @click="eliminarRegistro(eliminar, item.idEmpleado, item.nombreEmpleado, currentTheme.value)"
             />
         </template>
       </VDataTable>
@@ -198,7 +220,7 @@ const descargarListado = () => {
       <VRow>
         <VCol cols="12" md="4" class="flex-sm-column">
           <VTextField
-            v-model="itemEditar.id"
+            v-model="itemEditar.idEmpleado"
             :rules="[reglaObligatoria()]"
             label="ID"
             disabled
@@ -206,14 +228,14 @@ const descargarListado = () => {
         </VCol>
         <VCol cols="12" md="4">
           <VTextField
-            v-model="itemEditar.nombre"
+            v-model="itemEditar.nombreEmpleado"
             :rules="[reglaObligatoria()]"
             label="Nombre"
           />
         </VCol>
         <VCol cols="12" md="4">
           <VTextField
-            v-model="itemEditar.apellido"
+            v-model="itemEditar.apellidoEmpleado"
             :rules="[reglaObligatoria()]"
             label="Apellido"
           />
@@ -224,7 +246,7 @@ const descargarListado = () => {
       <VRow>
         <VCol cols="12" md="4" class="flex-sm-column">
           <VTextField
-            v-model="itemEditar.dni"
+            v-model="itemEditar.dniEmpleado"
             :rules="[reglaObligatoria()]"
             label="DNI"
             type="number"
@@ -232,14 +254,14 @@ const descargarListado = () => {
         </VCol>
         <VCol cols="12" md="4">
           <VTextField
-            v-model="itemEditar.numero"
+            v-model="itemEditar.telefonoEmpleado"
             :rules="[reglaObligatoria()]"
             label="Teléfono"
           />
         </VCol>
         <VCol cols="12" md="4">
           <VTextField
-            v-model="itemEditar.direccion"
+            v-model="itemEditar.direccionEmpleado"
             :rules="[reglaObligatoria()]"
             label="Dirección"
           />
@@ -250,7 +272,7 @@ const descargarListado = () => {
       <VRow>
         <VCol cols="12" md="6" class="flex-sm-column">
           <VTextField
-            v-model="itemEditar.email"
+            v-model="itemEditar.mailEmpleado"
             :rules="[reglaObligatoria()]"
             label="Email"
             type="email"
@@ -258,7 +280,10 @@ const descargarListado = () => {
         </VCol>
         <VCol cols="12" md="6">
           <VSelect
-            v-model="itemEditar.posicion"
+            v-model="itemEditar.puesto"
+            :items="itemsPuestos"
+            item-title="nombre"
+            return-object
             :rules="[reglaObligatoria()]"
             label="Puesto"
           />

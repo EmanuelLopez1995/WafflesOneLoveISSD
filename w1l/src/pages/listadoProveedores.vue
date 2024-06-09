@@ -22,7 +22,7 @@ const currentTheme = computed(() => {
 const fetchData = async () => {
   loading.value = true;
   try {
-    axios.get('/suppliers/get-all').then((response) => {
+    axios.get('/Proveedor/GetAllProveedores').then((response) => {
         proveedores.value = response.data;
         loading.value = false;
     })
@@ -37,7 +37,7 @@ onMounted(fetchData);
 
 const eliminar = function (id) {
     try {
-        axios.delete(`/suppliers?id=${id}`).then((response) => {
+        axios.delete(`/Proveedor/DeleteProveedor/${id}`).then((response) => {
             fetchData();
         })
     } catch (error) {
@@ -58,7 +58,6 @@ const guardarEdicionProveedor = () => {
   dialog.value = false;
   try {
     let params = {
-        id: itemEditar.value.id,
         nombre: itemEditar.value.nombre,
         razonSocial: itemEditar.value.razonSocial,
         direccion: itemEditar.value.direccion,
@@ -67,7 +66,7 @@ const guardarEdicionProveedor = () => {
         email: itemEditar.value.email,
         detalle: itemEditar.value.detalle
       }
-      axios.put(`/suppliers`, params).then((response) => {
+      axios.put(`/Proveedor/UpdateProveedor/${itemEditar.value.id}`, params).then((response) => {
         fetchData();
       })
   } catch {
