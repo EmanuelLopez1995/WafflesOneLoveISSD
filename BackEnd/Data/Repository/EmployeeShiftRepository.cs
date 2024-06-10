@@ -30,6 +30,7 @@ namespace Data.Repository
         {
             var query = context.EmployeeShifts.AsQueryable();
 
+            if (queryModel.ShiftId.HasValue) query = query.Where(x => x.ShiftId == queryModel.ShiftId.Value);
             if (queryModel.EmployeeId.HasValue) query = query.Where(x => x.EmployeeId == queryModel.EmployeeId);
             if (queryModel.SinFinalizar.HasValue)
             {
@@ -68,6 +69,12 @@ namespace Data.Repository
             }
             return query;
         }
+        public bool IsShiftOpen(int employeeId, DateTime startDate)
+        {
+            return !context.EmployeeShifts
+                .Any(es => es.EmployeeId == employeeId &&
+                           es.StartDate == startDate &&
+                           es.EndDate == null);
+        }
     }
 }
- 

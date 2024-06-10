@@ -13,5 +13,8 @@ namespace Common.Interfaces.Repository
     {
         EmployeeShift Obtener(EmpoyeeShiftQueryModel queryModel);
         IEnumerable<EmployeeShift> ConsultarListado(EmpoyeeShiftQueryModel queryModel);
+
+        bool IsShiftOpen(int employeeId, DateTime startDate);
+
     }
 }

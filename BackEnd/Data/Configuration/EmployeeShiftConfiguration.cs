@@ -36,6 +36,8 @@ namespace FC.Data.Configuration
                    .HasForeignKey(x => x.ShiftId)
                    .IsRequired(true)
                    .OnDelete(DeleteBehavior.Restrict);
+
+          
         }
     }
 }

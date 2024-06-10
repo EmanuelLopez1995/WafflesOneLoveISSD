@@ -12,6 +12,7 @@
         public string? NotesAdmission { get; set; }
         public string? NotesEnd { get; set; }
         public bool cashier { get; set; }
+        public int ShiftId { get; set; }
 
 
 

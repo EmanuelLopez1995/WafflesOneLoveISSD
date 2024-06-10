@@ -25,6 +25,13 @@ namespace Service.Services
                 return ack;
             }
 
+            var isShiftOpen = UoW.EmployeeShifts.IsShiftOpen(model.EmployeeId, model.StartDate.Date);
+            if (!isShiftOpen)
+            {
+                ack.Mensaje = "El turno ya está abierto";
+                return ack;
+            }
+
             employee.EmployeeShifts.Add(new EmployeeShift
             {
                 StartDate = model.StartDate.Date,
@@ -35,21 +42,20 @@ namespace Service.Services
                 NotesAdmission = model.NotesAdmission,
                 NotesEnd = model.NotesEnd,
                 cashier =model.cashier,
-                EndDate = model.EndDate?.Date
-              
-            }) ;
+                EndDate = model.EndDate?.Date,
+                ShiftId=model.ShiftId
 
-            try
-            {
+            }); ;
+
+
                 UoW.Complete();
                 ack.Exito = true;
-            }
-            catch (Exception ex)
-            {
-                ack.Mensaje = $"Ocurrió un error al agregar el turno del empleado {ex.Message}";
-                ack.Exito = false;
-            }
-
+            
+           
+            
+               // ack.Mensaje = $"Ocurrió un error al agregar el turno del empleado ";
+                //ack.Exito = false;
+            
             return ack;
         }
 
