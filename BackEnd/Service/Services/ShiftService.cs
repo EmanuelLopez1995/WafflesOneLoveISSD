@@ -103,7 +103,7 @@ namespace Service.Services
                 return ack;
             }
 
-            var employeeShifts = UoW.EmployeeShifts.ConsultarListado(new EmpoyeeShiftQueryModel { shiftId = shift.Id });
+            var employeeShifts = UoW.EmployeeShifts.ConsultarListado(new EmpoyeeShiftQueryModel { ShiftId = shift.Id });
 
             var response = new ShiftModel
             {
@@ -126,7 +126,8 @@ namespace Service.Services
                     NotesEnd = x.NotesEnd,
                     StartDate = x.StartDate,
                     StartTimeHours = x.StartTimeHours,
-                    StartTimeMinutes = x.StartTimeMinutes
+                    StartTimeMinutes = x.StartTimeMinutes,
+                    ShiftId=x.ShiftId
                 })
             };
 
