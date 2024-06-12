@@ -1,0 +1,23 @@
+﻿
+    //Datos ejemplo para inicarTurno
+{
+    "tipoTurno": 1,
+    "fechaTurno": "2024-06-09",
+    "horaDelInicio": "10:30:00",
+    "notasInicio": "notas inicio",
+    "esFeriado": true,
+    "idEncargadoTurno": 1,
+    "empleados": [
+        {
+            "idEmpleado": 1,
+            "horaIngresoEmpleado": "10:30:00",
+            "descripcionIngreso": "ema ingreso nota",
+            "esRespDeApertCaja": true,
+            "esEncargadoTurno": true
+        }
+    ],
+    "caja": {
+        "activoInicial": 2000,
+        "importeInicial": 2000
+    }
+}

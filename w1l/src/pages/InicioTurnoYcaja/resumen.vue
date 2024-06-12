@@ -4,13 +4,14 @@ import { algoSalioMalError, registroExitosoMensaje } from '@/components/SwalCust
 import { ref, defineEmits, defineProps } from 'vue'
 import { useTheme } from 'vuetify'
 import axios from 'axios'
-import { router } from '@/plugins/router';
+import { useRouter } from 'vue-router'
 import { obtenerHoraActualHHMMSS } from '@/components/fechaYHora.js'
 import { useGeneralStore } from '@/store/store.js';
 
 const emit = defineEmits(['backToCaja'])
 
 const store = useGeneralStore();
+const router = useRouter();
 
 const props = defineProps({
   turno: {
@@ -37,8 +38,7 @@ const comenzarTurno = () => {
         idEmpleado: empleado.idEmpleado,
         horaIngresoEmpleado: empleado.horaLlegada + ':00',
         descripcionIngreso: empleado.notas || '',
-        esRespDeApertCaja: props.caja.encargadoDeAperturaDeCaja.idEmpleado == empleado.idEmpleado ? true : false,
-        esEncargadoTurno: props.turno.encargadoDeTurno.idEmpleado == empleado.idEmpleado ? true : false,
+        esRespDeApertCaja: props.caja.encargadoDeAperturaDeCaja.idEmpleado == empleado.idEmpleado ? true : false
     }));
 
     let cajaParams = {
@@ -52,6 +52,7 @@ const comenzarTurno = () => {
         horaDelInicio: horaActual,
         notasInicio: props.turno.notas || '',
         esFeriado: props.turno.esFeriado,
+        idEncargadoTurno: props.turno.encargadoDeTurno.idEmpleado,
         empleados: empleadosParams,
         caja: cajaParams
     }
