@@ -40,5 +40,45 @@ namespace WafflesBackRepository.Repositories
                 }
             }
         }
+
+        public async Task<TurnoModel> ObtenerTurnoEnCurso()
+        {
+            var query = @"SELECT TOP 1 idTurno, tipoTurno, fechaTurno, horaDelInicio, horaCierre, notasInicio, notasCierre, esFeriado, idEncargadoTurno, idCaja 
+                          FROM Turno 
+                          WHERE horaCierre IS NULL 
+                          ORDER BY fechaTurno DESC, horaDelInicio DESC";
+
+            using (SqlConnection connection = _connectionHelper.GetConnection())
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(query, connection))
+                {
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            return new TurnoModel
+                            {
+                                idTurno = reader.GetInt32(reader.GetOrdinal("idTurno")),
+                                tipoTurno = reader.GetInt32(reader.GetOrdinal("tipoTurno")),
+                                fechaTurno = reader.GetDateTime(reader.GetOrdinal("fechaTurno")),
+                                horaDelInicio = reader.GetTimeSpan(reader.GetOrdinal("horaDelInicio")),
+                                horaCierre = reader.IsDBNull(reader.GetOrdinal("horaCierre")) ? (TimeSpan?)null : reader.GetTimeSpan(reader.GetOrdinal("horaCierre")),
+                                notasInicio = reader.IsDBNull(reader.GetOrdinal("notasInicio")) ? null : reader.GetString(reader.GetOrdinal("notasInicio")),
+                                notasCierre = reader.IsDBNull(reader.GetOrdinal("notasCierre")) ? null : reader.GetString(reader.GetOrdinal("notasCierre")),
+                                esFeriado = reader.GetBoolean(reader.GetOrdinal("esFeriado")),
+                                idEncargadoTurno = reader.GetInt32(reader.GetOrdinal("idEncargadoTurno")),
+                                idCaja = reader.IsDBNull(reader.GetOrdinal("idCaja")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("idCaja")),
+                                // Empleados y Caja se pueden cargar aquí si hay datos adicionales necesarios
+                            };
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -41,5 +41,22 @@ namespace WafflesBackServices.Services
                 throw new Exception($"Error en el servicio al iniciar el turno: {ex.Message}");
             }
         }
+
+        public async Task<TurnoModel> GetTurnoEnCurso()
+        {
+            try
+            {
+                var turnoEnCurso = await _turnoRepository.ObtenerTurnoEnCurso();
+                var cajaEnCurso = await _cajaRepository.GetCajaPorId((int)turnoEnCurso.idCaja);
+                var empleadosTurno = await _turnoEmpleadoRepository.ObtenerEmpleadosPorTurno((int)turnoEnCurso.idTurno);
+                turnoEnCurso.Caja = cajaEnCurso;
+                turnoEnCurso.Empleados = empleadosTurno;
+                return turnoEnCurso;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error en el servicio al obtener el turno en curso: {ex.Message}");
+            }
+        }
     }
 }
