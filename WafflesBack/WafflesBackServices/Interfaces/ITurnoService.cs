@@ -7,5 +7,6 @@ namespace WafflesBackServices.Interfaces
     public interface ITurnoService
     {
         Task<int> IniciarTurno(TurnoModel turno);
+        Task<TurnoModel> GetTurnoEnCurso();
     }
 }

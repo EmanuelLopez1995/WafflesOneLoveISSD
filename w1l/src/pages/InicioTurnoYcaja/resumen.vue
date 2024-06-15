@@ -59,7 +59,8 @@ const comenzarTurno = () => {
 
     try {
         axios.post('/Turno/IniciarTurno', params)
-            .then((response) => {
+        .then((response) => {
+                store.iniciarTurno();
                 router.push('/dashboard');
             })
             .catch((error) => {

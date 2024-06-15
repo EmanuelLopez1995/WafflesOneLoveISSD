@@ -10,5 +10,6 @@ namespace WafflesBackRepository.Interfaces
     public interface ITurnoEmpleadoRepository
     {
         Task RegistrarEmpleadoTurno(TurnoEmpleadoModel empleado);
+        Task<List<TurnoEmpleadoModel>> ObtenerEmpleadosPorTurno(int idTurno);
     }
 }

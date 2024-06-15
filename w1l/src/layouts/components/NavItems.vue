@@ -2,17 +2,52 @@
 import VerticalNavSectionTitle from '@/@layouts/components/VerticalNavSectionTitle.vue'
 import VerticalNavGroup from '@layouts/components/VerticalNavGroup.vue'
 import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
+import { ref, onMounted, onUnmounted } from 'vue';
+import { useGeneralStore } from '@/store/store.js';
+
+const generalStore = useGeneralStore();
+
+const updateTurnoIniciado = () => {
+  generalStore.updateTurnoIniciado();
+};
+
+// Escuchar los cambios en localStorage
+onMounted(() => {
+  window.addEventListener('storage', updateTurnoIniciado);
+});
 </script>
 
 <template>
   <VerticalNavLink
+  v-if="!generalStore.turnoIniciado"
     :item="{
       title: 'Inicio de Turno',
       icon: 'ri-door-open-line',
       to: '/inicioTurnoYcaja',
     }"
   />
-    <VerticalNavGroup
+  <VerticalNavGroup
+    v-else
+    :item="{
+      title: 'Turno en curso',
+      icon: 'ri-loop-left-fill',
+    }"
+  >
+    <VerticalNavLink
+      :item="{
+        title: 'Detalle de Apertura de Turno',
+        to: '',
+      }"
+    />
+    <VerticalNavLink
+      @click="finalizarTurno"
+      :item="{
+        title: 'Finalizar Turno',
+        to: '',
+      }"
+    />
+  </VerticalNavGroup>
+  <VerticalNavGroup
     :item="{
       title: 'Stock',
       icon: 'ri-archive-stack-line',

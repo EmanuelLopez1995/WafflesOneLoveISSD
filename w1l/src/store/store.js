@@ -1,11 +1,20 @@
 import { defineStore } from 'pinia';
 
-export const useGeneralStore = defineStore('counter', {
+export const useGeneralStore = defineStore('general', {
   state: () => ({
-    turnoEnCurso: false,
+    turnoIniciado: localStorage.getItem('turnoIniciado') === 'true'
   }),
   actions: {
-  },
-  getters: {
+    iniciarTurno() {
+      this.turnoIniciado = true;
+      localStorage.setItem('turnoIniciado', 'true');
+    },
+    finalizarTurno() {
+      this.turnoIniciado = false;
+      localStorage.setItem('turnoIniciado', 'false');
+    },
+    updateTurnoIniciado() {
+      this.turnoIniciado = localStorage.getItem('turnoIniciado') === 'true';
+    }
   }
 });

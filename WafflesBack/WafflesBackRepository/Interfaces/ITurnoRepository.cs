@@ -6,5 +6,6 @@ namespace WafflesBackRepository.Interfaces
     public interface ITurnoRepository
     {
         Task<int> IniciarTurno(TurnoModel turno, int idCaja);
+        Task<TurnoModel> ObtenerTurnoEnCurso();
     }
 }

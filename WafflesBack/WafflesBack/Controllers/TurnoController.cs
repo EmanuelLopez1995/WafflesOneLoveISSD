@@ -38,5 +38,27 @@ namespace WafflesBack.Controllers
                 return StatusCode(500, $"Error al iniciar el turno: {ex.Message}");
             }
         }
+
+        [HttpGet]
+        [Route("GetTurnoEnCurso")]
+        public async Task<IActionResult> GetTurnoEnCurso()
+        {
+            try
+            {
+                var turnoEnCurso = await _turnoService.GetTurnoEnCurso();
+                if (turnoEnCurso != null)
+                {
+                    return Ok(turnoEnCurso);
+                }
+                else
+                {
+                    return NotFound("No hay un turno en curso.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al obtener el turno en curso: {ex.Message}");
+            }
+        }
     }
 }
