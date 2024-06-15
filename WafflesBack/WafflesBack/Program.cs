@@ -10,9 +10,9 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 // Configurar archivos de configuración
 builder.Configuration
-    .AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true) // Priorizar configuración local
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
 
 // Añadir servicios a la colección de servicios de ASP.NET Core
