@@ -13,6 +13,7 @@ namespace WafflesBackServices.Interfaces
         public Task<int> AddEmpleado(EmpleadoModel empleado);
         public Task<int> UpdateEmpleado(EmpleadoModel empleado);
         public Task<int> DeleteEmpleado(int id);
+        Task<EmpleadoModel> GetEmpleadoPorId(int id);
 
 
     }

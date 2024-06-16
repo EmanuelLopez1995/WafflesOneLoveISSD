@@ -35,15 +35,15 @@ onMounted(() => {
   >
     <VerticalNavLink
       :item="{
-        title: 'Detalle de Apertura de Turno',
-        to: '',
+        title: 'Detalle de Inicio',
+        to: '/detalleInicioTurno',
       }"
     />
     <VerticalNavLink
       @click="finalizarTurno"
       :item="{
         title: 'Finalizar Turno',
-        to: '',
+        to: '/finalizarTurno',
       }"
     />
   </VerticalNavGroup>

@@ -10,5 +10,6 @@ namespace WafflesBackRepository.Interfaces
         Task<int> AddEmpleado(EmpleadoModel model);
         Task<int> UpdateEmpleado(EmpleadoModel empleado);
         Task<int> DeleteEmpleado(int id);
+        Task<EmpleadoModel> GetEmpleadoPorId(int id);
     }
 }
