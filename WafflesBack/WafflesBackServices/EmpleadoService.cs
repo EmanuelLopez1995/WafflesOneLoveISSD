@@ -67,5 +67,17 @@ namespace WafflesBackServices
                 throw new ApplicationException("Error al eliminar el empleado");
             }
         }
+
+        public async Task<EmpleadoModel> GetEmpleadoPorId(int id)
+        {
+            try
+            {
+                return await _empleadoRepository.GetEmpleadoPorId(id);
+            }
+            catch (Exception)
+            {
+                throw new ApplicationException($"Error al obtener el empleado con ID: {id}");
+            }
+        }
     }
 }

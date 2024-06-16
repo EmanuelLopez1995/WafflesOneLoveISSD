@@ -72,6 +72,14 @@ export const routes = [
         path: 'listadoStock',
         component: () => import('@/pages/listadoStock.vue'),
       },
+      {
+        path: 'detalleInicioTurno',
+        component: () => import('@/pages/detalleInicioTurno.vue'),
+      },
+      {
+        path: 'finalizarTurno',
+        component: () => import('@/pages/finalizarTurno.vue'),
+      },
     ],
   },
   {

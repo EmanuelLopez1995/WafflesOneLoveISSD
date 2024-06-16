@@ -120,5 +120,41 @@ namespace WafflesBackRepository
                 }
             }
         }
+
+        public async Task<EmpleadoModel> GetEmpleadoPorId(int id)
+        {
+            var query = "SELECT * FROM Empleado WHERE idEmpleado = @idEmpleado";
+
+            using (SqlConnection connection = _connectionHelper.GetConnection())
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@idEmpleado", id);
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            return new EmpleadoModel
+                            {
+                                idEmpleado = reader.GetInt32(0),
+                                nombreEmpleado = reader.GetString(1),
+                                apellidoEmpleado = reader.GetString(2),
+                                direccionEmpleado = reader.GetString(3),
+                                telefonoEmpleado = reader.GetString(4),
+                                mailEmpleado = reader.GetString(5),
+                                DNIEmpleado = reader.GetString(6),
+                                idPuestoEmpleado = reader.GetInt32(7),
+                            };
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

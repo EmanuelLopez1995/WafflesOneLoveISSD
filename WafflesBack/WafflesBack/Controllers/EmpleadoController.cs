@@ -97,6 +97,28 @@ namespace WafflesBack.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+
+        [HttpGet]
+        [Route("GetEmpleadoPorId/{id}")]
+        public async Task<IActionResult> GetEmpleadoPorId(int id)
+        {
+            try
+            {
+                var empleado = await _empleadoService.GetEmpleadoPorId(id);
+                if (empleado != null)
+                {
+                    return Ok(empleado);
+                }
+                else
+                {
+                    return NotFound($"No se encontró el empleado con ID: {id}");
+                }
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
     }
 }
 
