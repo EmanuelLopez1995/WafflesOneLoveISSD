@@ -58,5 +58,39 @@ namespace WafflesBackServices.Services
                 throw new Exception($"Error en el servicio al obtener el turno en curso: {ex.Message}");
             }
         }
+
+        public async Task<bool> UpdateTurnoEnCurso(TurnoModel turno)
+        {
+            try
+            {
+                bool turnoUpdated = await _turnoRepository.ActualizarTurnoEnCurso(turno);
+                if (!turnoUpdated)
+                {
+                    return false;
+                }
+
+                bool cajaUpdated = await _cajaRepository.ActualizarCajaEnCurso(turno.Caja, (int)turno.idTurno);
+                if (!cajaUpdated)
+                {
+                    return false;
+                }
+
+                foreach (var empleado in turno.Empleados)
+                {
+                    empleado.idTurno = turno.idTurno;
+                    bool empleadoUpdated = await _turnoEmpleadoRepository.ActualizarEmpleadoTurnoEnCurso(empleado, (int)turno.idTurno);
+                    if (!empleadoUpdated)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error en el servicio al actualizar el turno en curso: {ex.Message}");
+            }
+        }
     }
 }

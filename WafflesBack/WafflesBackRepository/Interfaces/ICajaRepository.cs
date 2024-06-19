@@ -8,5 +8,6 @@ namespace WafflesBackRepository.Interfaces
     {
         Task<int> IniciarCaja(CajaModel caja);
         Task<CajaModel> GetCajaPorId(int idCaja);
+        Task<bool> ActualizarCajaEnCurso(CajaModel caja, int idCaja);
     }
 }
