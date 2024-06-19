@@ -1,5 +1,5 @@
 ﻿
-    //Datos ejemplo para inicarTurno
+//Datos ejemplo para inicarTurno
 {
     "tipoTurno": 1,
     "fechaTurno": "2024-06-09",
@@ -19,5 +19,35 @@
     "caja": {
         "activoInicial": 2000,
         "importeInicial": 2000
+    }
+}
+
+//Datos ejemplo para UpdateTurnoEnCurso
+
+{
+    "idTurno": 7,
+    "tipoTurno": 2,
+    "fechaTurno": "2024-10-10",
+    "horaDelInicio": "10:10:00",
+    "notasInicio": "AAAAAA",
+    "esFeriado": true,
+    "idEncargadoTurno": 2,
+    "empleados": [
+        {
+            "idEmpleado": 1,
+            "horaIngresoEmpleado": "10:10:00",
+            "descripcionIngreso": "NUEVO EMPL 1",
+            "esRespDeApertCaja": true
+        },
+        {
+            "idEmpleado": 2,
+            "horaIngresoEmpleado": "10:10:10",
+            "descripcionIngreso": "NUEVO EMPL 2",
+            "esRespDeApertCaja": false
+        }
+    ],
+    "caja": {
+        "activoInicial": 10000,
+        "importeInicial": 10000
     }
 }
