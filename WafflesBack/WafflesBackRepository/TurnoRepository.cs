@@ -80,5 +80,35 @@ namespace WafflesBackRepository.Repositories
                 }
             }
         }
+
+        public async Task<bool> ActualizarTurnoEnCurso(TurnoModel turno)
+        {
+            var query = @"UPDATE Turno 
+                          SET tipoTurno = @tipoTurno, 
+                              fechaTurno = @fechaTurno, 
+                              horaDelInicio = @horaDelInicio, 
+                              notasInicio = @notasInicio, 
+                              esFeriado = @esFeriado,
+                              idEncargadoTurno = @idEncargadoTurno 
+                          WHERE idTurno = @idTurno";
+
+            using (SqlConnection connection = _connectionHelper.GetConnection())
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@tipoTurno", turno.tipoTurno);
+                    command.Parameters.AddWithValue("@fechaTurno", turno.fechaTurno);
+                    command.Parameters.AddWithValue("@horaDelInicio", turno.horaDelInicio);
+                    command.Parameters.AddWithValue("@notasInicio", turno.notasInicio);
+                    command.Parameters.AddWithValue("@esFeriado", turno.esFeriado);
+                    command.Parameters.AddWithValue("@idEncargadoTurno", turno.idEncargadoTurno);
+                    command.Parameters.AddWithValue("@idTurno", turno.idTurno);
+
+                    int rowsAffected = await command.ExecuteNonQueryAsync();
+                    return rowsAffected > 0;
+                }
+            }
+        }
     }
 }

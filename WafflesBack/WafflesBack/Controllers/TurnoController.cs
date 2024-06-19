@@ -60,5 +60,27 @@ namespace WafflesBack.Controllers
                 return StatusCode(500, $"Error al obtener el turno en curso: {ex.Message}");
             }
         }
+
+        [HttpPut]
+        [Route("UpdateTurnoEnCurso")]
+        public async Task<IActionResult> UpdateTurnoEnCurso([FromBody] TurnoModel turno)
+        {
+            try
+            {
+                var result = await _turnoService.UpdateTurnoEnCurso(turno);
+                if (result)
+                {
+                    return Ok("Turno actualizado correctamente");
+                }
+                else
+                {
+                    return BadRequest("No se pudo actualizar el turno.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al actualizar el turno: {ex.Message}");
+            }
+        }
     }
 }
