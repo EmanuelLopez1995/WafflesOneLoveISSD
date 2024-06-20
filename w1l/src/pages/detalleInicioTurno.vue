@@ -6,7 +6,6 @@ import { useTheme } from 'vuetify'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { useGeneralStore } from '@/store/store.js'
-import AperturaCaja from '@/pages/InicioTurnoYcaja/aperturaDeCaja.vue'
 
 const emit = defineEmits(['backToCaja'])
 
@@ -185,6 +184,7 @@ const agregarModificacionCaja = () => {
   formModCaja.value.validate().then(response => {
     if (response.valid) {
       datosCajaResumen.value = datosCajaAEditar.value
+      datosCajaResumen.value.importeInicial = valorTotal.value;
       dialogDatosCaja.value = !dialogDatosCaja.value
     }
   })
@@ -201,13 +201,70 @@ const deseleccionarEmpleado = empleado => {
   }
 }
 
+//Cosas de caja
+const billetes = ref([2000, 1000, 500, 200, 100, 50, 20, 10])
+const cantidadBilletes = ref([])
+const sumaBilletes = ref([])
+const valorTotal = ref(0)
+const aperturaCorrecta = ref(null)
+
+const sumarValores = (index) => {
+    sumaBilletes.value[index] = cantidadBilletes.value[index] * billetes.value[index];
+    valorTotal.value = sumaBilletes.value.reduce((suma, numero) => suma + numero, 0);
+    verificarAperturaCorrecta();
+}
+
+const verificarAperturaCorrecta = () => {
+    if(valorTotal.value === datosCajaAEditar.value.activoInicial) {
+        aperturaCorrecta.value = true;
+    } else {
+        aperturaCorrecta.value = false;
+    }
+}
+
+//////////////////////
+
 onMounted(() => {
   getEmpleados()
   fetchDatosTurno()
 })
 
 const confirmarEdicion = () => {
-  // Implementación de la confirmación de edición
+    try {
+      let params = {
+        idTurno: datosTurnoResumen.value.idTurno,
+        tipoTurno: datosTurnoResumen.value.tipoTurno,
+        fechaTurno: datosTurnoResumen.value.fechaTurno,
+        horaDelInicio: datosTurnoResumen.value.horaDelInicio, // creo que no debería mandarse
+        notasInicio: datosTurnoResumen.value.notasInicio,
+        esFeriado: datosTurnoResumen.value.esFeriado,
+        idEncargadoTurno: datosTurnoResumen.value.encargadoTurno.idEmpleado,
+        empleados: datosEmpleadosResumen.value.map(empleado => ({
+              idEmpleado: empleado.idEmpleado,
+              horaIngresoEmpleado: (() => {
+                  if(empleado.horaIngresoEmpleado.length == 11){
+                    return empleado.horaIngresoEmpleado.slice(0,8)
+                  } else if(empleado.horaIngresoEmpleado.length == 5) {
+                    return empleado.horaIngresoEmpleado + ':00'
+                  }
+                  return empleado.horaIngresoEmpleado
+              })(),
+              descripcionIngreso: empleado.descripcionIngreso,
+              esRespDeApertCaja: empleado.esRespDeApertCaja
+          })),
+        caja: {
+          activoInicial: datosCajaResumen.value.activoInicial,
+          importeInicial: datosCajaResumen.value.importeInicial 
+        }
+      }
+      axios.put('/Turno/UpdateTurnoEnCurso', params).then((response) => {
+        
+      }).catch((err) => {
+        algoSalioMalError(currentTheme.value)
+      })
+    } catch (err) {
+      algoSalioMalError(currentTheme.value)
+    }
 }
 </script>
 
@@ -305,7 +362,7 @@ const confirmarEdicion = () => {
                     {{ item.nombreEmpleado + ' ' + item.apellidoEmpleado }}
                   </td>
                   <td class="text-center">
-                    {{ item.horaIngresoEmpleado }}
+                    {{ item.horaIngresoEmpleado.slice(0, 5) }}
                   </td>
                   <td class="text-center">
                     {{ item.descripcionIngreso ? item.descripcionIngreso : '-' }}
@@ -586,32 +643,112 @@ const confirmarEdicion = () => {
           title="Editar Apertura de Caja"
           class="px-5"
         >
-        <VForm
+          <VForm
             @submit.prevent="agregarModificacionCaja"
             ref="formModCaja"
           >
-            <!-- <VCol
+            <VCol
               cols="12"
               class="d-flex gap-4 justify-end"
             >
-              <VRow> -->
-                <AperturaCaja :esComponente="true"/>
+              <VRow>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VTable>
+                <thead>
+                  <tr>
+                    <th class="text-uppercase">Billete</th>
+                    <th class="text-uppercase text-center">Cantidad</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr
+                    v-for="(billete, index) in billetes"
+                    :key="billete"
+                  >
+                    <td>
+                      <b> ${{ billete }} </b>
+                    </td>
+                    <td>
+                      <VTextField
+                        v-model="cantidadBilletes[index]"
+                        type="number"
+                        @input="sumarValores(index)"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><b> Total </b></td>
+                    <td>
+                      <b> ${{ valorTotal }} </b>
+                    </td>
+                  </tr>
+                </tbody>
+              </VTable>
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VRow>
                 <VCol
                   cols="12"
                   md="12"
-                  class="d-flex gap-4 justify-end"
                 >
-                  <VBtn
-                    color="secondary"
-                    variant="outlined"
-                    @click="cerrarDialogEditarCaja"
-                  >
-                    CANCELAR
-                  </VBtn>
-                  <VBtn type="submit"> ACEPTAR </VBtn>
+                  <VSelect
+                    v-model="datosCajaAEditar.encargadoCaja"
+                    :items="datosEmpleadosResumen"
+                    item-title="nombreCompletoYid"
+                    return-object
+                    :rules="[reglaObligatoria()]"
+                    label="Encargado de apertura de caja"
+                    placeholder="Encargado de apertura de caja"
+                  />
                 </VCol>
-              <!-- </VRow>
-            </VCol> -->
+                <VCol
+                  cols="12"
+                  md="12"
+                >
+                  <h3>Activo inicial: ${{ datosCajaAEditar.activoInicial }}</h3>
+                </VCol>
+                <VCol
+                  cols="12"
+                  md="12"
+                >
+                  <VChip
+                    v-if="aperturaCorrecta"
+                    color="success"
+                  >
+                    Apertura correcta
+                  </VChip>
+                  <VChip
+                    v-else-if="aperturaCorrecta == false"
+                    color="error"
+                  >
+                    Apertura incorrecta
+                  </VChip>
+                </VCol>
+              </VRow>
+            </VCol>
+            <VCol
+              cols="12"
+              md="12"
+              class="d-flex gap-4 justify-end"
+            >
+              <VBtn
+                color="secondary"
+                variant="outlined"
+                @click="cerrarDialogEditarCaja"
+              >
+                CANCELAR
+              </VBtn>
+              <VBtn type="submit"> ACEPTAR </VBtn>
+            </VCol>
+            </VRow>
+            </VCol>
           </VForm>
         </VCard>
       </VDialog>
