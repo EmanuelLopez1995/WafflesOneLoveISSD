@@ -63,21 +63,47 @@ namespace WafflesBackServices.Services
         {
             try
             {
+                // Obtener la lista actual de empleados en el turno
+                var empleadosActuales = await _turnoEmpleadoRepository.ObtenerEmpleadosPorTurno((int)turno.idTurno);
+
+                // Identificar empleados eliminados y agregados
+                var empleadosEliminados = empleadosActuales.Where(ea => !turno.Empleados.Any(te => te.idEmpleado == ea.idEmpleado)).ToList();
+                var empleadosAgregados = turno.Empleados.Where(te => !empleadosActuales.Any(ea => ea.idEmpleado == te.idEmpleado)).ToList();
+
+                // Actualizar el turno
                 bool turnoUpdated = await _turnoRepository.ActualizarTurnoEnCurso(turno);
                 if (!turnoUpdated)
                 {
                     return false;
                 }
 
+                // Actualizar la caja
                 bool cajaUpdated = await _cajaRepository.ActualizarCajaEnCurso(turno.Caja, (int)turno.idTurno);
                 if (!cajaUpdated)
                 {
                     return false;
                 }
 
-                foreach (var empleado in turno.Empleados)
+                // Eliminar empleados eliminados
+                foreach (var empleado in empleadosEliminados)
+                {
+                    bool empleadoEliminado = await _turnoEmpleadoRepository.EliminarEmpleadoTurno(empleado.idEmpleado.Value, (int)turno.idTurno);
+                    if (!empleadoEliminado)
+                    {
+                        return false;
+                    }
+                }
+
+                // Agregar empleados agregados
+                foreach (var empleado in empleadosAgregados)
                 {
                     empleado.idTurno = turno.idTurno;
+                    await _turnoEmpleadoRepository.RegistrarEmpleadoTurno(empleado);
+                }
+
+                // Actualizar empleados restantes
+                foreach (var empleado in turno.Empleados)
+                {
                     bool empleadoUpdated = await _turnoEmpleadoRepository.ActualizarEmpleadoTurnoEnCurso(empleado, (int)turno.idTurno);
                     if (!empleadoUpdated)
                     {

@@ -106,5 +106,24 @@ namespace WafflesBackRepository.Repositories
                 }
             }
         }
+
+        public async Task<bool> EliminarEmpleadoTurno(int idEmpleado, int idTurno)
+        {
+            var query = @"DELETE FROM TurnoEmpleado 
+                  WHERE idEmpleado = @idEmpleado AND idTurno = @idTurno";
+
+            using (SqlConnection connection = _connectionHelper.GetConnection())
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@idEmpleado", idEmpleado);
+                    command.Parameters.AddWithValue("@idTurno", idTurno);
+
+                    int rowsAffected = await command.ExecuteNonQueryAsync();
+                    return rowsAffected > 0;
+                }
+            }
+        }
     }
 }

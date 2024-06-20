@@ -12,5 +12,6 @@ namespace WafflesBackRepository.Interfaces
         Task RegistrarEmpleadoTurno(TurnoEmpleadoModel empleado);
         Task<List<TurnoEmpleadoModel>> ObtenerEmpleadosPorTurno(int idTurno);
         Task<bool> ActualizarEmpleadoTurnoEnCurso(TurnoEmpleadoModel empleado, int idTurno);
+        Task<bool> EliminarEmpleadoTurno(int idEmpleado, int idTurno);
     }
 }
