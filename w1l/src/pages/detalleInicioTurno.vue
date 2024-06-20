@@ -6,6 +6,7 @@ import { useTheme } from 'vuetify'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { useGeneralStore } from '@/store/store.js'
+import Swal from 'sweetalert2';
 
 const emit = defineEmits(['backToCaja'])
 
@@ -252,45 +253,68 @@ onMounted(() => {
 
 const confirmarEdicion = () => {
   if (datosCajaResumen.value.encargadoCaja) {
-    try {
-      let params = {
-        idTurno: datosTurnoResumen.value.idTurno,
-        tipoTurno: datosTurnoResumen.value.tipoTurno,
-        fechaTurno: datosTurnoResumen.value.fechaTurno,
-        horaDelInicio: datosTurnoResumen.value.horaDelInicio, // creo que no debería mandarse
-        notasInicio: datosTurnoResumen.value.notasInicio,
-        esFeriado: datosTurnoResumen.value.esFeriado,
-        idEncargadoTurno: datosTurnoResumen.value.encargadoTurno.idEmpleado,
-        empleados: datosEmpleadosResumen.value.map(empleado => ({
-          idEmpleado: empleado.idEmpleado,
-          horaIngresoEmpleado: (() => {
-            if (empleado.horaIngresoEmpleado.length == 11) {
-              return empleado.horaIngresoEmpleado.slice(0, 8)
-            } else if (empleado.horaIngresoEmpleado.length == 5) {
-              return empleado.horaIngresoEmpleado + ':00'
-            }
-            return empleado.horaIngresoEmpleado
-          })(),
-          descripcionIngreso: empleado.descripcionIngreso,
-          esRespDeApertCaja: empleado.esRespDeApertCaja,
-        })),
-        caja: {
-          activoInicial: datosCajaResumen.value.activoInicial,
-          importeInicial: datosCajaResumen.value.importeInicial,
-        },
-      }
-      axios
-        .put('/Turno/UpdateTurnoEnCurso', params)
-        .then(response => {})
-        .catch(err => {
+    console.log(currentTheme.value)
+    Swal.fire({
+      title: 'Estas seguro?',
+      text: 'Se actualizarán los datos del turno',
+      icon: 'warning',
+      color: currentTheme.value.value.letras,
+      background: currentTheme.value.value.background,
+      showCancelButton: true,
+      confirmButtonColor: currentTheme.value.value.primary,
+      cancelButtonColor: currentTheme.value.value['error-darken-1'],
+      confirmButtonText: 'Continuar',
+      cancelButtonText: 'Cancelar',
+    }).then(async result => {
+      if (result.isConfirmed) {
+        try {
+          let params = {
+            idTurno: datosTurnoResumen.value.idTurno,
+            tipoTurno: datosTurnoResumen.value.tipoTurno,
+            fechaTurno: datosTurnoResumen.value.fechaTurno,
+            horaDelInicio: datosTurnoResumen.value.horaDelInicio, // creo que no debería mandarse
+            notasInicio: datosTurnoResumen.value.notasInicio,
+            esFeriado: datosTurnoResumen.value.esFeriado,
+            idEncargadoTurno: datosTurnoResumen.value.encargadoTurno.idEmpleado,
+            empleados: datosEmpleadosResumen.value.map(empleado => ({
+              idEmpleado: empleado.idEmpleado,
+              horaIngresoEmpleado: (() => {
+                if (empleado.horaIngresoEmpleado.length == 11) {
+                  return empleado.horaIngresoEmpleado.slice(0, 8)
+                } else if (empleado.horaIngresoEmpleado.length == 5) {
+                  return empleado.horaIngresoEmpleado + ':00'
+                }
+                return empleado.horaIngresoEmpleado
+              })(),
+              descripcionIngreso: empleado.descripcionIngreso ? empleado.descripcionIngreso : '',
+              esRespDeApertCaja: empleado.esRespDeApertCaja,
+            })),
+            caja: {
+              activoInicial: datosCajaResumen.value.activoInicial,
+              importeInicial: datosCajaResumen.value.importeInicial,
+            },
+          }
+          axios.put('/Turno/UpdateTurnoEnCurso', params).then(response => {
+                Swal.fire({
+                    title: "Listo!",
+                    text: "Se actualizó el turno correctamente",
+                    icon: "success",
+                    color: currentTheme.value.value.letras,
+                    background: currentTheme.value.value.background,
+                    confirmButtonColor: currentTheme.value.value.primary
+                });
+            })
+            .catch(err => {
+              algoSalioMalError(currentTheme.value)
+            })
+        } catch (err) {
           algoSalioMalError(currentTheme.value)
-        })
-    } catch (err) {
-      algoSalioMalError(currentTheme.value)
-    }
+        }
+      }
+    })
   } else {
     //El encargado de caja no esta cargado
-    warningMessage('Debe registrar un nuevo encargado de caja', currentTheme.value);
+    warningMessage('Debe registrar un nuevo encargado de caja', currentTheme.value)
   }
 }
 </script>
