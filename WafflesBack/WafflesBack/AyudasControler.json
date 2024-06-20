@@ -41,7 +41,7 @@
         },
         {
             "idEmpleado": 2,
-            "horaIngresoEmpleado": "10:10:10",
+            "horaIngresoEmpleado": "10:10:00",
             "descripcionIngreso": "NUEVO EMPL 2",
             "esRespDeApertCaja": false
         }

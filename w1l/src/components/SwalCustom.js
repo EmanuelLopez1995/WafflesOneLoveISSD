@@ -61,3 +61,30 @@ export function warningMessage(mensaje, theme) {
         confirmButtonColor: theme['primary'],
     });
 }
+
+export function mensajeConVerificacion(mensajeEstaSeguro, mensajeListo, funcion, theme) {
+    Swal.fire({
+        title: "Estas seguro?",
+        text: mensajeEstaSeguro,
+        icon: "warning",
+        color: theme['letras'],
+        background: theme['background'],
+        showCancelButton: true,
+        confirmButtonColor: theme['primary'],
+        cancelButtonColor: theme['error-darken-1'],
+        confirmButtonText: "Continuar",
+        cancelButtonText: "Cancelar",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                funcion();
+                Swal.fire({
+                    title: "Listo!",
+                    text: mensajeListo,
+                    icon: "success",
+                    color: theme['letras'],
+                    background: theme['background'],
+                    confirmButtonColor: theme['primary']
+                });
+            }
+    });
+}
