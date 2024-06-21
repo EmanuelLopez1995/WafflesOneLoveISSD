@@ -5,7 +5,7 @@ namespace WafflesBackRepository.Interfaces
 {
     public interface IArticuloPorIngredienteRepository
     {
-        Task RegistrarArticulosPorIngrediente(ArticuloPorIngredienteModel model);
+        Task RegistrarArticulosPorIngrediente(int idArticulo, int idIngrediente);
         Task<List<ArticuloPorIngredienteModel>> ObtenerArticulosPorIngrediente(int idIngrediente);
         Task<bool> ActualizarArticuloPorIngrediente(ArticuloPorIngredienteModel model);
     }

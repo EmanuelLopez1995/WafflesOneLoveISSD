@@ -9,6 +9,6 @@
         public string? detalleIngrediente { get; set; }
         public int idUMD { get; set; }
 
-        public List<ArticuloPorIngredienteModel>? Articulos { get; set; }
+        public List<int>? IdsArticulos { get; set; }
     }
 }
