@@ -30,11 +30,9 @@ namespace WafflesBackServices
             {
                 int IdIngrediente = await _ingredienteRepository.AddIngrediente(ingrediente);
 
-
-                foreach (var articulos in ingrediente.Articulos)
+                foreach (var idArticulo in ingrediente.IdsArticulos)
                 {
-                    articulos.IdIngrediente = IdIngrediente;
-                    await _articuloPorIngredienteRepository.RegistrarArticulosPorIngrediente(articulos);
+                    await _articuloPorIngredienteRepository.RegistrarArticulosPorIngrediente(idArticulo, IdIngrediente);
                 }
 
                 return IdIngrediente;

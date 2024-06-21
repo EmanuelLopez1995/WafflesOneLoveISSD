@@ -17,7 +17,7 @@ namespace WafflesBackRepository
             _connectionHelper = connectionHelper;
         }
 
-        public async Task RegistrarArticulosPorIngrediente(ArticuloPorIngredienteModel model)
+        public async Task RegistrarArticulosPorIngrediente(int idArticulo, int idIngrediente)
         {
             var query = @"INSERT INTO ArticulosPorIngrediente (IdIngrediente, IdArticulo)
                           VALUES (@IdIngrediente, @IdArticulo);";
@@ -27,8 +27,8 @@ namespace WafflesBackRepository
                 await connection.OpenAsync();
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@IdIngrediente", model.IdIngrediente);
-                    command.Parameters.AddWithValue("@IdArticulo", model.IdArticulo);
+                    command.Parameters.AddWithValue("@IdIngrediente", idIngrediente);
+                    command.Parameters.AddWithValue("@IdArticulo", idArticulo);
 
                     await command.ExecuteNonQueryAsync();
                 }

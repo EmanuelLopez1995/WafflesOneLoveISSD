@@ -49,10 +49,10 @@ namespace WafflesBackRepository
 
         public async Task<int> AddIngrediente(IngredienteModel ingrediente)
         {
-            var query = @"INSERT INTO Ingrediente (nombreIngrediente, stockMinimo, stockActual,
-                        detalleIngrediente, idUMD)
-                          VALUES (@nombreIngrediente, @stockMinimo, @stockActual, 
-                          @detalleIngrediente, @idUMD)";
+            var query = @"
+                    INSERT INTO Ingrediente (nombreIngrediente, stockMinimo, stockActual, detalleIngrediente, idUMD)
+                    OUTPUT INSERTED.idIngrediente
+                    VALUES (@nombreIngrediente, @stockMinimo, @stockActual, @detalleIngrediente, @idUMD)";
 
             using (SqlConnection connection = _connectionHelper.GetConnection())
             {
@@ -65,8 +65,8 @@ namespace WafflesBackRepository
                     command.Parameters.AddWithValue("@detalleIngrediente", ingrediente.detalleIngrediente);
                     command.Parameters.AddWithValue("@idUMD", ingrediente.idUMD);
 
-                    int rowsAffected = await command.ExecuteNonQueryAsync();
-                    return rowsAffected;
+                    int idIngrediente = Convert.ToInt32(await command.ExecuteScalarAsync());
+                    return idIngrediente;
                 }
             }
         }
