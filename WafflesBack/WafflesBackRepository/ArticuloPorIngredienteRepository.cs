@@ -91,5 +91,33 @@ namespace WafflesBackRepository
                 }
             }
         }
+
+        public async Task<List<int>> GetArticulosPorIngredienteId(int idIngrediente)
+        {
+            var query = @"SELECT IdArticulo
+                          FROM ArticulosPorIngrediente
+                          WHERE IdIngrediente = @IdIngrediente";
+
+            var articulosIds = new List<int>();
+
+            using (SqlConnection connection = _connectionHelper.GetConnection())
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@IdIngrediente", idIngrediente);
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            articulosIds.Add(reader.GetInt32(reader.GetOrdinal("IdArticulo")));
+                        }
+                    }
+                }
+            }
+
+            return articulosIds;
+        }
     }
 }
