@@ -8,5 +8,6 @@ namespace WafflesBackRepository.Interfaces
         Task RegistrarArticulosPorIngrediente(int idArticulo, int idIngrediente);
         Task<List<ArticuloPorIngredienteModel>> ObtenerArticulosPorIngrediente(int idIngrediente);
         Task<bool> ActualizarArticuloPorIngrediente(ArticuloPorIngredienteModel model);
+        Task<List<int>> GetArticulosPorIngredienteId(int idIngrediente);
     }
 }

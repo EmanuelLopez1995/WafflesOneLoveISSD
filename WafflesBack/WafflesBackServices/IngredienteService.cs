@@ -21,7 +21,15 @@ namespace WafflesBackServices
 
         public async Task<List<IngredienteModel>> GetAllIngredientes()
         {
-            return await _ingredienteRepository.GetAllIngredientes();
+            var listadoIngredientes = await _ingredienteRepository.GetAllIngredientes();
+
+            foreach (var ingrediente in listadoIngredientes)
+            {
+                var articuloIds = await _articuloPorIngredienteRepository.GetArticulosPorIngredienteId((int)ingrediente.IdIngrediente);
+                ingrediente.IdsArticulos = articuloIds;
+            }
+
+            return listadoIngredientes;
         }
 
         public async Task<int> AddIngrediente(IngredienteModel ingrediente)
