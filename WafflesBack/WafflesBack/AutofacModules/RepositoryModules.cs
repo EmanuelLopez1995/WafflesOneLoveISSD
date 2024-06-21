@@ -20,7 +20,10 @@ namespace WafflesBack.AutofacModules
             builder.RegisterType<TurnoEmpleadoRepository>().As<ITurnoEmpleadoRepository>().InstancePerLifetimeScope();
             builder.RegisterType<CajaRepository>().As<ICajaRepository>().InstancePerLifetimeScope();
             builder.RegisterType<ActivoInicialRepository>().As<IActivoInicialRepository>().InstancePerLifetimeScope();
-
+            builder.RegisterType<UMDRepository>().As<IUMDRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<ArticuloRepository>().As<IArticuloRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<IngredienteRepository>().As<IIngredienteRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<ArticuloPorIngredienteRepository>().As<IArticuloPorIngredienteRepository>();
 
             base.Load(builder);
         }
