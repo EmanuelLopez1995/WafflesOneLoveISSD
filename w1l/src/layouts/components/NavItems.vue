@@ -40,7 +40,6 @@ onMounted(() => {
       }"
     />
     <VerticalNavLink
-      @click="finalizarTurno"
       :item="{
         title: 'Finalizar Turno',
         to: '/finalizarTurno',
