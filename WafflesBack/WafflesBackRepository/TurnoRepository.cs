@@ -44,9 +44,9 @@ namespace WafflesBackRepository.Repositories
         public async Task<TurnoModel> ObtenerTurnoEnCurso()
         {
             var query = @"SELECT TOP 1 idTurno, tipoTurno, fechaTurno, horaDelInicio, horaCierre, notasInicio, notasCierre, esFeriado, idEncargadoTurno, idCaja 
-                          FROM Turno 
-                          WHERE horaCierre IS NULL 
-                          ORDER BY fechaTurno DESC, horaDelInicio DESC";
+                            FROM Turno 
+                            WHERE horaCierre IS NULL 
+                            ORDER BY idTurno DESC;";
 
             using (SqlConnection connection = _connectionHelper.GetConnection())
             {
