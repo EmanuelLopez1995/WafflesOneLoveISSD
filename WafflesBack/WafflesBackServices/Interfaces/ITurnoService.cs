@@ -9,5 +9,6 @@ namespace WafflesBackServices.Interfaces
         Task<int> IniciarTurno(TurnoModel turno);
         Task<TurnoModel> GetTurnoEnCurso();
         Task<bool> UpdateTurnoEnCurso(TurnoModel turno);
+        Task<bool> FinalizarTurnoEnCurso(TurnoModel turno);
     }
 }

@@ -17,6 +17,7 @@ const notasInicio = ref('')
 const notasCierre = ref('')
 const esFeriado = ref(false)
 const encargadoDeTurno = ref({nombreCompleto: ''})
+const idTurno = ref(null)
 
 const form = ref(null)
 const vuetifyTheme = useTheme()
@@ -28,7 +29,7 @@ const currentTheme = computed(() => {
 const cerrarTurno = () => {
   form.value.validate().then(response => {
     if (response.valid) {
-        emit('cierreTurno', {empleadosSeleccionados, fecha, turno, notasInicio, notasCierre, esFeriado, encargadoDeTurno})
+        emit('cierreTurno', {empleadosSeleccionados, fecha, turno, notasInicio, notasCierre, esFeriado, encargadoDeTurno, idTurno})
     } 
   })
 }
@@ -54,6 +55,7 @@ const fetchDatosTurno = async () => {
     let { empleados, caja, ...turnoCall } = response.data
     fecha.value = turnoCall.fechaTurno.slice(0,10);
     turno.value = turnoCall.tipoTurno;
+    idTurno.value = turnoCall.idTurno;
     esFeriado.value = turnoCall.esFeriado;
     empleadosSeleccionados.value = empleados;
     notasInicio.value = turnoCall.notasInicio;

@@ -69,7 +69,6 @@ namespace WafflesBackRepository.Repositories
                                 esFeriado = reader.GetBoolean(reader.GetOrdinal("esFeriado")),
                                 idEncargadoTurno = reader.GetInt32(reader.GetOrdinal("idEncargadoTurno")),
                                 idCaja = reader.IsDBNull(reader.GetOrdinal("idCaja")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("idCaja")),
-                                // Empleados y Caja se pueden cargar aquí si hay datos adicionales necesarios
                             };
                         }
                         else
@@ -103,6 +102,28 @@ namespace WafflesBackRepository.Repositories
                     command.Parameters.AddWithValue("@notasInicio", turno.notasInicio);
                     command.Parameters.AddWithValue("@esFeriado", turno.esFeriado);
                     command.Parameters.AddWithValue("@idEncargadoTurno", turno.idEncargadoTurno);
+                    command.Parameters.AddWithValue("@idTurno", turno.idTurno);
+
+                    int rowsAffected = await command.ExecuteNonQueryAsync();
+                    return rowsAffected > 0;
+                }
+            }
+        }
+
+        public async Task<bool> FinalizarTurnoEnCurso(TurnoModel turno)
+        {
+            var query = @"UPDATE Turno 
+                          SET horaCierre = @horaCierre, 
+                              notasCierre = @notasCierre
+                          WHERE idTurno = @idTurno";
+
+            using (SqlConnection connection = _connectionHelper.GetConnection())
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@horaCierre", turno.horaCierre);
+                    command.Parameters.AddWithValue("@notasCierre", turno.notasCierre);
                     command.Parameters.AddWithValue("@idTurno", turno.idTurno);
 
                     int rowsAffected = await command.ExecuteNonQueryAsync();

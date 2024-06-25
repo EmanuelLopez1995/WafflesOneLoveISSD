@@ -92,5 +92,27 @@ namespace WafflesBackRepository.Repositories
                 }
             }
         }
+
+        public async Task<bool> FinalizarCajaEnCurso(CajaModel caja, int idCaja)
+        {
+            var query = @"UPDATE Caja 
+                          SET retiroCaja = @retiroCaja, 
+                              importeFinal = @importeFinal
+                          WHERE idCaja = @idCaja";
+
+            using (SqlConnection connection = _connectionHelper.GetConnection())
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@retiroCaja", caja.retiroCaja);
+                    command.Parameters.AddWithValue("@importeFinal", caja.importeFinal);
+                    command.Parameters.AddWithValue("@idCaja", idCaja);
+
+                    int rowsAffected = await command.ExecuteNonQueryAsync();
+                    return rowsAffected > 0;
+                }
+            }
+        }
     }
 }
