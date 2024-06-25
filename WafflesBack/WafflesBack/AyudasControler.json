@@ -51,3 +51,31 @@
         "importeInicial": 10000
     }
 }
+
+//Datos ejemplo cierre de Turno, asegurarse de que el id sea existente
+
+{
+    "idTurno": 7,
+    "horaCierre": "20:30:00",
+    "notasCierre": "notas de cierre 1",
+    "empleados": [
+        {
+            "idEmpleado": 1,
+            "horaEgresoEmpleado": "20:30:00",
+            "descripcionEgreso": "salida emp 1",
+            "esRespDeCierreCaja": true,
+            "sueldoTotalDelDia": 0
+        },
+        {
+            "idEmpleado": 2,
+            "horaEgresoEmpleado": "20:25:00",
+            "descripcionEgreso": "salida emp 2",
+            "esRespDeCierreCaja": false,
+            "sueldoTotalDelDia": 0
+        }
+    ],
+    "caja": {
+        "retiroCaja": 10000,
+        "importeFinal": 30000
+    }
+}

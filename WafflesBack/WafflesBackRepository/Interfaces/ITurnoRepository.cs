@@ -8,5 +8,6 @@ namespace WafflesBackRepository.Interfaces
         Task<int> IniciarTurno(TurnoModel turno, int idCaja);
         Task<TurnoModel> ObtenerTurnoEnCurso();
         Task<bool> ActualizarTurnoEnCurso(TurnoModel turno);
+        Task<bool> FinalizarTurnoEnCurso(TurnoModel turno);
     }
 }

@@ -31,45 +31,43 @@ const currentTheme = computed(() => {
   return ref(vuetifyTheme.current.value.colors)
 })
 
-const comenzarTurno = () => {
-    // let horaActual = obtenerHoraActualHHMMSS();
+const finalizarTurno = () => {
+    let params = {
+        idTurno: props.turno.idTurno,
+        horaCierre: obtenerHoraActualHHMMSS(),
+        notasCierre: props.turno.notasCierre,
+        empleados: props.turno.empleadosSeleccionados.map((empleado) => ({
+            idEmpleado: empleado.idEmpleado,
+            horaEgresoEmpleado: empleado.horaEgresoEmpleado + ':00',
+            descripcionEgreso: empleado.descripcionEgreso,
+            esRespDeCierreCaja: (() => {
+                if(empleado.idEmpleado == props.caja.encargadoDeCierreDeCaja.idEmpleado){
+                    return true;
+                } else {
+                    return false;
+                }
+            })(),
+            sueldoTotalDelDia: 0
+        })),
+        caja: {
+            retiroCaja: props.caja.valorTotal - props.caja.activoInicial,
+            importeFinal: props.caja.valorTotal
+        }
+    }
 
-    // let empleadosParams = props.turno.empleadosSeleccionados.map((empleado) => ({
-    //     idEmpleado: empleado.idEmpleado,
-    //     horaIngresoEmpleado: empleado.horaLlegada + ':00',
-    //     descripcionIngreso: empleado.notas || '',
-    //     esRespDeApertCaja: props.caja.encargadoDeAperturaDeCaja.idEmpleado == empleado.idEmpleado ? true : false
-    // }));
-
-    // let cajaParams = {
-    //     activoInicial: props.caja.activoInicial,
-    //     importeInicial: props.caja.valorTotal
-    // }
-
-    // let params = {
-    //     tipoTurno: props.turno.turno,
-    //     fechaTurno: props.turno.fecha,
-    //     horaDelInicio: horaActual,
-    //     notasInicio: props.turno.notas || '',
-    //     esFeriado: props.turno.esFeriado,
-    //     idEncargadoTurno: props.turno.encargadoDeTurno.idEmpleado,
-    //     empleados: empleadosParams,
-    //     caja: cajaParams
-    // }
-
-    // try {
-    //     axios.post('/Turno/IniciarTurno', params)
-    //     .then((response) => {
-    //             store.iniciarTurno();
-    //             router.push('/dashboard');
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //             algoSalioMalError(currentTheme.value);
-    //         });
-    // } catch (error) {
-    //     console.log(error);
-    // }
+    try {
+        axios.put('/Turno/FinalizarTurnoEnCurso', params)
+        .then((response) => {
+                store.finalizarTurno();
+                router.push('/dashboard');
+            })
+            .catch((error) => {
+                console.log(error);
+                algoSalioMalError(currentTheme.value);
+            });
+    } catch (error) {
+        console.log(error);
+    }
 
 }
 
@@ -79,7 +77,7 @@ const comenzarTurno = () => {
   <VCard>
     <VCardItem>
       <VForm
-        @submit.prevent="comenzarTurno"
+        @submit.prevent="finalizarTurno"
         class="pt-5"
         ref="form"
       >

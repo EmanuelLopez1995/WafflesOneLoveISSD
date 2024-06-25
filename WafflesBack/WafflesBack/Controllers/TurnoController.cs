@@ -82,5 +82,27 @@ namespace WafflesBack.Controllers
                 return StatusCode(500, $"Error al actualizar el turno: {ex.Message}");
             }
         }
+
+        [HttpPut]
+        [Route("FinalizarTurnoEnCurso")]
+        public async Task<IActionResult> FinalizarTurnoEnCurso([FromBody] TurnoModel turno)
+        {
+            try
+            {
+                var result = await _turnoService.FinalizarTurnoEnCurso(turno);
+                if (result)
+                {
+                    return Ok("Turno finalizado correctamente");
+                }
+                else
+                {
+                    return BadRequest("No se pudo finalizar el turno.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al finalizar el turno: {ex.Message}");
+            }
+        }
     }
 }
