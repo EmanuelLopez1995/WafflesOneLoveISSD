@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using WafflesBackCommon.Models;
+using WafflesBackRepository;
 using WafflesBackRepository.Interfaces;
 using WafflesBackServices.Interfaces;
 
@@ -24,6 +25,18 @@ namespace WafflesBackServices
             catch (Exception)
             {
                 throw new ApplicationException("Error al actualizar los sueldos básicos");
+            }
+        }
+
+        public async Task<List<SueldosBasicosModel>> GetAllSueldosBasicos()
+        {
+            try
+            {
+                return (await _sueldosBasicosRepository.GetAllSueldosBasicos());
+            }
+            catch (Exception)
+            {
+                throw new ApplicationException("Error al obtener todos los sueldos");
             }
         }
     }

@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using WafflesBackCommon.Models;
+using WafflesBackServices;
 using WafflesBackServices.Interfaces;
 
 namespace WafflesBack.Controllers
@@ -23,7 +24,7 @@ namespace WafflesBack.Controllers
         {
             // id 1 - colaborador
             // id 2 - encargado
-            // id 2 - dueño
+            // id 3 - dueño
             try
             {
                 sueldosBasicos.idSueldosBasicos = id;
@@ -40,6 +41,20 @@ namespace WafflesBack.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"Error al actualizar SueldosBasicos: {ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAllSueldos")]
+        public async Task<IActionResult> GetAllSueldosBasicos()
+        {
+            try
+            {
+                return Ok(await _sueldosBasicosService.GetAllSueldosBasicos());
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
     }
