@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 using WafflesBackCommon.Models;
 using WafflesBackRepository.Helpers;
@@ -58,6 +59,37 @@ namespace WafflesBackRepository
                     return rowsAffected;
                 }
             }
+        }
+
+        public async Task<List<SueldosBasicosModel>> GetAllSueldosBasicos()
+        {
+            var sueldosBasicosList = new List<SueldosBasicosModel>();
+            var query = "SELECT * FROM SueldosBasicos";
+
+            using (SqlConnection connection = _connectionHelper.GetConnection())
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(query, connection))
+                {
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var sueldoBasico = new SueldosBasicosModel
+                            {
+                                idSueldosBasicos = reader.GetInt32(reader.GetOrdinal("idSueldosBasicos")),
+                                descripcion = reader.GetString(reader.GetOrdinal("descripcion")),
+                                valorHoraNormal = reader.IsDBNull(reader.GetOrdinal("valorHoraNormal")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("valorHoraNormal")),
+                                valorHoraFerDom = reader.IsDBNull(reader.GetOrdinal("valorHoraFerDom")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("valorHoraFerDom")),
+                                plusEncargado = reader.IsDBNull(reader.GetOrdinal("plusEncargado")) ? (decimal?)null : reader.GetDecimal(reader.GetOrdinal("plusEncargado")),
+                                basicoDueno = reader.IsDBNull(reader.GetOrdinal("basicoDueno")) ? (decimal?)null : reader.GetDecimal(reader.GetOrdinal("basicoDueno"))
+                            };
+                            sueldosBasicosList.Add(sueldoBasico);
+                        }
+                    }
+                }
+            }
+            return sueldosBasicosList;
         }
     }
 }

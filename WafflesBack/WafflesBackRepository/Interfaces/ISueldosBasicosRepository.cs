@@ -10,5 +10,6 @@ namespace WafflesBackRepository.Interfaces
     public interface ISueldosBasicosRepository
     {
         Task<int> UpdateSueldosBasicos(SueldosBasicosModel sueldosBasicos);
+        Task<List<SueldosBasicosModel>> GetAllSueldosBasicos();
     }
 }
