@@ -92,6 +92,7 @@ onMounted(() => {
               type="date"
               :rules="[reglaObligatoria()]"
               label="Fecha"
+              readonly
             />
           </VCol>
 
