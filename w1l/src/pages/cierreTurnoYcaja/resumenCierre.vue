@@ -39,7 +39,7 @@ const finalizarTurno = () => {
         empleados: props.turno.empleadosSeleccionados.map((empleado) => ({
             idEmpleado: empleado.idEmpleado,
             horaEgresoEmpleado: empleado.horaEgresoEmpleado + ':00',
-            descripcionEgreso: empleado.descripcionEgreso,
+            descripcionEgreso: empleado.descripcionEgreso || "",
             esRespDeCierreCaja: (() => {
                 if(empleado.idEmpleado == props.caja.encargadoDeCierreDeCaja.idEmpleado){
                     return true;
@@ -252,7 +252,7 @@ const finalizarTurno = () => {
                 class="d-flex gap-4"
             >
                 <VBtn prepend-icon="ri-arrow-left-line" @click="emit('backToCaja')"> Atrás </VBtn>
-                <VBtn type="submit" prepend-icon="ri-check-line"> Iniciar Turno </VBtn>
+                <VBtn type="submit" prepend-icon="ri-check-line"> Finalizar Turno </VBtn>
             </VCol>
         </VRow>
       </VForm>

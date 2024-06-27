@@ -10,7 +10,7 @@ const contenidoActivoSueldos = ref(0)
 //Contenidos sueldos
 const contenidos = [
   {
-    title: 'Registrar sueldos',
+    title: 'Detalle de sueldos',
     id: 1,
   },
   {
