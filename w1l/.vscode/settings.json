@@ -3,7 +3,7 @@
     "files.insertFinalNewline": true,
     "javascript.updateImportsOnFileMove.enabled": "always",
     "[javascript]": {
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[typescript]": {
         "editor.defaultFormatter": "dbaeumer.vscode-eslint",
@@ -25,7 +25,7 @@
     },
     // Vue
     "[vue]": {
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     // Extension: Volar
     "volar.preview.port": 3000,
