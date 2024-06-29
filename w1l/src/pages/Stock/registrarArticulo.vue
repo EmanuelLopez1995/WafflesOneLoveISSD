@@ -1,7 +1,7 @@
 <script setup>
 import { reglaObligatoria, validarEmail } from '@/components/validaciones.js';
 import { algoSalioMalError, registroExitosoMensaje } from '@/components/SwalCustom.js';
-import { ref } from 'vue';
+import { ref , watch} from 'vue';
 import { useTheme } from 'vuetify';
 import axios from 'axios';
 
@@ -50,7 +50,6 @@ const fetchIngredientes = async () => {
             .get('/Ingrediente')
             .then(response => {
                 ingredientes.value = response.data;
-                console.log(ingredientes);
             })
             .catch(() => {
                 algoSalioMalError(currentTheme.value);
@@ -81,6 +80,7 @@ const registrarArticulo = () => {
                 if (esIngrediente.value) {
                     params.pesoArticulo = pesoVolumen.value;
                     // TODO: agregar ingrediente.value
+                    // TODO: Cuando se seleccionaba un ingrediente debía tomar el stock minimo del ingrediente?
                 }
                 // axios
                 //     .post('/Articulo/AddArticulo', params)
@@ -97,6 +97,23 @@ const registrarArticulo = () => {
         }
     });
 };
+
+const ingredienteActualizado = () => {
+    if(ingrediente.value) {
+        const umdDeIngrediente = unidadesDeMedida.value.find((item) => item.idUMD == ingrediente.value.idUMD);
+        unidadDeMedida.value = umdDeIngrediente;
+    }
+}
+
+watch(esIngrediente, (newValue, oldValue) => {
+    if (newValue) {
+        unidadDeMedida.value = null;
+        ingrediente.value = null;
+    } else {
+        unidadDeMedida.value = null;
+        ingrediente.value = null;
+    }
+});
 </script>
 
 <template>
@@ -167,6 +184,7 @@ const registrarArticulo = () => {
                             :rules="[reglaObligatoria()]"
                             v-model="unidadDeMedida"
                             label="Unidad de medida"
+                            :readonly="esIngrediente ? true : false"
                         />
                     </VCol>
                     <VCol
@@ -200,6 +218,7 @@ const registrarArticulo = () => {
                         <VSelect
                             :items="ingredientes"
                             :rules="[reglaObligatoria()]"
+                            @update:menu="ingredienteActualizado"
                             v-model="ingrediente"
                             label="Seleccione el ingrediente"
                             item-title="nombreIngrediente"
