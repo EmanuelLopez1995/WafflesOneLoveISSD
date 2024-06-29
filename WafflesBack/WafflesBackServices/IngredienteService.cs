@@ -56,35 +56,41 @@ namespace WafflesBackServices
             return await _ingredienteRepository.UpdateIngrediente(ingrediente);
         }
 
+
+
         public async Task<int> DeleteIngrediente(int id)
         {
-            return await _ingredienteRepository.DeleteIngrediente(id);
-        }
+            // Obtiene el ingrediente por su ID
+            var ingrediente = await _ingredienteRepository.GetIngredienteById(id);
 
+            if (ingrediente != null)
+            {
+                // Elimina los artículos asociados al ingrediente
+                await _articuloPorIngredienteRepository.DeleteArticulosPorIngrediente((int)ingrediente.IdIngrediente);
+
+                // Elimina el ingrediente
+                return await _ingredienteRepository.DeleteIngrediente(id);
+            }
+
+            // Si el ingrediente no existe, devuelve un valor indicando que no se hizo ninguna eliminación
+            return 0;
+        }
         public async Task<IngredienteModel> GetIngredienteById(int id)
         {
+            
+            var ingrediente = await _ingredienteRepository.GetIngredienteById(id);
 
+            if (ingrediente != null)
+            {
+                
+                var articuloIds = await _articuloPorIngredienteRepository.GetArticulosPorIngredienteId((int)ingrediente.IdIngrediente);
+                ingrediente.IdsArticulos = articuloIds;
+            }
 
-            return await _ingredienteRepository.GetIngredienteById(id);
-
-
+            return ingrediente;
         }
 
-        // Métodos para manejar la relación ArticulosPorIngrediente
-        // public async Task RegistrarArticuloPorIngrediente(ArticuloPorIngredienteModel model)
-        // {
-        //await _articuloPorIngredienteRepository.RegistrarArticulosPorIngrediente(model);
-        //}
-
-        //public async Task<List<ArticuloPorIngredienteModel>> ObtenerArticulosPorIngrediente(int idIngrediente)
-        //{
-        //    return await _articuloPorIngredienteRepository.ObtenerArticulosPorIngrediente(idIngrediente);
-        //}
-
-        //public async Task<bool> ActualizarArticuloPorIngrediente(ArticuloPorIngredienteModel model)
-        //{
-        //  return await _articuloPorIngredienteRepository.ActualizarArticuloPorIngrediente(model);
-        //}
     }
 }
+
  
