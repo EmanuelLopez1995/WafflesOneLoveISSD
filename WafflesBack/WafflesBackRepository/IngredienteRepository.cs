@@ -114,6 +114,8 @@ namespace WafflesBackRepository
             }
         }
 
+
+
         public async Task<IngredienteModel> GetIngredienteById(int id)
         {
             var query = "SELECT * FROM Ingrediente WHERE IdIngrediente = @IdIngrediente";
