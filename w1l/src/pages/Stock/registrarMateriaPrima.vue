@@ -13,7 +13,11 @@ const stockMinimo = ref('');
 const stockInicial = ref(0);
 const detalle = ref('');
 const form = ref(null);
+const formAgregarArticulo = ref(null);
 const unidadDeMedida = ref(null);
+const articulos = ref(null);
+const articuloNuevo = ref(null);
+const listadoArticulosNuevos = ref([]);
 
 const dialog = ref(false);
 
@@ -26,15 +30,13 @@ const currentTheme = computed(() => {
 });
 
 const fetchArticulos = async () => {
-    // try {
-    //   axios.get('/employees/get-all').then((response) => {
-    //       empleados.value = response.data;
-    //       loading.value = false;
-    //   })
-    // } catch {
-    //   algoSalioMalError(currentTheme.value);
-    //   loading.value = false;
-    // }
+    try {
+        axios.get('/Articulo/GetAllArticulo').then(response => {
+            articulos.value = response.data;
+        });
+    } catch {
+        algoSalioMalError(currentTheme.value);
+    }
 };
 
 const fetchUMD = () => {
@@ -56,8 +58,8 @@ const fetchUMD = () => {
 };
 
 onMounted(() => {
-    fetchArticulos();
     fetchUMD();
+    fetchArticulos();
 });
 
 const registrarIngrediente = () => {
@@ -68,13 +70,13 @@ const registrarIngrediente = () => {
                     nombreIngrediente: nombre.value,
                     stockMinimo: stockMinimo.value || 0,
                     stockActual: stockInicial.value || 0,
-                    detalleIngrediente: detalle.value || "",
+                    detalleIngrediente: detalle.value || '',
                     idUMD: unidadDeMedida.value.idUMD
                 };
-                axios.post('/Ingrediente', params).then(() => {
-                    registroExitosoMensaje('ingrediente', currentTheme.value);
-                    form.value.reset();
-                });
+                // axios.post('/Ingrediente', params).then(() => {
+                //     registroExitosoMensaje('ingrediente', currentTheme.value);
+                //     form.value.reset();
+                // });
             } catch (error) {
                 algoSalioMalError(currentTheme.value);
             }
@@ -87,21 +89,11 @@ const abrirModalAgregarArticulo = () => {
 };
 
 const agregarArticuloModal = () => {
-    formAgregarProducto.value.validate().then(response => {
+    formAgregarArticulo.value.validate().then(response => {
         if (response.valid) {
-            // productoSeleccionado.value.subtotal =
-            //   productoSeleccionado.value.cantidad * productoSeleccionado.value.precioUnitario
-            //   const copiaProducto = { ...productoSeleccionado.value }
-            // if(!esEditar.value) {
-            //   //AGREGAR NUEVO PRODUCTO A LISTA
-            //   productosSeleccionados.value.push(copiaProducto)
-            // } else {
-            //   // MODIFICAR PRODUCTO DE LISTA
-            //   productosSeleccionados.value[indexAEditar.value] = copiaProducto;
-            // }
-            // productoSeleccionado.value = {}
-            // calcularTotal()
-            // dialog.value = !dialog
+            listadoArticulosNuevos.value.push(articuloNuevo.value);
+            articuloNuevo.value = null;
+            dialog.value = !dialog
         }
     });
 };
@@ -111,7 +103,7 @@ const cerrarModal = () => {
 };
 
 const cancelarDialog = () => {
-    // productoSeleccionado.value = {}
+    articuloNuevo.value = null;
     dialog.value = !dialog.value;
 };
 </script>
@@ -221,7 +213,7 @@ const cancelarDialog = () => {
                 >
                     <VForm
                         @submit.prevent="agregarArticuloModal"
-                        ref="formAgregarProducto"
+                        ref="formAgregarArticulo"
                     >
                         <VCol
                             cols="12"
@@ -233,8 +225,11 @@ const cancelarDialog = () => {
                                     md="12"
                                 >
                                     <VSelect
-                                        :items="['asd', 'qwe']"
+                                        :items="articulos"
                                         :rules="[reglaObligatoria()]"
+                                        item-title="nombreArticulo"
+                                        v-model="articuloNuevo"
+                                        return-object
                                         label="Artículo"
                                         placeholder="Seleccione el artículo a agregar"
                                     >
