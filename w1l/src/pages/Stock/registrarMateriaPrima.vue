@@ -93,10 +93,17 @@ const agregarArticuloModal = () => {
         if (response.valid) {
             listadoArticulosNuevos.value.push(articuloNuevo.value);
             articuloNuevo.value = null;
-            dialog.value = !dialog
+            dialog.value = !dialog;
         }
     });
 };
+
+const eliminarArticulo = (idArticulo) => {
+    const index = listadoArticulosNuevos.value.findIndex(a => a.idArticulo === idArticulo)
+    if (index !== -1) {
+        listadoArticulosNuevos.value.splice(index, 1)
+    }
+}
 
 const cerrarModal = () => {
     emit('cerrarDialogo');
@@ -176,7 +183,44 @@ const cancelarDialog = () => {
                             label="Detalle"
                         />
                     </VCol>
+                    <!-- Tabla de artículos -->
+                    <VCol
+                        v-if="listadoArticulosNuevos.length > 0"
+                        cols="12"
+                        md="12"
+                    >
+                        <h2 class="pb-3 mt-3">Artículos relacionados</h2>
+                        <VTable>
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase">NOMBRE</th>
+                                    <th class="text-uppercase">MARCA</th>
+                                    <th class="text-uppercase">OPCIONES</th>
+                                </tr>
+                            </thead>
 
+                            <tbody>
+                                <tr
+                                    v-for="(item) in listadoArticulosNuevos"
+                                    :key="item.idArticulo"
+                                >
+                                    <td>{{ item.nombreArticulo.charAt(0).toUpperCase() + item.nombreArticulo.slice(1) }}</td>
+                                    <td>{{ item.marcaArticulo.toUpperCase() }}</td>
+                                    <td> 
+                                        <IconBtn
+                                            icon="ri-delete-bin-5-fill"
+                                            color="error-darken-1"
+                                            class="me-1"
+                                            @click="
+                                                eliminarArticulo(item.idArticulo)
+                                            "
+                                        />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </VTable>
+                    </VCol>
+                    <!-- Botones -->
                     <VCol
                         cols="12"
                         class="d-flex justify-end gap-4"
