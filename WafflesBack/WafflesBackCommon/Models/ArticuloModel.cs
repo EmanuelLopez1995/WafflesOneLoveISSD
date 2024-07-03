@@ -18,6 +18,7 @@ namespace WafflesBackCommon.Models
         public decimal pesoArticulo { get; set; }
         public string? detalleArticulo { get; set; }
         public int idUMD { get; set; }
+        public List<int>? IdsMateriaPrima { get; set; }
 
     }
 }

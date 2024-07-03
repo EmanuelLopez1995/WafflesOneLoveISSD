@@ -110,6 +110,25 @@ namespace WafflesBackRepository
             }
         }
 
+        public async Task<int> UpdateArticuloEsIngrediente(int idArticulo)
+        {
+            var query = @"  UPDATE Articulo 
+                            SET esMateriaPrima = 1
+                            WHERE IdArticulo = @IdArticulo";
+
+            using (SqlConnection connection = _connectionHelper.GetConnection())
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@IdArticulo", idArticulo);
+
+                    int rowsAffected = await command.ExecuteNonQueryAsync();
+                    return rowsAffected;
+                }
+            }
+        }
+
         public async Task<int> DeleteArticulo(int id)
         {
             var query = "DELETE FROM Articulo WHERE IdArticulo = @IdArticulo";

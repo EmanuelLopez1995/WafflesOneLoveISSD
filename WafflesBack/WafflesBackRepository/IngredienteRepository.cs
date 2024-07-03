@@ -34,10 +34,7 @@ namespace WafflesBackRepository
                             {
                                 IdIngrediente = reader.GetInt32(0),
                                 nombreIngrediente = reader.GetString(1),
-                                stockMinimo = reader.GetDecimal(2),
-                                stockActual = reader.GetDecimal(3),
-                                detalleIngrediente = reader.GetString(4),
-                                idUMD = reader.GetInt32(5)
+                                detalleIngrediente = reader.GetString(2)
                             };
                             ingredientesList.Add(ingrediente);
                         }
@@ -50,9 +47,9 @@ namespace WafflesBackRepository
         public async Task<int> AddIngrediente(IngredienteModel ingrediente)
         {
             var query = @"
-                    INSERT INTO Ingrediente (nombreIngrediente, stockMinimo, stockActual, detalleIngrediente, idUMD)
+                    INSERT INTO Ingrediente (nombreIngrediente,detalleIngrediente)
                     OUTPUT INSERTED.idIngrediente
-                    VALUES (@nombreIngrediente, @stockMinimo, @stockActual, @detalleIngrediente, @idUMD)";
+                    VALUES (@nombreIngrediente,@detalleIngrediente)";
 
             using (SqlConnection connection = _connectionHelper.GetConnection())
             {
@@ -60,12 +57,13 @@ namespace WafflesBackRepository
                 using (var command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@nombreIngrediente", ingrediente.nombreIngrediente);
-                    command.Parameters.AddWithValue("@stockMinimo", ingrediente.stockMinimo);
-                    command.Parameters.AddWithValue("@stockActual", ingrediente.stockActual);
+                   
                     command.Parameters.AddWithValue("@detalleIngrediente", ingrediente.detalleIngrediente);
-                    command.Parameters.AddWithValue("@idUMD", ingrediente.idUMD);
+                    
 
                     int idIngrediente = Convert.ToInt32(await command.ExecuteScalarAsync());
+
+
                     return idIngrediente;
                 }
             }
@@ -74,9 +72,7 @@ namespace WafflesBackRepository
         public async Task<int> UpdateIngrediente(IngredienteModel ingrediente)
         {
             var query = @"UPDATE Ingrediente 
-                          SET nombreIngrediente = @nombreIngrediente, stockMinimo = @stockMinimo, 
-                              stockActual = @stockActual, detalleIngrediente = @detalleIngrediente, 
-                              idUMD = @idUMD
+                          SET nombreIngrediente = @nombreIngrediente,detalleIngrediente = @detalleIngrediente    
                           WHERE IdIngrediente = @IdIngrediente";
 
             using (SqlConnection connection = _connectionHelper.GetConnection())
@@ -85,10 +81,9 @@ namespace WafflesBackRepository
                 using (var command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@nombreIngrediente", ingrediente.nombreIngrediente);
-                    command.Parameters.AddWithValue("@stockMinimo", ingrediente.stockMinimo);
-                    command.Parameters.AddWithValue("@stockActual", ingrediente.stockActual);
+                    
                     command.Parameters.AddWithValue("@detalleIngrediente", ingrediente.detalleIngrediente);
-                    command.Parameters.AddWithValue("@idUMD", ingrediente.idUMD);
+                    
                     command.Parameters.AddWithValue("@IdIngrediente", ingrediente.IdIngrediente);
 
                     int rowsAffected = await command.ExecuteNonQueryAsync();
@@ -135,10 +130,9 @@ namespace WafflesBackRepository
                             {
                                 IdIngrediente = reader.GetInt32(0),
                                 nombreIngrediente = reader.GetString(1),
-                                stockMinimo = reader.GetDecimal(2),
-                                stockActual = reader.GetDecimal(3),
-                                detalleIngrediente = reader.GetString(4),
-                                idUMD = reader.GetInt32(5)
+                                
+                                detalleIngrediente = reader.GetString(2)
+                              
                             };
                         }
                         else
