@@ -12,11 +12,13 @@ namespace WafflesBackServices
     {
         private readonly IIngredienteRepository _ingredienteRepository;
         private readonly IArticuloPorIngredienteRepository _articuloPorIngredienteRepository;
+        private readonly IArticuloRepository _articuloRepository;
 
-        public IngredienteService(IIngredienteRepository ingredienteRepository, IArticuloPorIngredienteRepository articuloPorIngredienteRepository)
+        public IngredienteService(IIngredienteRepository ingredienteRepository, IArticuloPorIngredienteRepository articuloPorIngredienteRepository, IArticuloRepository articuloRepository)
         {
             _ingredienteRepository = ingredienteRepository;
             _articuloPorIngredienteRepository = articuloPorIngredienteRepository;
+            _articuloRepository = articuloRepository;
         }
 
         public async Task<List<IngredienteModel>> GetAllIngredientes()
@@ -38,9 +40,13 @@ namespace WafflesBackServices
             {
                 int IdIngrediente = await _ingredienteRepository.AddIngrediente(ingrediente);
 
-                if (ingrediente.IdsArticulos != null) {                 
+                if (ingrediente.IdsArticulos != null)
+                {
                     foreach (var idArticulo in ingrediente.IdsArticulos)
                     {
+                        // Actualiza el artículo asociado como materia prima
+                        await _articuloRepository.UpdateArticuloEsIngrediente(idArticulo);
+                        // Asocia el artículo con el ingrediente
                         await _articuloPorIngredienteRepository.RegistrarArticulosPorIngrediente(idArticulo, IdIngrediente);
                     }
                 }

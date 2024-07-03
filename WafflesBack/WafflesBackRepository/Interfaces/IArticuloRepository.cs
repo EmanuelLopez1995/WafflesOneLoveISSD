@@ -9,6 +9,7 @@ namespace WafflesBackRepository.Interfaces
         Task<List<ArticuloModel>> GetAllArticulo();
         Task<int> AddArticulo(ArticuloModel model);
         Task<int> UpdateArticulo(ArticuloModel articulo);
+        Task<int> UpdateArticuloEsIngrediente(int idArticulo);
         Task<int> DeleteArticulo(int id);
         Task<ArticuloModel> GetArticuloPorId(int id);
     }

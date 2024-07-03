@@ -9,10 +9,14 @@ namespace WafflesBackServices
     public class ArticuloService : IArticuloService
     {
         private readonly IArticuloRepository _articuloRepository;
+        private readonly IArticuloPorIngredienteRepository _articuloPorIngredienteRepository;
+        private readonly IIngredienteRepository _ingredienteRepository;
 
-        public ArticuloService(IArticuloRepository articuloRepository)
+        public ArticuloService(IArticuloRepository articuloRepository, IArticuloPorIngredienteRepository articuloPorIngredienteRepository, IIngredienteRepository ingredienteRepository)
         {
             _articuloRepository = articuloRepository;
+            _articuloPorIngredienteRepository = articuloPorIngredienteRepository;
+            _ingredienteRepository = ingredienteRepository;
         }
 
         public async Task<List<ArticuloModel>> GetAllArticulo()
