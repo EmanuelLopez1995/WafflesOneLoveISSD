@@ -156,7 +156,7 @@ watch(esIngrediente, (newValue, oldValue) => {
                         <VTextField
                             v-model="stockMinimo"
                             :rules="[reglaObligatoria()]"
-                            label="Stock mínimo"
+                            :label="unidadDeMedida ? 'Stock mínimo en ' + unidadDeMedida.nombreUMD : 'Stock mínimo'"
                             type="number"
                         />
                     </VCol>
@@ -169,7 +169,7 @@ watch(esIngrediente, (newValue, oldValue) => {
                             v-model="stockInicial"
                             :rules="[reglaObligatoria()]"
                             type="number"
-                            label="Stock Inicial"
+                            :label="unidadDeMedida ? 'Stock inicial en ' + unidadDeMedida.nombreUMD : 'Stock inicial'"
                         />
                     </VCol>
 

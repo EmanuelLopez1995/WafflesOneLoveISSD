@@ -10,7 +10,6 @@ const emit = defineEmits(['cerrarDialogo']);
 
 const nombre = ref('');
 const stockMinimo = ref('');
-const stockInicial = ref(0);
 const detalle = ref('');
 const form = ref(null);
 const formAgregarArticulo = ref(null);
@@ -66,10 +65,11 @@ const registrarIngrediente = () => {
     form.value.validate().then(response => {
         if (response.valid) {
             try {
+                // TODO: Agregar un informe diciendo que las unidades de medida de los articulos se convertiran a la del ingrediente
                 let params = {
                     nombreIngrediente: nombre.value,
                     stockMinimo: stockMinimo.value || 0,
-                    stockActual: stockInicial.value || 0,
+                    stockActual: 0,
                     detalleIngrediente: detalle.value || '',
                     idUMD: unidadDeMedida.value.idUMD
                 };
@@ -98,12 +98,12 @@ const agregarArticuloModal = () => {
     });
 };
 
-const eliminarArticulo = (idArticulo) => {
-    const index = listadoArticulosNuevos.value.findIndex(a => a.idArticulo === idArticulo)
+const eliminarArticulo = idArticulo => {
+    const index = listadoArticulosNuevos.value.findIndex(a => a.idArticulo === idArticulo);
     if (index !== -1) {
-        listadoArticulosNuevos.value.splice(index, 1)
+        listadoArticulosNuevos.value.splice(index, 1);
     }
-}
+};
 
 const cerrarModal = () => {
     emit('cerrarDialogo');
@@ -136,21 +136,9 @@ const cancelarDialog = () => {
                             placeholder="Leche, Manteca, etc."
                         />
                     </VCol>
-
-                    <VCol
+                    <!-- <VCol
                         cols="12"
-                        md="6"
-                    >
-                        <VTextField
-                            v-model="stockMinimo"
-                            :rules="[reglaObligatoria()]"
-                            label="Stock mínimo"
-                            type="number"
-                        />
-                    </VCol>
-                    <VCol
-                        cols="12"
-                        md="6"
+                        md="3"
                     >
                         <VSelect
                             :items="unidadesDeMedida"
@@ -160,19 +148,19 @@ const cancelarDialog = () => {
                             v-model="unidadDeMedida"
                             label="Unidad de medida"
                         />
-                    </VCol>
-
+                    </VCol> -->
+<!-- 
                     <VCol
                         cols="12"
-                        md="6"
+                        md="3"
                     >
                         <VTextField
-                            v-model="stockInicial"
+                            v-model="stockMinimo"
                             :rules="[reglaObligatoria()]"
+                            :label="unidadDeMedida ? 'Stock mínimo en ' + unidadDeMedida.nombreUMD : 'Stock mínimo'"
                             type="number"
-                            label="Stock Inicial"
                         />
-                    </VCol>
+                    </VCol> -->
 
                     <VCol
                         cols="12"
@@ -195,25 +183,29 @@ const cancelarDialog = () => {
                                 <tr>
                                     <th class="text-uppercase">NOMBRE</th>
                                     <th class="text-uppercase">MARCA</th>
+                                    <th class="text-uppercase">STOCK ACTUAL</th>
+                                    <th class="text-uppercase">UMD</th>
                                     <th class="text-uppercase">OPCIONES</th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 <tr
-                                    v-for="(item) in listadoArticulosNuevos"
+                                    v-for="item in listadoArticulosNuevos"
                                     :key="item.idArticulo"
                                 >
-                                    <td>{{ item.nombreArticulo.charAt(0).toUpperCase() + item.nombreArticulo.slice(1) }}</td>
+                                    <td>
+                                        {{ item.nombreArticulo.charAt(0).toUpperCase() + item.nombreArticulo.slice(1) }}
+                                    </td>
                                     <td>{{ item.marcaArticulo.toUpperCase() }}</td>
-                                    <td> 
+                                    <td>{{ item.stockActual }}</td>
+                                    <td>{{ item.idUMD }}</td>
+                                    <td>
                                         <IconBtn
                                             icon="ri-delete-bin-5-fill"
                                             color="error-darken-1"
                                             class="me-1"
-                                            @click="
-                                                eliminarArticulo(item.idArticulo)
-                                            "
+                                            @click="eliminarArticulo(item.idArticulo)"
                                         />
                                     </td>
                                 </tr>
