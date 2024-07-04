@@ -56,6 +56,7 @@ namespace WafflesBackRepository
         {
             var query = @"INSERT INTO Articulo (nombreArticulo,marcaArticulo,stockMinimo,stockActual,
                         esMateriaPrima,pesoArticulo,detalleArticulo,idUMD)
+                        OUTPUT INSERTED.IdArticulo
                           VALUES (@nombreArticulo, @marcaArticulo, @stockMinimo, @stockActual, 
                           @esMateriaPrima, @pesoArticulo, @detalleArticulo,@idUMD)";
 
@@ -74,8 +75,10 @@ namespace WafflesBackRepository
                     command.Parameters.AddWithValue("@idUMD", articulo.idUMD);
 
 
-                    int rowsAffected = await command.ExecuteNonQueryAsync();
-                    return rowsAffected;
+                    int IdArticulo = Convert.ToInt32(await command.ExecuteScalarAsync());
+
+                   
+                    return IdArticulo;
                 }
             }
         }
