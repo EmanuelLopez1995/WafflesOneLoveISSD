@@ -21,13 +21,38 @@ namespace WafflesBackServices
 
         public async Task<List<ArticuloModel>> GetAllArticulo()
         {
-            return await _articuloRepository.GetAllArticulo();
+
+            var listadoArticulos = await _articuloRepository.GetAllArticulo();
+
+            foreach (var articulo in listadoArticulos)
+            {
+                var ingredienteId = await _articuloPorIngredienteRepository.GetIngredientePorArticuloId((int)articulo.IdArticulo);
+                articulo.IdIngrediente = ingredienteId;
+            }   
+
+            return listadoArticulos;
         }
 
         public async Task<int> AddArticulo(ArticuloModel articulo)
         {
-            return await _articuloRepository.AddArticulo(articulo);
+            try
+            {
+                int IdArticulo = await _articuloRepository.AddArticulo(articulo);
+
+                if (articulo.IdIngrediente != 0) 
+                {
+                    // Asocia el artículo con el ingrediente
+                    await _articuloPorIngredienteRepository.RegistrarArticulosPorIngrediente(IdArticulo, articulo.IdIngrediente);
+                }
+
+                return IdArticulo;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error en el servicio al registrar artículo: {ex.Message}");
+            }
         }
+
 
         public async Task<int> UpdateArticulo(ArticuloModel articulo)
         {
