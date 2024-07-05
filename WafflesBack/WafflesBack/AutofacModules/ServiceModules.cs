@@ -18,6 +18,7 @@ namespace WafflesBack.AutofacModules
             builder.RegisterType<UMDService>().As<IUMDService>().InstancePerLifetimeScope();
             builder.RegisterType<ArticuloService>().As<IArticuloService>().InstancePerLifetimeScope();
             builder.RegisterType<IngredienteService>().As<IIngredienteService>().InstancePerLifetimeScope();
+            builder.RegisterType<CompraService>().As<ICompraService>().InstancePerLifetimeScope();
 
             base.Load(builder);
         }

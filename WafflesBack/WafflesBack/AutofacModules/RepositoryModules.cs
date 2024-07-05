@@ -24,6 +24,10 @@ namespace WafflesBack.AutofacModules
             builder.RegisterType<ArticuloRepository>().As<IArticuloRepository>().InstancePerLifetimeScope();
             builder.RegisterType<IngredienteRepository>().As<IIngredienteRepository>().InstancePerLifetimeScope();
             builder.RegisterType<ArticuloPorIngredienteRepository>().As<IArticuloPorIngredienteRepository>();
+            builder.RegisterType<CompraRepository>().As<ICompraRepository>();
+            builder.RegisterType<DetalleCompraRepository>().As<IDetalleCompraRepository>();
+
+
 
             base.Load(builder);
         }

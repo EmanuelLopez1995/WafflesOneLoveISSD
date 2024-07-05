@@ -79,3 +79,20 @@
         "importeFinal": 30000
     }
 }
+
+
+//Ejemplo POST Compra (nueva compra)
+{
+    "fechaCompra": "2024-07-04",
+    "archivo": "RWplbXBsbyBkZSB2YXJiaW5hcnk=",
+    "idProveedor": 1,
+    "total": 10000,
+    "detallesCompra": [
+        {
+            "idArticulo": 1,
+            "cantidad": 10,
+            "precioUnitario": 1000,
+            "subtotal": 10000
+        }
+    ]
+}
