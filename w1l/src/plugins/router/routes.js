@@ -80,6 +80,10 @@ export const routes = [
         path: 'finalizarTurno',
         component: () => import('@/pages/finalizarTurno.vue'),
       },
+      {
+        path: 'listadoCompras',
+        component: () => import('@/pages/listadoCompras.vue'),
+      },
     ],
   },
   {
