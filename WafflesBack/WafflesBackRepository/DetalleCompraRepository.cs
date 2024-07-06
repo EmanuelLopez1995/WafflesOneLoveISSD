@@ -34,12 +34,12 @@ namespace WafflesBackRepository
                         {
                             var detalleCompra = new DetalleCompraModel
                             {
-                                IdDetalleCompra = reader.GetInt32(0),
-                                IdArticulo = reader.GetInt32(1),
-                                Cantidad = reader.GetInt32(2),
-                                PrecioUnitario = reader.GetDecimal(3),
-                                Subtotal = reader.GetDecimal(4),
-                                IdCompra = reader.GetInt32(5)
+                                IdDetalleCompra = reader.GetInt32(reader.GetOrdinal("IdDetalleCompra")),
+                                IdArticulo = reader.GetInt32(reader.GetOrdinal("IdArticulo")),
+                                Cantidad = reader.GetInt32(reader.GetOrdinal("Cantidad")),
+                                PrecioUnitario = reader.GetDecimal(reader.GetOrdinal("PrecioUnitario")),
+                                Subtotal = reader.GetDecimal(reader.GetOrdinal("Subtotal")),
+                                IdCompra = reader.GetInt32(reader.GetOrdinal("IdCompra"))
                             };
                             detalleCompraList.Add(detalleCompra);
                         }
@@ -64,6 +64,23 @@ namespace WafflesBackRepository
                     command.Parameters.AddWithValue("@precioUnitario", detalleCompra.PrecioUnitario);
                     command.Parameters.AddWithValue("@subtotal", detalleCompra.Subtotal);
                     command.Parameters.AddWithValue("@idCompra", detalleCompra.IdCompra);
+
+                    int rowsAffected = await command.ExecuteNonQueryAsync();
+                    return rowsAffected;
+                }
+            }
+        }
+
+        public async Task<int> DeleteDetalleCompraPorIdCompra(int idCompra)
+        {
+            var query = "DELETE FROM DetalleCompra WHERE idCompra = @idCompra";
+
+            using (SqlConnection connection = _connectionHelper.GetConnection())
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@idCompra", idCompra);
 
                     int rowsAffected = await command.ExecuteNonQueryAsync();
                     return rowsAffected;

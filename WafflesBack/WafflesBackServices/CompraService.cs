@@ -25,7 +25,15 @@ namespace WafflesBackServices
         {
             try
             {
-                return await _compraRepository.GetAllCompras();
+                var compras = await _compraRepository.GetAllCompras();
+
+                foreach (var compra in compras)
+                {
+                    compra.DetallesCompra = await _detalleCompraRepository.GetDetallesByCompraId((int)compra.IdCompra);                   
+                }
+
+                return compras;
+
             }
             catch (Exception)
             {
@@ -69,6 +77,7 @@ namespace WafflesBackServices
         {
             try
             {
+                await _detalleCompraRepository.DeleteDetalleCompraPorIdCompra(id);
                 return await _compraRepository.DeleteCompra(id);
             }
             catch (Exception)
