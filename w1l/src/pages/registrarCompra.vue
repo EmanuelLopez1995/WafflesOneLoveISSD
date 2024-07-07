@@ -4,9 +4,16 @@ import { reglaObligatoria, validarEmail } from '@/components/validaciones.js';
 import { algoSalioMalError, registroExitosoMensaje } from '@/components/SwalCustom.js';
 import { ref, computed } from 'vue';
 import axios from 'axios';
-import RegistrarStock from '@/pages/registrarStock.vue';
+import RegistrarArticulo from '@/pages/Stock/registrarArticulo.vue';
 
 //TODO: Sacar de la lista de agregar productos a los productos que ya se han agregado, sino va a funcionar mal el eliminar de la lista
+
+//props
+
+const props = defineProps({
+    esModalDetalle: Boolean,
+    datosRegistro: Object
+});
 
 // Agregar producto
 
@@ -37,6 +44,29 @@ const currentTheme = computed(() => {
     return ref(vuetifyTheme.current.value.colors);
 });
 
+const emit = defineEmits(['cerrarDialogo', 'confirmarDialogo']);
+
+const cargarDatosRegistroCompra = () => {
+    if (props.esModalDetalle) {
+        proveedor.value = props.datosRegistro.proveedor;
+        proveedor.value.nombreYid = `${props.datosRegistro.proveedor.nombre} (${props.datosRegistro.proveedor.id})`;
+        fecha.value = props.datosRegistro.fechaCompra;
+        console.log(productos.value);
+        productosSeleccionados.value = props.datosRegistro.detallesCompra.map(detalle => {
+            const articulo = productos.value.find(prod => prod.idArticulo === detalle.idArticulo);
+            return {
+                ...detalle,
+                producto: articulo || {}
+            };
+        });
+    }
+};
+
+const confirmarModificacion = () => {
+
+    emit('confirmarDialogo', 'asdasdasda')
+}
+
 const registrarCompra = async () => {
     try {
         const productosParams = productosSeleccionados.value.map(el => ({
@@ -54,9 +84,8 @@ const registrarCompra = async () => {
             detallesCompra: productosParams
         };
 
-        
         axios.post('/Compra/AddCompra', params).then(() => {
-          registroExitosoMensaje('compra', currentTheme.value)
+            registroExitosoMensaje('compra', currentTheme.value);
         });
     } catch (error) {
         console.log(error);
@@ -163,9 +192,9 @@ const obtenerProveedores = () => {
     }
 };
 
-const obtenerArticulos = () => {
+const obtenerArticulos = async () => {
     try {
-        axios.get('/Articulo/GetAllArticulo').then(response => {
+        await axios.get('/Articulo/GetAllArticulo').then(response => {
             productos.value = response.data;
         });
     } catch (error) {
@@ -173,17 +202,29 @@ const obtenerArticulos = () => {
     }
 };
 
-onMounted(() => {
+onMounted(async () => {
     obtenerProveedores();
-    obtenerArticulos();
+    await obtenerArticulos();
     obtenerFechaActual();
+    cargarDatosRegistroCompra();
 });
 </script>
 
 <template>
     <VCard>
         <VCardItem>
-            <h2 class="pb-5">Registrar compra</h2>
+            <h2
+                v-if="!props.esModalDetalle"
+                class="pb-5"
+            >
+                Registrar compra
+            </h2>
+            <h2
+                v-else
+                class="pb-5"
+            >
+                Detalle de la compra
+            </h2>
             <VForm
                 @submit.prevent="registrarCompra"
                 ref="form"
@@ -298,7 +339,16 @@ onMounted(() => {
                         cols="12"
                         class="d-flex justify-end gap-4"
                     >
-                        <VBtn type="submit"> REGISTRAR </VBtn>
+                        <VBtn
+                            v-if="props.esModalDetalle"
+                            color="secondary"
+                            variant="outlined"
+                            @click="emit('cerrarDialogo')"
+                        >
+                            CANCELAR
+                        </VBtn>
+                        <VBtn v-if="props.esModalDetalle" @click="confirmarModificacion"> MODIFICAR </VBtn>
+                        <VBtn v-if="!props.esModalDetalle" type="submit"> REGISTRAR </VBtn>
                     </VCol>
                 </VRow>
             </VForm>
@@ -412,10 +462,7 @@ onMounted(() => {
             v-model="dialogRegistrarProducto"
             width="60%"
         >
-            <RegistrarStock
-                :esModal="true"
-                @cerrarDialogo="dialogRegistrarProducto = !dialogRegistrarProducto"
-            />
+            <RegistrarArticulo />
         </VDialog>
     </VCard>
 </template>
