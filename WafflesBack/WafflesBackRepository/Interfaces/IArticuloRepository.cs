@@ -11,6 +11,6 @@ namespace WafflesBackRepository.Interfaces
         Task<int> UpdateArticulo(ArticuloModel articulo);
         Task<int> UpdateArticuloEsIngrediente(int idArticulo);
         Task<int> DeleteArticulo(int id);
-        Task<ArticuloModel> GetArticuloPorId(int id);
+        Task<ArticuloModel> GetArticuloPorId(int idArticulo);
     }
 }
