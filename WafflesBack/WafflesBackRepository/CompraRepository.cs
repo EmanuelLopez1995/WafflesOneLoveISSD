@@ -72,7 +72,7 @@ namespace WafflesBackRepository
         public async Task<int> UpdateCompra(CompraModel compra)
         {
             var query = @"UPDATE Compra 
-                          SET fechaCompra = @fechaCompra, archivo = @archivo, 
+                          SET fechaCompra = @fechaCompra, 
                               idProveedor = @idProveedor, Total = @Total 
                           WHERE idCompra = @idCompra";
 
@@ -82,7 +82,6 @@ namespace WafflesBackRepository
                 using (var command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@fechaCompra", compra.FechaCompra);
-                    command.Parameters.AddWithValue("@archivo", compra.Archivo);
                     command.Parameters.AddWithValue("@idProveedor", compra.IdProveedor);
                     command.Parameters.AddWithValue("@Total", compra.Total);
                     command.Parameters.AddWithValue("@idCompra", compra.IdCompra);

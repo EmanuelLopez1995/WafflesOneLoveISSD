@@ -6,6 +6,7 @@ import { reglaObligatoria, validarEmail } from '@/components/validaciones.js';
 import { useTheme } from 'vuetify';
 import EditModal from '@/components/editModal/EditModal.vue';
 import descargarPDF from '@/components/pdfHelper.js';
+import registrarCompra from '@/pages/registrarCompra.vue';
 
 const compras = ref([]);
 const proveedores = ref([]);
@@ -153,6 +154,28 @@ const guardarEdicionCompra = () => {
 const descargarListado = () => {
     descargarPDF(titulosTabla, compras.value, 'compras');
 };
+
+const confirmarModificacion = event => {
+    try {
+        let params = {
+            idCompra: event.idCompra,
+            fechaCompra: event.fechaCompra,
+            idProveedor: event.idProveedor,
+            total: event.total,
+            detallesCompra: event.detallesCompra
+        };
+        axios.put(`/Compra/UpdateCompra/${params.idCompra}`, params).then(async () => {
+            dialog.value = false;
+            await fetchData();
+            fetchProveedores();
+            fetchArticulos();
+            registroExitosoMensaje('compra', currentTheme.value);
+        });
+    } catch (error) {
+        console.log(error);
+        algoSalioMalError(currentTheme.value);
+    }
+};
 </script>
 
 <template>
@@ -221,182 +244,17 @@ const descargarListado = () => {
             >
         </VCol>
 
-        <!-- MODAL EDITAR -->
+        <!-- MODAL PRIMER TEST -->
         <VDialog
             v-model="dialog"
-            width="50%"
+            width="60%"
         >
-            <VCard
-                prepend-icon="ri-edit-2-fill"
-                title="Detalle"
-                class="px-5"
-            >
-                <VForm
-                    @submit.prevent="guardarEdicionCompra"
-                    ref="form"
-                >
-                    <VRow>
-                        <VCol
-                            cols="12"
-                            md="2"
-                            class="flex-sm-column"
-                        >
-                            <VTextField
-                                v-model="itemEditarCompra.idCompra"
-                                :rules="[reglaObligatoria()]"
-                                label="ID"
-                                readonly
-                            />
-                        </VCol>
-                        <VCol
-                            cols="12"
-                            md="5"
-                        >
-                            <VTextField
-                                v-model="itemEditarCompra.fechaCompra"
-                                :rules="[reglaObligatoria()]"
-                                label="Fecha"
-                                type="date"
-                                readonly
-                            />
-                        </VCol>
-                        <VCol
-                            cols="12"
-                            md="5"
-                        >
-                            <VSelect
-                                v-model="itemEditarCompra.proveedor"
-                                :rules="[reglaObligatoria()]"
-                                :items="proveedores"
-                                item-title="nombre"
-                                return-object
-                                label="Proveedor"
-                                readonly
-                            />
-                        </VCol>
-                    </VRow>
-
-                    <!-- Segunda fila -->
-                    <h3 class="pt-5 pb-3">Productos</h3>
-                    <VRow
-                        v-for="(detalle, index) in itemEditarCompra.detallesCompra"
-                        :key="index"
-                    >
-                        <VCol
-                            cols="12"
-                            md="3"
-                        >
-                            <VSelect
-                                v-model="detalle.idArticulo"
-                                :items="productos"
-                                item-title="nombreArticulo"
-                                item-value="idArticulo"
-                                label="Producto"
-                                readonly
-                            />
-                        </VCol>
-                        <VCol
-                            cols="12"
-                            md="3"
-                        >
-                            <VTextField
-                                v-model="detalle.cantidad"
-                                label="Cantidad"
-                                type="number"
-                                readonly
-                            />
-                        </VCol>
-                        <VCol
-                            cols="12"
-                            md="3"
-                        >
-                            <VTextField
-                                v-model="detalle.precioUnitario"
-                                label="Precio Unitario"
-                                type="number"
-                                readonly
-                            />
-                        </VCol>
-                        <VCol
-                            cols="12"
-                            md="3"
-                        >
-                            <VTextField
-                                v-model="detalle.subtotal"
-                                label="Subtotal"
-                                type="number"
-                                readonly
-                            />
-                        </VCol>
-                    </VRow>
-                    <VRow>
-                        <VCol cols="12" md="3"></VCol>
-                        <VCol cols="12" md="3"></VCol>
-                        <VCol cols="12" md="3"></VCol>
-                        <VCol
-                            cols="12"
-                            md="3"
-                        >
-                            <VTextField
-                                v-model="itemEditarCompra.total"
-                                :rules="[reglaObligatoria()]"
-                                label="Total"
-                                type="number"
-                                readonly
-                            />
-                        </VCol>
-                    </VRow>
-                    <VCol
-                        cols="12"
-                        class="d-flex gap-4 justify-end mt-3"
-                    >
-                        <VBtn
-                            color="secondary"
-                            variant="outlined"
-                            @click="closeDialog"
-                        >
-                            CERRAR
-                        </VBtn>
-                        <VBtn
-                            color="primary"
-                            variant="outlined"
-                            type="submit"
-                        >
-                            EDITAR
-                        </VBtn>
-                    </VCol>
-                </VForm>
-            </VCard>
+            <registrarCompra
+                :esModalDetalle="true"
+                :datosRegistro="itemEditarCompra"
+                @cerrarDialogo="dialog = !dialog"
+                @confirmarDialogo="confirmarModificacion"
+            />
         </VDialog>
-        <!-- Primera fila -->
-
-        <!-- Tercera fila -->
-        <!-- <VRow>
-                <VCol
-                    cols="12"
-                    md="6"
-                    class="flex-sm-column"
-                >
-                    <VTextField
-                        v-model="itemEditarCompra.mailEmpleado"
-                        :rules="[reglaObligatoria()]"
-                        label="Email"
-                        type="email"
-                    />
-                </VCol>
-                <VCol
-                    cols="12"
-                    md="6"
-                >
-                    <VSelect
-                        v-model="itemEditarCompra.puesto"
-                        :items="itemsPuestos"
-                        item-title="nombre"
-                        return-object
-                        :rules="[reglaObligatoria()]"
-                        label="Puesto"
-                    />
-                </VCol>
-            </VRow> -->
     </VCard>
 </template>
