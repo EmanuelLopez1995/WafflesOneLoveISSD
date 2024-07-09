@@ -6,6 +6,7 @@ using WafflesBackServices.Interfaces;
 using Microsoft.Extensions.Configuration;
 using WafflesBackCommon.Models;
 using WafflesBackRepository.Repositories;
+using System.Transactions;
 
 namespace WafflesBackServices
 {
@@ -63,13 +64,31 @@ namespace WafflesBackServices
 
         public async Task<int> UpdateCompra(CompraModel compra)
         {
-            try
+            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                return await _compraRepository.UpdateCompra(compra);
-            }
-            catch (Exception)
-            {
-                throw new ApplicationException("Error al actualizar la compra");
+                try
+                {
+                    // Actualizar la compra
+                    await _compraRepository.UpdateCompra(compra);
+
+                    // Eliminar todos los detalles existentes de la compra
+                    await _detalleCompraRepository.DeleteDetalleCompraPorIdCompra((int)compra.IdCompra);
+
+                    // Insertar los nuevos detalles
+                    foreach (var detalleNuevo in compra.DetallesCompra)
+                    {
+                        detalleNuevo.IdCompra = compra.IdCompra;
+                        await _detalleCompraRepository.AddDetalleCompra(detalleNuevo);
+                    }
+
+                    transaction.Complete();
+                    return (int)compra.IdCompra;
+                }
+                catch (Exception)
+                {
+                    transaction.Dispose();
+                    throw new ApplicationException("Error al actualizar la compra");
+                }
             }
         }
 

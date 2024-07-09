@@ -6,7 +6,7 @@ import { reglaObligatoria, validarEmail } from '@/components/validaciones.js';
 import { useTheme } from 'vuetify';
 import EditModal from '@/components/editModal/EditModal.vue';
 import descargarPDF from '@/components/pdfHelper.js';
-import registrarCompra from '@/pages/registrarCompra.vue'
+import registrarCompra from '@/pages/registrarCompra.vue';
 
 const compras = ref([]);
 const proveedores = ref([]);
@@ -155,9 +155,27 @@ const descargarListado = () => {
     descargarPDF(titulosTabla, compras.value, 'compras');
 };
 
-const confirmarModificacion = (event) => {
-    console.log(event);
-}
+const confirmarModificacion = event => {
+    try {
+        let params = {
+            idCompra: event.idCompra,
+            fechaCompra: event.fechaCompra,
+            idProveedor: event.idProveedor,
+            total: event.total,
+            detallesCompra: event.detallesCompra
+        };
+        axios.put(`/Compra/UpdateCompra/${params.idCompra}`, params).then(async () => {
+            dialog.value = false;
+            await fetchData();
+            fetchProveedores();
+            fetchArticulos();
+            registroExitosoMensaje('compra', currentTheme.value);
+        });
+    } catch (error) {
+        console.log(error);
+        algoSalioMalError(currentTheme.value);
+    }
+};
 </script>
 
 <template>
@@ -231,7 +249,12 @@ const confirmarModificacion = (event) => {
             v-model="dialog"
             width="60%"
         >
-            <registrarCompra :esModalDetalle="true" :datosRegistro="itemEditarCompra" @cerrarDialogo="dialog = !dialog" @confirmarDialogo="confirmarModificacion"/>
+            <registrarCompra
+                :esModalDetalle="true"
+                :datosRegistro="itemEditarCompra"
+                @cerrarDialogo="dialog = !dialog"
+                @confirmarDialogo="confirmarModificacion"
+            />
         </VDialog>
     </VCard>
 </template>

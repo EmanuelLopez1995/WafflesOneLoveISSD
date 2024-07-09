@@ -51,7 +51,6 @@ const cargarDatosRegistroCompra = () => {
         proveedor.value = props.datosRegistro.proveedor;
         proveedor.value.nombreYid = `${props.datosRegistro.proveedor.nombre} (${props.datosRegistro.proveedor.id})`;
         fecha.value = props.datosRegistro.fechaCompra;
-        console.log(productos.value);
         productosSeleccionados.value = props.datosRegistro.detallesCompra.map(detalle => {
             const articulo = productos.value.find(prod => prod.idArticulo === detalle.idArticulo);
             return {
@@ -63,27 +62,31 @@ const cargarDatosRegistroCompra = () => {
 };
 
 const confirmarModificacion = () => {
+    const params = crearParams();
+    emit('confirmarDialogo', params);
+};
 
-    emit('confirmarDialogo', 'asdasdasda')
-}
+const crearParams = () => {
+    const productosParams = productosSeleccionados.value.map(el => ({
+        idArticulo: el.producto.idArticulo,
+        cantidad: el.cantidad,
+        precioUnitario: el.precioUnitario,
+        subtotal: el.subtotal
+    }));
+
+    return {
+        idCompra: props.datosRegistro ? props.datosRegistro.idCompra : 0,
+        fechaCompra: fecha.value,
+        // archivo: archivoBase64,
+        idProveedor: proveedor.value.id,
+        total: calcularTotal(),
+        detallesCompra: productosParams
+    };
+};
 
 const registrarCompra = async () => {
     try {
-        const productosParams = productosSeleccionados.value.map(el => ({
-            idArticulo: el.producto.idArticulo,
-            cantidad: el.cantidad,
-            precioUnitario: el.precioUnitario,
-            subtotal: el.subtotal
-        }));
-
-        const params = {
-            fechaCompra: fecha.value,
-            // archivo: archivoBase64,
-            idProveedor: proveedor.value.id,
-            total: calcularTotal(),
-            detallesCompra: productosParams
-        };
-
+        const params = crearParams();
         axios.post('/Compra/AddCompra', params).then(() => {
             registroExitosoMensaje('compra', currentTheme.value);
         });
@@ -347,8 +350,18 @@ onMounted(async () => {
                         >
                             CANCELAR
                         </VBtn>
-                        <VBtn v-if="props.esModalDetalle" @click="confirmarModificacion"> MODIFICAR </VBtn>
-                        <VBtn v-if="!props.esModalDetalle" type="submit"> REGISTRAR </VBtn>
+                        <VBtn
+                            v-if="props.esModalDetalle"
+                            @click="confirmarModificacion"
+                        >
+                            MODIFICAR
+                        </VBtn>
+                        <VBtn
+                            v-if="!props.esModalDetalle"
+                            type="submit"
+                        >
+                            REGISTRAR
+                        </VBtn>
                     </VCol>
                 </VRow>
             </VForm>
