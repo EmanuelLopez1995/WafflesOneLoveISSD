@@ -56,17 +56,62 @@ namespace WafflesBackServices
 
         public async Task<int> UpdateArticulo(ArticuloModel articulo)
         {
-            return await _articuloRepository.UpdateArticulo(articulo);
+            try
+            {
+                int IdArticulo = await _articuloRepository.UpdateArticulo(articulo);
+
+                if (articulo.IdIngrediente >= 0)
+                {
+                    await _articuloPorIngredienteRepository.DeleteIngredientePorArticulo((int)articulo.IdArticulo);
+
+
+                    await _articuloPorIngredienteRepository.RegistrarArticulosPorIngrediente((int)articulo.IdArticulo, articulo.IdIngrediente);
+                    
+
+                }
+
+                return IdArticulo;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error en el servicio al actualizar articulo: {ex.Message}");
+            }
+            
         }
 
         public async Task<int> DeleteArticulo(int id)
-        {
-            return await _articuloRepository.DeleteArticulo(id);
+        
+         {
+                // Obtiene el ingrediente por su ID
+                var articulo = await _articuloRepository.GetArticuloPorId(id);
+
+                if (articulo != null)
+                {
+                    // Elimina los artículos asociados al ingrediente
+                    await _articuloPorIngredienteRepository.DeleteIngredientePorArticulo((int)articulo.IdArticulo);
+
+                    // Elimina el ingrediente
+                    return await _articuloRepository.DeleteArticulo(id);
+                }
+
+            // Si el ingrediente no existe, devuelve un valor indicando que no se hizo ninguna eliminación
+
+            return 0;
         }
 
         public async Task<ArticuloModel> GetArticuloPorId(int id)
         {
-            return await _articuloRepository.GetArticuloPorId(id);
+
+            var articulo = await _articuloRepository.GetArticuloPorId(id);
+
+            if (articulo != null)
+            {
+
+                var ingredienteId = await _articuloPorIngredienteRepository.GetIngredientePorArticuloId((int)articulo.IdArticulo);
+                articulo.IdIngrediente = ingredienteId;
+            }
+
+            return articulo;
         }
     }
 }

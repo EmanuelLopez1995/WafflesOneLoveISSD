@@ -61,10 +61,28 @@ namespace WafflesBackServices
 
         public async Task<int> UpdateIngrediente(IngredienteModel ingrediente)
         {
-            return await _ingredienteRepository.UpdateIngrediente(ingrediente);
+            try
+            {
+                int IdIngrediente = await _ingredienteRepository.UpdateIngrediente(ingrediente);
+
+                if (ingrediente.IdsArticulos != null)
+                {
+                    await _articuloPorIngredienteRepository.DeleteArticulosPorIngrediente(IdIngrediente);
+
+                    foreach (var idArticulo in ingrediente.IdsArticulos)
+                    {
+                        
+                        await _articuloPorIngredienteRepository.RegistrarArticulosPorIngrediente(idArticulo, IdIngrediente);
+                    }
+                }
+
+                return IdIngrediente;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error en el servicio al registrar ingrediente: {ex.Message}");
+            }
         }
-
-
 
         public async Task<int> DeleteIngrediente(int id)
         {

@@ -101,19 +101,23 @@ namespace WafflesBackRepository
                     command.Parameters.AddWithValue("@marcaArticulo", articulo.marcaArticulo);
                     command.Parameters.AddWithValue("@stockMinimo", articulo.stockMinimo);
                     command.Parameters.AddWithValue("@stockActual", articulo.stockActual);
-                    command.Parameters.AddWithValue("@esMateriaPrima", articulo.esMateriaPrima);
+                    command.Parameters.AddWithValue("@esMateriaPrima", articulo.esMateriaPrima ? 1 : 0);
                     command.Parameters.AddWithValue("@pesoArticulo", articulo.pesoArticulo);
                     command.Parameters.AddWithValue("@detalleArticulo", articulo.detalleArticulo);
                     command.Parameters.AddWithValue("@idUMD", articulo.idUMD);
                     command.Parameters.AddWithValue("@IdArticulo", articulo.IdArticulo);
 
+
                     int rowsAffected = await command.ExecuteNonQueryAsync();
                     return rowsAffected;
+
+
+                    
                 }
             }
         }
 
-        public async Task<int> UpdateArticuloEsIngrediente(int idArticulo)
+        public async Task<int> UpdateArticuloEsIngrediente(int idArticulo) //modifica el campo esMateriaPrima si cuando creas un ingrediente seleccionas un art que fue regitrado sin establecer ingrediente
         {
             var query = @"  UPDATE Articulo 
                             SET esMateriaPrima = 1
@@ -149,7 +153,7 @@ namespace WafflesBackRepository
             }
         }
 
-        public async Task<ArticuloModel> GetArticuloPorId(int id)
+        public async Task<ArticuloModel> GetArticuloPorId(int idArticulo)
         {
             var query = "SELECT * FROM Articulo WHERE IdArticulo = @IdArticulo";
 
@@ -158,7 +162,7 @@ namespace WafflesBackRepository
                 await connection.OpenAsync();
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@IdArticulo", id);
+                    command.Parameters.AddWithValue("@IdArticulo", idArticulo);
 
                     using (var reader = await command.ExecuteReaderAsync())
                     {

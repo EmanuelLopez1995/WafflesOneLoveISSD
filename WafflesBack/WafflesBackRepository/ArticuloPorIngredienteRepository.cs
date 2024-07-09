@@ -51,6 +51,22 @@ namespace WafflesBackRepository
             }
         }
 
+        public async Task DeleteIngredientePorArticulo(int idArticulo)
+        {
+            var query = @"DELETE FROM ArticulosPorIngrediente WHERE IdArticulo = @IdArticulo;";
+
+            using (SqlConnection connection = _connectionHelper.GetConnection())
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@IdArticulo", idArticulo);
+
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
         public async Task<List<ArticuloPorIngredienteModel>> ObtenerArticulosPorIngrediente(int idIngrediente)
         {
             var query = @"SELECT IdIngrediente, IdArticulo
