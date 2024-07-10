@@ -66,17 +66,17 @@ const registrarIngrediente = () => {
         if (response.valid) {
             try {
                 // TODO: Agregar un informe diciendo que las unidades de medida de los articulos se convertiran a la del ingrediente
+                let idsArticulos = listadoArticulosNuevos.value.map(art => art.idArticulo)
                 let params = {
                     nombreIngrediente: nombre.value,
-                    stockMinimo: stockMinimo.value || 0,
-                    stockActual: 0,
                     detalleIngrediente: detalle.value || '',
-                    idUMD: unidadDeMedida.value.idUMD
+                    idsArticulos
                 };
-                // axios.post('/Ingrediente', params).then(() => {
-                //     registroExitosoMensaje('ingrediente', currentTheme.value);
-                //     form.value.reset();
-                // });
+                axios.post('/Ingrediente', params).then(() => {
+                    registroExitosoMensaje('ingrediente', currentTheme.value);
+                    form.value.reset();
+                    listadoArticulosNuevos.value = [];
+                });
             } catch (error) {
                 algoSalioMalError(currentTheme.value);
             }
@@ -91,6 +91,12 @@ const abrirModalAgregarArticulo = () => {
 const agregarArticuloModal = () => {
     formAgregarArticulo.value.validate().then(response => {
         if (response.valid) {
+            articuloNuevo.value.umd = unidadesDeMedida.value.find((umd) => {
+                if(umd.idUMD == articuloNuevo.value.idUMD) {
+                    return umd.nombreUMD
+                }
+            })
+            console.log(articuloNuevo.value)
             listadoArticulosNuevos.value.push(articuloNuevo.value);
             articuloNuevo.value = null;
             dialog.value = !dialog;
@@ -199,7 +205,7 @@ const cancelarDialog = () => {
                                     </td>
                                     <td>{{ item.marcaArticulo.toUpperCase() }}</td>
                                     <td>{{ item.stockActual }}</td>
-                                    <td>{{ item.idUMD }}</td>
+                                    <td>{{ item.umd.nombreUMD }}</td>
                                     <td>
                                         <IconBtn
                                             icon="ri-delete-bin-5-fill"
