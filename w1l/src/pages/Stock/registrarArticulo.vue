@@ -1,7 +1,7 @@
 <script setup>
 import { reglaObligatoria, validarEmail } from '@/components/validaciones.js';
 import { algoSalioMalError, registroExitosoMensaje } from '@/components/SwalCustom.js';
-import { ref , watch} from 'vue';
+import { ref, watch } from 'vue';
 import { useTheme } from 'vuetify';
 import axios from 'axios';
 
@@ -79,41 +79,23 @@ const registrarArticulo = () => {
                 };
                 if (esIngrediente.value) {
                     params.pesoArticulo = pesoVolumen.value;
-                    // TODO: agregar ingrediente.value
-                    // TODO: Cuando se seleccionaba un ingrediente debía tomar el stock minimo del ingrediente?
+                    params.idIngrediente = ingrediente.value.idIngrediente;
                 }
-                // axios
-                //     .post('/Articulo/AddArticulo', params)
-                //     .then(() => {
-                //         registroExitosoMensaje('artículo', currentTheme.value);
-                //         form.value.reset();
-                //     })
-                //     .catch(() => {
-                //         algoSalioMalError(currentTheme.value);
-                //     });
+                axios
+                    .post('/Articulo/AddArticulo', params)
+                    .then(() => {
+                        registroExitosoMensaje('artículo', currentTheme.value);
+                        form.value.reset();
+                    })
+                    .catch(() => {
+                        algoSalioMalError(currentTheme.value);
+                    });
             } catch (error) {
                 algoSalioMalError(currentTheme.value);
             }
         }
     });
 };
-
-const ingredienteActualizado = () => {
-    if(ingrediente.value) {
-        const umdDeIngrediente = unidadesDeMedida.value.find((item) => item.idUMD == ingrediente.value.idUMD);
-        unidadDeMedida.value = umdDeIngrediente;
-    }
-}
-
-watch(esIngrediente, (newValue, oldValue) => {
-    if (newValue) {
-        unidadDeMedida.value = null;
-        ingrediente.value = null;
-    } else {
-        unidadDeMedida.value = null;
-        ingrediente.value = null;
-    }
-});
 </script>
 
 <template>
@@ -184,7 +166,6 @@ watch(esIngrediente, (newValue, oldValue) => {
                             :rules="[reglaObligatoria()]"
                             v-model="unidadDeMedida"
                             label="Unidad de medida"
-                            :readonly="esIngrediente ? true : false"
                         />
                     </VCol>
                     <VCol
@@ -218,7 +199,6 @@ watch(esIngrediente, (newValue, oldValue) => {
                         <VSelect
                             :items="ingredientes"
                             :rules="[reglaObligatoria()]"
-                            @update:menu="ingredienteActualizado"
                             v-model="ingrediente"
                             label="Seleccione el ingrediente"
                             item-title="nombreIngrediente"
