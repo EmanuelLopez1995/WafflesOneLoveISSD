@@ -67,12 +67,12 @@ namespace WafflesBackServices
 
                 if (ingrediente.IdsArticulos != null)
                 {
-                    await _articuloPorIngredienteRepository.DeleteArticulosPorIngrediente(IdIngrediente);
+                    await _articuloPorIngredienteRepository.DeleteArticulosPorIngrediente((int)ingrediente.IdIngrediente);
 
                     foreach (var idArticulo in ingrediente.IdsArticulos)
                     {
                         
-                        await _articuloPorIngredienteRepository.RegistrarArticulosPorIngrediente(idArticulo, IdIngrediente);
+                        await _articuloPorIngredienteRepository.RegistrarArticulosPorIngrediente(idArticulo, (int)ingrediente.IdIngrediente);
                     }
                 }
 
