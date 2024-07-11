@@ -206,7 +206,7 @@ const obtenerArticulos = async () => {
 };
 
 onMounted(async () => {
-    obtenerProveedores();
+    await obtenerProveedores();
     await obtenerArticulos();
     obtenerFechaActual();
     cargarDatosRegistroCompra();
