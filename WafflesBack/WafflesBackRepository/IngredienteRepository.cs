@@ -87,10 +87,8 @@ namespace WafflesBackRepository
                     command.Parameters.AddWithValue("@IdIngrediente", ingrediente.IdIngrediente);
 
 
-                    
-
-
-                    return ingrediente.IdIngrediente.Value;
+                    int rowsAffected = await command.ExecuteNonQueryAsync();
+                    return rowsAffected;
                 }
             }
         }
