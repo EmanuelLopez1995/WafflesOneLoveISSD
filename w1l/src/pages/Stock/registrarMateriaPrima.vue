@@ -5,7 +5,11 @@ import { ref } from 'vue';
 import { useTheme } from 'vuetify';
 import axios from 'axios';
 
-const props = defineProps(['esModal']);
+const props = defineProps({
+    esModalDetalle: Boolean,
+    datosRegistro: Object,
+    esModal: Boolean
+});
 const emit = defineEmits(['cerrarDialogo']);
 
 const nombre = ref('');
@@ -28,9 +32,35 @@ const currentTheme = computed(() => {
     return ref(vuetifyTheme.current.value.colors);
 });
 
+const cargarDatosRegistroIngrediente = () => {
+    if (props.esModalDetalle) { 
+        nombre.value = props.datosRegistro.nombreIngrediente;
+        detalle.value = props.datosRegistro.detalleIngrediente;
+        props.datosRegistro.idsArticulos.forEach((idArt) => {
+            articuloNuevo.value = articulos.value.find(art => art.idArticulo == idArt)
+            agregarArticulo();
+        })
+    }
+}
+
+const confirmarModificacion = () => {
+    const params = crearParams();
+    params.idIngrediente = props.datosRegistro.idIngrediente;
+    emit('confirmarDialogo', params);
+};
+
+const crearParams = () => {
+    let idsArticulos = listadoArticulosNuevos.value.map(art => art.idArticulo)
+    return {
+        nombreIngrediente: nombre.value,
+        detalleIngrediente: detalle.value || '',
+        idsArticulos
+    };
+}
+
 const fetchArticulos = async () => {
     try {
-        axios.get('/Articulo/GetAllArticulo').then(response => {
+        await axios.get('/Articulo/GetAllArticulo').then(response => {
             articulos.value = response.data;
         });
     } catch {
@@ -56,9 +86,10 @@ const fetchUMD = () => {
     }
 };
 
-onMounted(() => {
+onMounted(async () => {
     fetchUMD();
-    fetchArticulos();
+    await fetchArticulos();
+    cargarDatosRegistroIngrediente();
 });
 
 const registrarIngrediente = () => {
@@ -66,12 +97,7 @@ const registrarIngrediente = () => {
         if (response.valid) {
             try {
                 // TODO: Agregar un informe diciendo que las unidades de medida de los articulos se convertiran a la del ingrediente
-                let idsArticulos = listadoArticulosNuevos.value.map(art => art.idArticulo)
-                let params = {
-                    nombreIngrediente: nombre.value,
-                    detalleIngrediente: detalle.value || '',
-                    idsArticulos
-                };
+                let params = crearParams();
                 axios.post('/Ingrediente', params).then(() => {
                     registroExitosoMensaje('ingrediente', currentTheme.value);
                     form.value.reset();
@@ -91,18 +117,21 @@ const abrirModalAgregarArticulo = () => {
 const agregarArticuloModal = () => {
     formAgregarArticulo.value.validate().then(response => {
         if (response.valid) {
-            articuloNuevo.value.umd = unidadesDeMedida.value.find((umd) => {
-                if(umd.idUMD == articuloNuevo.value.idUMD) {
-                    return umd.nombreUMD
-                }
-            })
-            console.log(articuloNuevo.value)
-            listadoArticulosNuevos.value.push(articuloNuevo.value);
-            articuloNuevo.value = null;
-            dialog.value = !dialog;
+            agregarArticulo();
         }
     });
 };
+
+const agregarArticulo = () => {
+    articuloNuevo.value.umd = unidadesDeMedida.value.find((umd) => {
+        if(umd.idUMD == articuloNuevo.value.idUMD) {
+            return umd.nombreUMD
+        }
+    })
+    listadoArticulosNuevos.value.push(articuloNuevo.value);
+    articuloNuevo.value = null;
+    dialog.value = !dialog;
+}
 
 const eliminarArticulo = idArticulo => {
     const index = listadoArticulosNuevos.value.findIndex(a => a.idArticulo === idArticulo);
@@ -230,14 +259,20 @@ const cancelarDialog = () => {
                             Agregar artículo
                         </VBtn>
                         <VBtn
-                            v-if="props.esModal"
+                            v-if="props.esModalDetalle"
                             color="secondary"
                             variant="outlined"
-                            @click="cerrarModal"
+                            @click="emit('cerrarDialogo')"
                         >
                             CANCELAR
                         </VBtn>
-                        <VBtn type="submit"> Registrar </VBtn>
+                        <VBtn
+                            v-if="props.esModalDetalle"
+                            @click="confirmarModificacion"
+                        >
+                            MODIFICAR
+                        </VBtn>
+                        <VBtn v-if="!props.esModalDetalle" type="submit"> Registrar </VBtn>
                     </VCol>
                 </VRow>
             </VForm>
