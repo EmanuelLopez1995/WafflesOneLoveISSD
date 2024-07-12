@@ -65,20 +65,6 @@ const fetchData = async () => {
         });
 };
 
-// const fetchProveedores = async () => {
-//     try {
-//         axios.get('/Proveedor/GetAllProveedores').then(response => {
-//             proveedores.value = response.data;
-//             compras.value = compras.value.map(compra => ({
-//                 proveedor: proveedores.value.find(prov => prov.id == compra.idProveedor),
-//                 ...compra
-//             }));
-//         });
-//     } catch (error) {
-//         algoSalioMalError(currentTheme.value);
-//     }
-// };
-
 const fetchArticulos = () => {
     try {
         axios.get('/Articulo/GetAllArticulo').then(response => {
@@ -92,7 +78,6 @@ const fetchArticulos = () => {
 onMounted(async () => {
     await fetchArticulos();
     fetchData();
-    // fetchProveedores();
 });
 
 const eliminar = function (id) {
@@ -133,12 +118,12 @@ const descargarListado = () => {
 
 const confirmarModificacion = event => {
     try {
-        // axios.put(`/Ingrediente/${event.idIngrediente}`, event).then(async () => {
-        //     dialog.value = false;
-        //     fetchArticulos();
-        //     await fetchData();
-        //     registroExitosoMensaje('ingrediente', currentTheme.value);
-        // });
+        axios.put(`/Ingrediente/${event.idIngrediente}`, event).then(async () => {
+            dialog.value = false;
+            fetchArticulos();
+            await fetchData();
+            registroExitosoMensaje('ingrediente', currentTheme.value);
+        });
     } catch (error) {
         console.log(error);
         algoSalioMalError(currentTheme.value);
