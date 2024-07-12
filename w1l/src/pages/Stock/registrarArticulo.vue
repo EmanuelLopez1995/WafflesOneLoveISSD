@@ -5,6 +5,13 @@ import { ref, watch } from 'vue';
 import { useTheme } from 'vuetify';
 import axios from 'axios';
 
+const props = defineProps({
+    esModalDetalle: Boolean,
+    datosRegistro: Object,
+    esModal: Boolean
+});
+const emit = defineEmits(['cerrarDialogo']);
+
 const nombre = ref('');
 const stockMinimo = ref(0);
 const stockInicial = ref(0);
@@ -26,6 +33,44 @@ const currentTheme = computed(() => {
     return ref(vuetifyTheme.current.value.colors);
 });
 
+const cargarDatosRegistroArticulo = () => {
+    if (props.esModalDetalle) {
+        nombre.value = props.datosRegistro.nombreArticulo;
+        marca.value = props.datosRegistro.marcaArticulo;
+        stockMinimo.value = props.datosRegistro.stockMinimo;
+        stockInicial.value = props.datosRegistro.stockActual;
+        unidadDeMedida.value = props.datosRegistro.umd;
+        detalle.value = props.datosRegistro.detalleArticulo;
+        esIngrediente.value = props.datosRegistro.esMateriaPrima;
+        pesoVolumen.value = props.datosRegistro.pesoArticulo;
+        ingrediente.value = props.datosRegistro.ingrediente;
+    }
+};
+
+const confirmarModificacion = () => {
+    const params = crearParams();
+    params.idArticulo = props.datosRegistro.idArticulo;
+    emit('confirmarDialogo', params);
+};
+
+const crearParams = () => {
+    let params = {
+        nombreArticulo: nombre.value,
+        marcaArticulo: marca.value,
+        stockMinimo: stockMinimo.value,
+        stockActual: stockInicial.value,
+        esMateriaPrima: esIngrediente.value,
+        detalleArticulo: detalle.value,
+        idUMD: unidadDeMedida.value.idUMD
+    };
+    if (esIngrediente.value) {
+        params.pesoArticulo = pesoVolumen.value;
+        params.idIngrediente = ingrediente.value.idIngrediente;
+    }
+
+    return params;
+};
+
 const fetchUMD = () => {
     try {
         axios
@@ -46,7 +91,7 @@ const fetchUMD = () => {
 
 const fetchIngredientes = async () => {
     try {
-        axios
+        await axios
             .get('/Ingrediente')
             .then(response => {
                 ingredientes.value = response.data;
@@ -59,28 +104,17 @@ const fetchIngredientes = async () => {
     }
 };
 
-onMounted(() => {
-    fetchIngredientes();
-    fetchUMD();
+onMounted(async () => {
+    await fetchIngredientes();
+    await fetchUMD();
+    cargarDatosRegistroArticulo();
 });
 
 const registrarArticulo = () => {
     form.value.validate().then(response => {
         if (response.valid) {
             try {
-                let params = {
-                    nombreArticulo: nombre.value,
-                    marcaArticulo: marca.value,
-                    stockMinimo: stockMinimo.value,
-                    stockActual: stockInicial.value,
-                    esMateriaPrima: esIngrediente.value,
-                    detalleArticulo: detalle.value,
-                    idUMD: unidadDeMedida.value.idUMD
-                };
-                if (esIngrediente.value) {
-                    params.pesoArticulo = pesoVolumen.value;
-                    params.idIngrediente = ingrediente.value.idIngrediente;
-                }
+                let params = crearParams();
                 axios
                     .post('/Articulo/AddArticulo', params)
                     .then(() => {
@@ -220,7 +254,26 @@ const registrarArticulo = () => {
                         cols="12"
                         class="d-flex justify-end gap-4"
                     >
-                        <VBtn type="submit"> Registrar </VBtn>
+                        <VBtn
+                            v-if="props.esModalDetalle"
+                            color="secondary"
+                            variant="outlined"
+                            @click="emit('cerrarDialogo')"
+                        >
+                            CANCELAR
+                        </VBtn>
+                        <VBtn
+                            v-if="props.esModalDetalle"
+                            @click="confirmarModificacion"
+                        >
+                            MODIFICAR
+                        </VBtn>
+                        <VBtn
+                            v-if="!props.esModalDetalle"
+                            type="submit"
+                        >
+                            Registrar
+                        </VBtn>
                     </VCol>
                 </VRow>
             </VForm>

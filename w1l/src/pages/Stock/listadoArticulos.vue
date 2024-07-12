@@ -6,7 +6,7 @@ import { reglaObligatoria, validarEmail } from '@/components/validaciones.js';
 import { useTheme } from 'vuetify';
 import EditModal from '@/components/editModal/EditModal.vue';
 import descargarPDF from '@/components/pdfHelper.js';
-import RegistrarIngrediente from '@/pages/Stock/registrarMateriaPrima.vue';
+import RegistrarArticulo from '@/pages/Stock/registrarArticulo.vue';
 
 const articulos = ref([]);
 const ingredientes = ref([]);
@@ -171,16 +171,16 @@ onMounted(async () => {
 
 const eliminar = function (id) {
     try {
-        // axios
-        //     .delete(`/Articulo/DeleteArticulo/${id}`)
-        //     .then(async response => {
-        //         await fetchIngredientes();
-        //         await obtenerUMDS();
-        //         await fetchData();
-        //     })
-        //     .catch(() => {
-        //         algoSalioMalError(currentTheme.value);
-        //     });
+        axios
+            .delete(`/Articulo/DeleteArticulo/${id}`)
+            .then(async response => {
+                await fetchIngredientes();
+                await obtenerUMDS();
+                await fetchData();
+            })
+            .catch(() => {
+                algoSalioMalError(currentTheme.value);
+            });
     } catch {
         algoSalioMalError(currentTheme.value);
     }
@@ -208,6 +208,7 @@ const descargarListado = () => {
 
 const confirmarModificacion = event => {
     try {
+        console.log(event);
         // axios.put(`/Ingrediente/${event.idIngrediente}`, event).then(async () => {
         //     dialog.value = false;
         //     fetchArticulos();
@@ -301,7 +302,7 @@ const confirmarModificacion = event => {
             v-model="dialog"
             width="60%"
         >
-            <RegistrarIngrediente
+            <RegistrarArticulo
                 :esModalDetalle="true"
                 :datosRegistro="itemEditarIngrediente"
                 @cerrarDialogo="dialog = !dialog"
