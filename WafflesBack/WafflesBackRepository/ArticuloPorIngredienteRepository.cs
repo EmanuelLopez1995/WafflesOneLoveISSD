@@ -71,8 +71,7 @@ namespace WafflesBackRepository
         {
             var query = @"SELECT IdIngrediente, IdArticulo
                           FROM ArticulosPorIngrediente
-                          WHERE IdIngrediente = @IdIngrediente"
-            ;
+                          WHERE IdIngrediente = @IdIngrediente";
 
             var articuloPorIngrediente = new List<ArticuloPorIngredienteModel>();
 
@@ -89,7 +88,6 @@ namespace WafflesBackRepository
                         {
                             var model = new ArticuloPorIngredienteModel
                             {
-                                IdArtPorIngrediente = reader.GetInt32(reader.GetOrdinal("IdArtPorIngrediente")),
                                 IdIngrediente = reader.GetInt32(reader.GetOrdinal("IdIngrediente")),
                                 IdArticulo = reader.GetInt32(reader.GetOrdinal("IdArticulo"))
                             };

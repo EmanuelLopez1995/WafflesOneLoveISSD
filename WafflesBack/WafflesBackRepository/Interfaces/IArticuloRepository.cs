@@ -12,5 +12,6 @@ namespace WafflesBackRepository.Interfaces
         Task<int> UpdateArticuloEsIngrediente(int idArticulo);
         Task<int> DeleteArticulo(int id);
         Task<ArticuloModel> GetArticuloPorId(int idArticulo);
+        Task<int> setEsMatPriEnFalsePorId(int idArticulo);
     }
 }

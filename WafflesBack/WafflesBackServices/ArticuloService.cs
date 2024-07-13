@@ -60,14 +60,11 @@ namespace WafflesBackServices
             {
                 int IdArticulo = await _articuloRepository.UpdateArticulo(articulo);
 
-                if (articulo.IdIngrediente >= 0)
+                await _articuloPorIngredienteRepository.DeleteIngredientePorArticulo((int)articulo.IdArticulo); //Dejalo ahí
+
+                if (articulo.esMateriaPrima)
                 {
-                    await _articuloPorIngredienteRepository.DeleteIngredientePorArticulo((int)articulo.IdArticulo);
-
-
                     await _articuloPorIngredienteRepository.RegistrarArticulosPorIngrediente((int)articulo.IdArticulo, articulo.IdIngrediente);
-                    
-
                 }
 
                 return IdArticulo;

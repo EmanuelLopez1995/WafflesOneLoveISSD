@@ -63,6 +63,24 @@ namespace WafflesBackServices
         {
             try
             {
+                // Obtenemos los artículos asociados al ingrediente antes de la actualización
+                var articulosXIngredienteOriginal = await _articuloPorIngredienteRepository.ObtenerArticulosPorIngrediente((int)ingrediente.IdIngrediente);
+
+                // Extraer solo los IdArticulo de la lista original
+                var idsArticulosOriginales = articulosXIngredienteOriginal
+                    .Where(a => a.IdArticulo.HasValue)
+                    .Select(a => a.IdArticulo.Value)
+                    .ToList();
+
+                var idsEliminados = idsArticulosOriginales.Except(ingrediente.IdsArticulos).ToList();
+
+                foreach (var idEliminado in idsEliminados)
+                {
+                    // Actualizamos el esMateriaPrima a False y le ponemos peso 0, deja de ser Ingrediente 
+                    // CHEQUEAR ESTO! QUE PASA SI TENEMOS EL MISMO ARTICULO EN 2 INGREDIENTES?
+                    await _articuloRepository.setEsMatPriEnFalsePorId(idEliminado);
+                }
+
                 int IdIngrediente = await _ingredienteRepository.UpdateIngrediente(ingrediente);
 
                 if (ingrediente.IdsArticulos != null)
@@ -71,8 +89,8 @@ namespace WafflesBackServices
 
                     foreach (var idArticulo in ingrediente.IdsArticulos)
                     {
-                        
                         await _articuloPorIngredienteRepository.RegistrarArticulosPorIngrediente(idArticulo, (int)ingrediente.IdIngrediente);
+                        await _articuloRepository.UpdateArticuloEsIngrediente(idArticulo);
                     }
                 }
 
@@ -80,19 +98,25 @@ namespace WafflesBackServices
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error en el servicio al registrar ingrediente: {ex.Message}");
+                throw new Exception($"Error en el servicio al actualizar ingrediente: {ex.Message}");
             }
         }
 
         public async Task<int> DeleteIngrediente(int id)
         {
             // Obtiene el ingrediente por su ID
-            var ingrediente = await _ingredienteRepository.GetIngredienteById(id);
+            var ingrediente = await GetIngredienteById(id);
 
             if (ingrediente != null)
             {
                 // Elimina los artículos asociados al ingrediente
                 await _articuloPorIngredienteRepository.DeleteArticulosPorIngrediente((int)ingrediente.IdIngrediente);
+
+                //Esto va a setear materia prima en false para los articulos relacionados
+                foreach (var idArticulo in ingrediente.IdsArticulos)
+                {
+                    await _articuloRepository.setEsMatPriEnFalsePorId(idArticulo);
+                }
 
                 // Elimina el ingrediente
                 return await _ingredienteRepository.DeleteIngrediente(id);
