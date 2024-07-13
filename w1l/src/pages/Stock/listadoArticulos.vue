@@ -1,12 +1,24 @@
 <script setup>
 import axios from 'axios';
-import { defineAsyncComponent, ref } from 'vue';
+import { defineAsyncComponent, ref, watch} from 'vue';
 import { eliminarRegistro, algoSalioMalError, registroExitosoMensaje } from '@/components/SwalCustom.js';
 import { reglaObligatoria, validarEmail } from '@/components/validaciones.js';
 import { useTheme } from 'vuetify';
 import EditModal from '@/components/editModal/EditModal.vue';
 import descargarPDF from '@/components/pdfHelper.js';
 import RegistrarArticulo from '@/pages/Stock/registrarArticulo.vue';
+
+const props = defineProps({
+    tabKey: String
+});
+
+watch(() => props.tabKey, async (newVal, oldVal) => {
+    if(newVal == 'listArt') {
+        await fetchIngredientes();
+        await obtenerUMDS();
+        await fetchData();
+    }
+});
 
 const articulos = ref([]);
 const ingredientes = ref([]);
@@ -98,7 +110,7 @@ const fetchData = async () => {
                 } else {
                     return {
                         ...art,
-                        ingrediente: {
+                        ingrediente: { //Ver si hace falta
                             nombreIngrediente: '-------'
                         }
                     };
@@ -208,13 +220,13 @@ const descargarListado = () => {
 
 const confirmarModificacion = event => {
     try {
-        console.log(event);
-        // axios.put(`/Ingrediente/${event.idIngrediente}`, event).then(async () => {
-        //     dialog.value = false;
-        //     fetchArticulos();
-        //     await fetchData();
-        //     registroExitosoMensaje('ingrediente', currentTheme.value);
-        // });
+        axios.put(`/Articulo/UpdateArticulo/${event.idArticulo}`, event).then(async () => {
+            dialog.value = false;
+            await fetchIngredientes();
+            await obtenerUMDS();
+            await fetchData();
+            registroExitosoMensaje('articulo', currentTheme.value);
+        });
     } catch (error) {
         console.log(error);
         algoSalioMalError(currentTheme.value);

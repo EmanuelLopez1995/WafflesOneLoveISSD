@@ -1,12 +1,23 @@
 <script setup>
 import axios from 'axios';
-import { defineAsyncComponent, ref } from 'vue';
+import { defineAsyncComponent, ref, watch } from 'vue';
 import { eliminarRegistro, algoSalioMalError, registroExitosoMensaje } from '@/components/SwalCustom.js';
 import { reglaObligatoria, validarEmail } from '@/components/validaciones.js';
 import { useTheme } from 'vuetify';
 import EditModal from '@/components/editModal/EditModal.vue';
 import descargarPDF from '@/components/pdfHelper.js';
 import RegistrarIngrediente from '@/pages/Stock/registrarMateriaPrima.vue';
+
+const props = defineProps({
+    tabKey: String
+});
+
+watch(() => props.tabKey, async (newVal, oldVal) => {
+    if(newVal == 'listIng') {
+        await fetchArticulos();
+        fetchData();
+    }
+});
 
 const ingredientes = ref([]);
 const proveedores = ref([]);

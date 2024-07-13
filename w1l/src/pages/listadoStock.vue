@@ -2,7 +2,7 @@
 import ListadoArticulos from '@/pages/Stock/listadoArticulos.vue'
 import ListadoIngredientes from '@/pages/Stock/listadoIngredientes.vue'
 
-import { useRoute } from 'vue-router'
+import { useRoute } from 'vue-router' 
 
 const route = useRoute()
 const activeTab = ref(route.params.tab)
@@ -49,11 +49,11 @@ let tabs = [
             :touch="false"
         >
             <VWindowItem value="listIng">
-                <ListadoIngredientes />
+                <ListadoIngredientes :tabKey="activeTab"/>
             </VWindowItem>
 
             <VWindowItem value="listArt">
-                <ListadoArticulos />
+                <ListadoArticulos :tabKey="activeTab"/>
             </VWindowItem>
         </VWindow>
     </div>

@@ -43,14 +43,18 @@ const cargarDatosRegistroArticulo = () => {
         detalle.value = props.datosRegistro.detalleArticulo;
         esIngrediente.value = props.datosRegistro.esMateriaPrima;
         pesoVolumen.value = props.datosRegistro.pesoArticulo;
-        ingrediente.value = props.datosRegistro.ingrediente;
+        ingrediente.value = props.datosRegistro.ingrediente.nombreIngrediente == '-------' ? null : props.datosRegistro.ingrediente;
     }
 };
 
 const confirmarModificacion = () => {
-    const params = crearParams();
-    params.idArticulo = props.datosRegistro.idArticulo;
-    emit('confirmarDialogo', params);
+    form.value.validate().then(response => {
+        if (response.valid) {
+            const params = crearParams();
+            params.idArticulo = props.datosRegistro.idArticulo;
+            emit('confirmarDialogo', params);
+        }
+    })
 };
 
 const crearParams = () => {

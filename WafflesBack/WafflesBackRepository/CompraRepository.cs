@@ -27,7 +27,7 @@ namespace WafflesBackRepository
                 await connection.OpenAsync();
                 using (var command = new SqlCommand(query, connection))
                 {
-                    using (var reader = await command.ExecuteReaderAsync())
+                    using (var reader = await command.ExecuteReaderAsync()) 
                     {
                         while (await reader.ReadAsync())
                         {
