@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using WafflesBackCommon.Models;
+using WafflesBackRepository;
 using WafflesBackRepository.Interfaces;
 using WafflesBackServices.Interfaces;
 
@@ -11,12 +12,15 @@ namespace WafflesBackServices
         private readonly IArticuloRepository _articuloRepository;
         private readonly IArticuloPorIngredienteRepository _articuloPorIngredienteRepository;
         private readonly IIngredienteRepository _ingredienteRepository;
+        private readonly IDetalleCompraRepository _detalleCompraRepository;
 
-        public ArticuloService(IArticuloRepository articuloRepository, IArticuloPorIngredienteRepository articuloPorIngredienteRepository, IIngredienteRepository ingredienteRepository)
+
+        public ArticuloService(IArticuloRepository articuloRepository, IArticuloPorIngredienteRepository articuloPorIngredienteRepository, IIngredienteRepository ingredienteRepository, IDetalleCompraRepository detalleCompraRepository)
         {
             _articuloRepository = articuloRepository;
             _articuloPorIngredienteRepository = articuloPorIngredienteRepository;
             _ingredienteRepository = ingredienteRepository;
+            _detalleCompraRepository = detalleCompraRepository;
         }
 
         public async Task<List<ArticuloModel>> GetAllArticulo()
@@ -77,23 +81,18 @@ namespace WafflesBackServices
         }
 
         public async Task<int> DeleteArticulo(int id)
-        
-         {
-                // Obtiene el ingrediente por su ID
-                var articulo = await _articuloRepository.GetArticuloPorId(id);
+        {
+            // Verificar si existen detalles de compra asociados al artículo
+            var detallesCompra = await _detalleCompraRepository.GetDetallesByArticuloId(id);
 
-                if (articulo != null)
-                {
-                    // Elimina los artículos asociados al ingrediente
-                    await _articuloPorIngredienteRepository.DeleteIngredientePorArticulo((int)articulo.IdArticulo);
+            if (detallesCompra.Count > 0)
+            {
+                // Si hay detalles de compra asociados, no se puede eliminar el artículo
+                throw new Exception("No se puede eliminar el artículo porque está asociado a registros de compra.");
+            }
 
-                    // Elimina el ingrediente
-                    return await _articuloRepository.DeleteArticulo(id);
-                }
-
-            // Si el ingrediente no existe, devuelve un valor indicando que no se hizo ninguna eliminación
-
-            return 0;
+            // Si no hay detalles de compra asociados, proceder con la eliminación del artículo
+            return await _articuloRepository.DeleteArticulo(id);
         }
 
         public async Task<ArticuloModel> GetArticuloPorId(int id)
