@@ -49,6 +49,39 @@ namespace WafflesBackRepository
             return detalleCompraList;
         }
 
+        public async Task<List<DetalleCompraModel>> GetDetallesByArticuloId(int idArticulo)
+        {
+            var detalleCompraList = new List<DetalleCompraModel>();
+            var query = "SELECT * FROM DetalleCompra WHERE idArticulo = @idArticulo";
+
+            using (SqlConnection connection = _connectionHelper.GetConnection())
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@idArticulo", idArticulo);
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var detalleCompra = new DetalleCompraModel
+                            {
+                                IdDetalleCompra = reader.GetInt32(reader.GetOrdinal("IdDetalleCompra")),
+                                IdArticulo = reader.GetInt32(reader.GetOrdinal("IdArticulo")),
+                                Cantidad = reader.GetInt32(reader.GetOrdinal("Cantidad")),
+                                PrecioUnitario = reader.GetDecimal(reader.GetOrdinal("PrecioUnitario")),
+                                Subtotal = reader.GetDecimal(reader.GetOrdinal("Subtotal")),
+                                IdCompra = reader.GetInt32(reader.GetOrdinal("IdCompra"))
+                            };
+                            detalleCompraList.Add(detalleCompra);
+                        }
+                    }
+                }
+            }
+            return detalleCompraList;
+        }
+
         public async Task<int> AddDetalleCompra(DetalleCompraModel detalleCompra)
         {
             var query = @"INSERT INTO DetalleCompra (idArticulo, cantidad, precioUnitario, subtotal, idCompra)

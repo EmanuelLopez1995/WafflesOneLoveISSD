@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
 import { defineAsyncComponent, ref, watch} from 'vue';
-import { eliminarRegistro, algoSalioMalError, registroExitosoMensaje } from '@/components/SwalCustom.js';
+import { eliminarRegistro, algoSalioMalError, registroExitosoMensaje, warningMessage } from '@/components/SwalCustom.js';
 import { reglaObligatoria, validarEmail } from '@/components/validaciones.js';
 import { useTheme } from 'vuetify';
 import EditModal from '@/components/editModal/EditModal.vue';
@@ -190,8 +190,12 @@ const eliminar = function (id) {
                 await obtenerUMDS();
                 await fetchData();
             })
-            .catch(() => {
-                algoSalioMalError(currentTheme.value);
+            .catch((error) => {
+                if(error.response.data == 'No se puede eliminar el artículo porque está asociado a registros de compra.') {
+                    warningMessage('No se puede eliminar el artículo porque está asociado a registros de compra.', currentTheme.value)
+                } else {
+                    algoSalioMalError(currentTheme.value);
+                }
             });
     } catch {
         algoSalioMalError(currentTheme.value);
