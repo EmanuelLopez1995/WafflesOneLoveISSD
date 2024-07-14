@@ -16,33 +16,7 @@ const dialog = ref(false);
 const itemEditarCompra = ref({});
 const search = ref('');
 const loading = ref(false);
-const titulosTabla = [
-    {
-        key: 'idCompra',
-        sortable: false,
-        title: 'ID'
-    },
-    {
-        key: 'fechaCompra',
-        sortable: false,
-        title: 'FECHA'
-    },
-    {
-        key: 'proveedor.nombre',
-        sortable: false,
-        title: 'PROVEEDOR'
-    },
-    {
-        key: 'totalConSigno',
-        sortable: false,
-        title: 'TOTAL'
-    },
-    {
-        key: 'opciones',
-        sortable: false,
-        title: 'OPCIONES'
-    }
-];
+const titulosTabla = ref([]);
 
 const itemsPuestos = [
     {
@@ -97,6 +71,33 @@ const fetchProveedores = async () => {
                 proveedor: proveedores.value.find(prov => prov.id == compra.idProveedor),
                 ...compra
             }));
+            titulosTabla.value = [
+                {
+                    key: 'idCompra',
+                    sortable: false,
+                    title: 'ID'
+                },
+                {
+                    key: 'fechaCompra',
+                    sortable: false,
+                    title: 'FECHA'
+                },
+                {
+                    key: 'proveedor.nombre',
+                    sortable: false,
+                    title: 'PROVEEDOR'
+                },
+                {
+                    key: 'totalConSigno',
+                    sortable: false,
+                    title: 'TOTAL'
+                },
+                {
+                    key: 'opciones',
+                    sortable: false,
+                    title: 'OPCIONES'
+                }
+            ];
         });
     } catch (error) {
         algoSalioMalError(currentTheme.value);
@@ -115,8 +116,8 @@ const fetchArticulos = () => {
 
 onMounted(async () => {
     await fetchData();
-    fetchProveedores();
-    fetchArticulos();
+    await fetchArticulos();
+    await fetchProveedores();
 });
 
 const eliminar = function (id) {
@@ -164,6 +165,7 @@ const confirmarModificacion = event => {
             total: event.total,
             detallesCompra: event.detallesCompra
         };
+        console.log(params);
         axios.put(`/Compra/UpdateCompra/${params.idCompra}`, params).then(async () => {
             dialog.value = false;
             await fetchData();
