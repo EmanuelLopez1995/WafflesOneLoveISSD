@@ -10,5 +10,7 @@ namespace WafflesBackServices.Interfaces
         Task<int> UpdateCompra(CompraModel compra);
         Task<int> DeleteCompra(int id);
         Task<CompraModel> GetCompraPorId(int id);
+        Task<int> ActualizarStockPorActualizarCompras(DetalleCompraModel detalleNuevo);
+        Task ActualizarStockPorEliminarDetalleCompra(DetalleCompraModel detalleEliminado);
     }
 }

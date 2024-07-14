@@ -10,5 +10,6 @@ namespace WafflesBackRepository.Interfaces
         Task<List<DetalleCompraModel>> GetDetallesByArticuloId(int idArticulo);
         Task<int> AddDetalleCompra(DetalleCompraModel detalleCompra);
         Task<int> DeleteDetalleCompraPorIdCompra(int idCompra);
+        Task<DetalleCompraModel> GetDetallesByDetallesId(int idDetalleCompra);
     }
 }

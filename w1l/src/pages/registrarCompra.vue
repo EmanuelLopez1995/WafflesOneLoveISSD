@@ -35,6 +35,7 @@ const fecha = ref(null);
 const totalFactura = ref(0);
 const productosSeleccionados = ref([]);
 const formAgregarProducto = ref(null);
+const form = ref(null);
 const proveedores = ref([]);
 // const archivo = ref(null);
 
@@ -68,6 +69,7 @@ const confirmarModificacion = () => {
 
 const crearParams = () => {
     const productosParams = productosSeleccionados.value.map(el => ({
+        idDetalleCompra: el.idDetalleCompra ?? el.idDetalleCompra,
         idArticulo: el.producto.idArticulo,
         cantidad: el.cantidad,
         precioUnitario: el.precioUnitario,
@@ -85,15 +87,20 @@ const crearParams = () => {
 };
 
 const registrarCompra = async () => {
-    try {
-        const params = crearParams();
-        axios.post('/Compra/AddCompra', params).then(() => {
-            registroExitosoMensaje('compra', currentTheme.value);
-        });
-    } catch (error) {
-        console.log(error);
-        algoSalioMalError(currentTheme.value);
-    }
+    form.value.validate().then(response => {
+        if (response.valid) {
+            try {
+                const params = crearParams();
+                axios.post('/Compra/AddCompra', params).then(() => {
+                    form.value.reset();
+                    registroExitosoMensaje('compra', currentTheme.value);
+                });
+            } catch (error) {
+                console.log(error);
+                algoSalioMalError(currentTheme.value);
+            }
+        }
+    });
 };
 
 const obtenerFechaActual = () => {
