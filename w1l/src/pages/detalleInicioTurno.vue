@@ -223,6 +223,8 @@ const agregarModificacionCaja = () => {
     });
 };
 const cerrarDialogEditarCaja = () => {
+    cantidadBilletes.value = [];
+    aperturaCorrecta.value = null;
     dialogDatosCaja.value = !dialogDatosCaja.value;
 };
 
