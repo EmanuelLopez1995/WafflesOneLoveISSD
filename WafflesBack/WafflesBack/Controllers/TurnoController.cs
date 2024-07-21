@@ -104,5 +104,27 @@ namespace WafflesBack.Controllers
                 return StatusCode(500, $"Error al finalizar el turno: {ex.Message}");
             }
         }
+
+        [HttpGet]
+        [Route("GetAllTurnos")]
+        public async Task<IActionResult> GetAllTurnos()
+        {
+            try
+            {
+                var turnos = await _turnoService.GetAllTurnos();
+                if (turnos != null && turnos.Any())
+                {
+                    return Ok(turnos);
+                }
+                else
+                {
+                    return NotFound("No hay turnos disponibles.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al obtener los turnos: {ex.Message}");
+            }
+        }
     }
 }

@@ -156,5 +156,23 @@ namespace WafflesBackServices.Services
                 throw new Exception($"Error en el servicio al finalizar el turno en curso: {ex.Message}");
             }
         }
+
+        public async Task<List<TurnoModel>> GetAllTurnos()
+        {
+            try
+            {
+                var turnos = await _turnoRepository.ObtenerTodosLosTurnos();
+                foreach (var turno in turnos)
+                {
+                    turno.Caja = await _cajaRepository.GetCajaPorId((int)turno.idCaja);
+                    turno.Empleados = await _turnoEmpleadoRepository.ObtenerEmpleadosPorTurno((int)turno.idTurno);
+                }
+                return turnos;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error en el servicio al obtener todos los turnos: {ex.Message}");
+            }
+        }
     }
 }
