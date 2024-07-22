@@ -136,7 +136,7 @@ namespace WafflesBackRepository.Repositories
         {
             var query = @"SELECT idTurno, tipoTurno, fechaTurno, horaDelInicio, horaCierre, notasInicio, notasCierre, esFeriado, idEncargadoTurno, idCaja 
                           FROM Turno 
-                          ORDER BY fechaTurno DESC;";
+                          ORDER BY idTurno DESC;";
 
             using (SqlConnection connection = _connectionHelper.GetConnection())
             {

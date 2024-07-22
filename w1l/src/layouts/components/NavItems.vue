@@ -18,28 +18,34 @@ onMounted(() => {
 </script>
 
 <template>
+  <VerticalNavGroup
+    :item="{
+      title: 'Turnos',
+      icon: 'ri-t-box-line',
+    }"
+  >
   <VerticalNavLink
-  v-if="!generalStore.turnoIniciado"
+    :item="{
+      title: 'Listado de turnos',
+      to: '/listadoTurnos',
+    }"
+  />
+  <VerticalNavLink
+    v-if="!generalStore.turnoIniciado"
     :item="{
       title: 'Inicio de Turno',
-      icon: 'ri-door-open-line',
       to: '/inicioTurnoYcaja',
     }"
   />
-  <VerticalNavGroup
-    v-else
-    :item="{
-      title: 'Turno en curso',
-      icon: 'ri-loop-left-fill',
-    }"
-  >
     <VerticalNavLink
+      v-if="generalStore.turnoIniciado"
       :item="{
         title: 'Detalle de Inicio',
         to: '/detalleInicioTurno',
       }"
     />
     <VerticalNavLink
+      v-if="generalStore.turnoIniciado"
       :item="{
         title: 'Finalizar Turno',
         to: '/finalizarTurno',

@@ -65,8 +65,6 @@ const irAResumen = (datosCierreDeCaja) => {
     tabs[0].disabled = true;
     activeTab.value = 'resumen';
     tabs[1].disabled = true;
-    // console.log(datosDeCierreDeCaja.value);
-    // console.log(datosDeCierreTurno.value);
 }
 
 const backToCaja = () => {

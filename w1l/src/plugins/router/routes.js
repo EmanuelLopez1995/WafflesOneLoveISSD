@@ -84,6 +84,10 @@ export const routes = [
         path: 'listadoCompras',
         component: () => import('@/pages/listadoCompras.vue'),
       },
+      {
+        path: 'listadoTurnos',
+        component: () => import('@/pages/listadoTurnos.vue'),
+      },
     ],
   },
   {
