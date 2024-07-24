@@ -1,9 +1,12 @@
 <script setup>
 import avatar1 from '@images/avatars/avatar-1.png'
-import { router } from '@/plugins/router';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const logout = () => {
-  localStorage.removeItem('usuarioAutenticado')
+  localStorage.removeItem('user');
+  localStorage.removeItem('token');
   router.push('/login')
 }
 </script>
