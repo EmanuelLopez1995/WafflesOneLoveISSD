@@ -8,16 +8,16 @@ const router = createRouter({
 
 router.beforeEach( async (to, from, next) => {
 
-  let usuarioAutenticado = localStorage.getItem('usuarioAutenticado'); // esto cambiaría desde el back 
+  let user = localStorage.getItem('user');
 
   if(to.path != '/login'){
-    if(usuarioAutenticado){
+    if(user){
       next(); 
     }else{
       next('/login')
     }
   }else{
-    if(!usuarioAutenticado){
+    if(!user){
       next(); 
     }else{
       next('/')
