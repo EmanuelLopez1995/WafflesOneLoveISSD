@@ -2,6 +2,7 @@
 import EmpleadosAdmin from '@/pages/admin/empleados/adminEmpleados.vue'
 import FinanzasAdmin from '@/pages/admin/finanzas/adminFinanzas.vue'
 import StockAdmin from '@/pages/admin/stock/adminStock.vue'
+import usuariosAdmin from '@/pages/admin/usuarios/usuariosAdmin.vue'
 
 import { useRoute } from 'vue-router'
 
@@ -15,14 +16,14 @@ let tabs = [
         tab: 'empleados'
     },
     {
+        title: 'Usuarios',
+        icon: 'ri-user-3-line',
+        tab: 'usuarios'
+    },
+    {
         title: 'Finanzas',
         icon: 'ri-money-dollar-box-line',
         tab: 'finanzas'
-    },
-    {
-        title: 'Usuarios',
-        icon: 'ri-check-double-line',
-        tab: 'usuarios'
     },
     {
         title: 'Stock',
@@ -67,7 +68,7 @@ let tabs = [
                 value="usuarios"
                 to="/asd"
             >
-                <h1>Usuarios</h1>
+                <usuariosAdmin />
             </VWindowItem>
 
             <VWindowItem value="finanzas">
