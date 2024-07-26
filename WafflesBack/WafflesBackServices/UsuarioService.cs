@@ -11,17 +11,26 @@ namespace WafflesBackServices
     public class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IUsuarioSeccionesRepository _usuarioSeccionesRepository;
 
-        public UsuarioService(IUsuarioRepository usuarioRepository, IConfiguration configuration)
+
+        public UsuarioService(IUsuarioRepository usuarioRepository, IConfiguration configuration, IUsuarioSeccionesRepository usuarioSeccionesRepository)
         {
             _usuarioRepository = usuarioRepository;
+            _usuarioSeccionesRepository = usuarioSeccionesRepository;
         }
 
         public async Task<List<UsuarioModel>> GetAllUsuarios()
         {
             try
             {
-                return await _usuarioRepository.GetAllUsuarios();
+                List<UsuarioModel> usuarios = await _usuarioRepository.GetAllUsuarios();
+
+                usuarios.ForEach(async usuario => {
+                    usuario.idsSecciones = await _usuarioSeccionesRepository.GetSeccionesPorUsuario((int)usuario.idUsuario);
+                });
+
+                return usuarios;
             }
             catch (Exception)
             {
@@ -33,7 +42,14 @@ namespace WafflesBackServices
         {
             try
             {
-                return await _usuarioRepository.AddUsuario(usuario);
+                int idUsuario =  await _usuarioRepository.AddUsuario(usuario);
+
+                usuario.idsSecciones.ForEach(async idSeccion =>
+                {
+                    await _usuarioSeccionesRepository.AddUsuarioSeccion(idUsuario, idSeccion);
+                });
+
+                return idUsuario;
             }
             catch (Exception)
             {
