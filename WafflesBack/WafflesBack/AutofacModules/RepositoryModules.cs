@@ -28,6 +28,8 @@ namespace WafflesBack.AutofacModules
             builder.RegisterType<DetalleCompraRepository>().As<IDetalleCompraRepository>();
             builder.RegisterType<BilletesRepository>().As<IBilletesRepository>();
             builder.RegisterType<UsuarioRepository>().As<IUsuarioRepository>();
+            builder.RegisterType<UsuarioSeccionesRepository>().As<IUsuarioSeccionesRepository>();
+
 
 
 
