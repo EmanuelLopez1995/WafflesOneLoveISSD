@@ -21,8 +21,7 @@ namespace WafflesBack.AutofacModules
             builder.RegisterType<CompraService>().As<ICompraService>().InstancePerLifetimeScope();
             builder.RegisterType<BilletesService>().As<IBilletesService>().InstancePerLifetimeScope();
             builder.RegisterType<UsuarioService>().As<IUsuarioService>().InstancePerLifetimeScope();
-
-
+            builder.RegisterType<SeccionService>().As<ISeccionService>().InstancePerLifetimeScope();
 
             base.Load(builder);
         }
