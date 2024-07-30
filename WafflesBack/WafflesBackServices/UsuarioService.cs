@@ -5,6 +5,8 @@ using WafflesBackRepository.Interfaces;
 using WafflesBackServices.Interfaces;
 using Microsoft.Extensions.Configuration;
 using WafflesBackCommon.Models;
+using WafflesBackRepository;
+using WafflesBackRepository.Repositories;
 
 namespace WafflesBackServices
 {
@@ -61,7 +63,17 @@ namespace WafflesBackServices
         {
             try
             {
-                return await _usuarioRepository.UpdateUsuario(usuario);
+
+                int rowsAffected = await _usuarioRepository.UpdateUsuario(usuario);
+                
+                await _usuarioSeccionesRepository.DeleteUsuarioSeccionesPorUsuario((int)usuario.idUsuario);
+
+                foreach (var idSeccion in usuario.idsSecciones)
+                {
+                    await _usuarioSeccionesRepository.AddUsuarioSeccion((int)usuario.idUsuario, idSeccion);
+                }
+
+                return rowsAffected;
             }
             catch (Exception)
             {
