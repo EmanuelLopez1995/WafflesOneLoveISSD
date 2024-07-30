@@ -73,6 +73,7 @@ namespace WafflesBackServices
         {
             try
             {
+                await _usuarioSeccionesRepository.DeleteUsuarioSeccionesPorUsuario(id);
                 return await _usuarioRepository.DeleteUsuario(id);
             }
             catch (Exception)

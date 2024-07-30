@@ -58,5 +58,22 @@ namespace WafflesBackRepository
             }
             return seccionesList;
         }
+
+        public async Task<int> DeleteUsuarioSeccionesPorUsuario(int idUsuario)
+        {
+            var query = "DELETE FROM UsuarioSecciones WHERE idUsuario = @idUsuario";
+
+            using (SqlConnection connection = _connectionHelper.GetConnection())
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@idUsuario", idUsuario);
+
+                    int rowsAffected = await command.ExecuteNonQueryAsync();
+                    return rowsAffected;
+                }
+            }
+        }
     }
 }
