@@ -1,62 +1,67 @@
 <script setup>
-import { reglaObligatoria, validarEmail } from '@/components/validaciones.js'
-import { eliminarRegistro, algoSalioMalError, registroExitosoMensaje } from '@/components/SwalCustom.js'
-import { ref } from 'vue'
-import { useTheme } from 'vuetify'
-import axios from 'axios'
+import { reglaObligatoria, validarEmail } from '@/components/validaciones.js';
+import { eliminarRegistro, algoSalioMalError, registroExitosoMensaje } from '@/components/SwalCustom.js';
+import { ref } from 'vue';
+import { useTheme } from 'vuetify';
+import useUsuarios from '@/composables/useUsuarios.js';
+import axios from 'axios';
 
-const dialog = ref(false)
-const form = ref(null)
-const formRegistro = ref(null)
-const vuetifyTheme = useTheme()
+const dialog = ref(false);
+const dialogRegistrar = ref(false);
+const form = ref(null);
+const formRegistro = ref(null);
+const vuetifyTheme = useTheme();
+const { secciones, obtenerUsuarios } = useUsuarios();
+const seccionesSeleccionadas = ref([]);
 
 const currentTheme = computed(() => {
-    return ref(vuetifyTheme.current.value.colors)
-})
+    return ref(vuetifyTheme.current.value.colors);
+});
 
-const usuarios = ref([])
+const usuarios = ref([]);
 const umdSeleccionado = ref({
     id: 0,
     nombreUMD: '',
     nombreCortoUMD: ''
-})
-const nuevoUMD = ref({
-    nombreUMD: '',
-    nombreCortoUMD: ''
-})
+});
+const nuevoUsuario = ref({
+    nombreUsuario: '',
+    claveUsuario: ''
+});
 
-const obtenerUsuarios = () => {
+const abrirEdicion = item => {
+    umdSeleccionado.value = Object.assign({}, item);
+    dialog.value = !dialog.value;
+};
+
+const abrirRegistrar = item => {
+    dialogRegistrar.value = !dialogRegistrar.value;
+};
+
+const cancelarDialog = () => {
+    dialog.value = !dialog.value;
+};
+
+const cancelarDialogRegistrar = () => {
+    dialogRegistrar.value = !dialogRegistrar.value;
+};
+
+const primeraParteSecciones = computed(() =>
+  secciones.value.slice(0, Math.ceil(secciones.value.length / 2))
+);
+
+const segundaParteSecciones = computed(() =>
+  secciones.value.slice(Math.ceil(secciones.value.length / 2))
+);
+
+const eliminar = async function (id) {
     try {
-        axios
-            .get('/Usuario/GetAllUsuarios')
-            .then(response => {
-                usuarios.value = response.data
-            })
-            .catch(() => {
-                algoSalioMalError(currentTheme.value)
-            })
+        await axios.delete(`/Usuario/DeleteUsuario/${id}`)
+        usuarios.value = await obtenerUsuarios();
     } catch (error) {
         algoSalioMalError(currentTheme.value)
     }
-}
-
-const abrirEdicion = item => {
-    umdSeleccionado.value = Object.assign({}, item)
-    dialog.value = !dialog.value
-}
-
-const cancelarDialog = () => {
-    dialog.value = !dialog.value
-}
-
-const eliminar = async function (id) {
-    // try {
-    //     await axios.delete(`/UMD/DeleteUMD/${id}`)
-    //     obtenerUsuarios()
-    // } catch (error) {
-    //     algoSalioMalError(currentTheme.value)
-    // }
-}
+};
 
 const confirmarEdicionUMD = () => {
     // form.value.validate().then(response => {
@@ -76,37 +81,43 @@ const confirmarEdicionUMD = () => {
     //         }
     //     }
     // })
-}
+};
 
-const confirmarRegistroUMD = () => {
-    // formRegistro.value.validate().then(response => {
-    //     if (response.valid) {
-    //         try {
-    //             let params = {
-    //                 nombreUMD: nuevoUMD.value.nombreUMD,
-    //                 nombreCortoUMD: nuevoUMD.value.nombreCortoUMD
-    //             }
-    //             axios.post(`/UMD/AddUMD`, params).then(() => {
-    //                 formRegistro.value.reset();
-    //                 nuevoUMD.value = ref({
-    //                     nombreUMD: '',
-    //                     nombreCortoUMD: ''
-    //                 })
-    //                 obtenerUsuarios()
-    //                 registroExitosoMensaje('UMD', currentTheme.value)
-    //             }).catch(() => {
-    //                 algoSalioMalError(currentTheme.value)
-    //             })
-    //         } catch (error) {
-    //             algoSalioMalError(currentTheme.value)
-    //         }
-    //     }
-    // })
-}
+const confirmarRegistroUsuario = () => {
+    formRegistro.value.validate().then(response => {
+        if (response.valid) {
+            try {
+                let params = {
+                    nombreUsuario: nuevoUsuario.value.nombreUsuario,
+                    claveUsuario: nuevoUsuario.value.claveUsuario,
+                    idsSecciones: seccionesSeleccionadas.value
+                };
+                axios
+                    .post(`/Usuario/AddUsuario`, params)
+                    .then(async () => {
+                        formRegistro.value.reset();
+                        nuevoUsuario.value = ref({
+                            nombreUMD: '',
+                            nombreCortoUMD: ''
+                        });
+                        seccionesSeleccionadas.value = [];
+                        usuarios.value = await obtenerUsuarios();
+                        dialogRegistrar.value = !dialogRegistrar.value;
+                        registroExitosoMensaje('Sección', currentTheme.value);
+                    })
+                    .catch(() => {
+                        algoSalioMalError(currentTheme.value);
+                    });
+            } catch (error) {
+                algoSalioMalError(currentTheme.value);
+            }
+        }
+    });
+};
 
-onMounted(() => {
-    obtenerUsuarios()
-})
+onMounted(async () => {
+    usuarios.value = await obtenerUsuarios();
+});
 </script>
 
 <template>
@@ -146,7 +157,7 @@ onMounted(() => {
                                         color="error-darken-1"
                                         class="me-1"
                                         @click="
-                                            eliminarRegistro(eliminar, item.idUMD, item.nombreUMD, currentTheme.value)
+                                            eliminarRegistro(eliminar, item.idUsuario, item.nombreUsuario, currentTheme.value)
                                         "
                                     />
                                 </td>
@@ -159,48 +170,16 @@ onMounted(() => {
                     cols="12"
                     md="8"
                 >
-                    <VForm
-                        @submit.prevent="confirmarRegistroUMD"
-                        ref="formRegistro"
+                    <h2 class="pb-3 mt-3">Registrar nuevo usuario</h2>
+                    <VBtn
+                        class="mt-1"
+                        @click="abrirRegistrar"
                     >
-                        <h2 class="pb-3 mt-3">Registrar nueva UMD</h2>
-                        <VRow>
-                            <VCol
-                                cols="12"
-                                md="4"
-                            >
-                                <VTextField
-                                    v-model="nuevoUMD.nombreUMD"
-                                    :rules="[reglaObligatoria()]"
-                                    label="Nombre"
-                                />
-                            </VCol>
-                            <VCol
-                                cols="12"
-                                md="4"
-                            >
-                                <VTextField
-                                    v-model="nuevoUMD.nombreCortoUMD"
-                                    :rules="[reglaObligatoria()]"
-                                    label="Nombre abreviado"
-                                />
-                            </VCol>
-                            <VCol
-                                cols="12"
-                                md="4"
-                            >
-                                <VBtn
-                                    class="mt-1"
-                                    type="submit"
-                                >
-                                    REGISTRAR
-                                </VBtn>
-                            </VCol>
-                        </VRow>
-                    </VForm>
+                        REGISTRAR
+                    </VBtn>
                 </VCol>
 
-                <!-- Modal -->
+                <!-- Modal Editar-->
                 <VDialog
                     persistent
                     v-model="dialog"
@@ -253,6 +232,97 @@ onMounted(() => {
                                         type="submit"
                                     >
                                         MODIFICAR
+                                    </VBtn>
+                                </VCol>
+                            </VRow>
+                        </VForm>
+                    </VCard>
+                </VDialog>
+
+                <!-- Modal agregar -->
+                <VDialog
+                    persistent
+                    v-model="dialogRegistrar"
+                    width="40%"
+                >
+                    <VCard
+                        prepend-icon="ri-edit-2-fill"
+                        title="Registrar nuevo usuario"
+                        class="px-5 py-5"
+                    >
+                        <VForm
+                            @submit.prevent="confirmarRegistroUsuario"
+                            ref="formRegistro"
+                        >
+                            <VRow>
+                                <VCol
+                                    cols="12"
+                                    md="6"
+                                >
+                                    <VTextField
+                                        v-model="nuevoUsuario.nombreUsuario"
+                                        :rules="[reglaObligatoria()]"
+                                        label="Nombre"
+                                    />
+                                </VCol>
+                                <VCol
+                                    cols="12"
+                                    md="6"
+                                >
+                                    <VTextField
+                                        v-model="nuevoUsuario.claveUsuario"
+                                        :rules="[reglaObligatoria()]"
+                                        label="Contraseña"
+                                        type="password"
+                                    />
+                                </VCol>
+                                <VCol cols="12" md="12">
+                                    <h3 class="mx-3 mt-3">Permisos:</h3>
+                                </VCol>
+
+                                <v-col
+                                    cols="12"
+                                    md="6"
+                                    
+                                >
+                                    <v-checkbox
+                                        class="px-3"
+                                        v-for="(seccion) in primeraParteSecciones"
+                                        :key="seccion.idSeccion"
+                                        v-model="seccionesSeleccionadas"
+                                        :label="seccion.nombreSeccion"
+                                        :value="seccion.idSeccion"
+                                    ></v-checkbox>
+                                </v-col>
+                                <v-col
+                                    cols="12"
+                                    md="6"
+                                >
+                                    <v-checkbox
+                                        v-for="(seccion) in segundaParteSecciones"
+                                        :key="seccion.idSeccion"
+                                        v-model="seccionesSeleccionadas"
+                                        :label="seccion.nombreSeccion"
+                                        :value="seccion.idSeccion"
+                                    ></v-checkbox>
+                                </v-col>
+                                <VCol
+                                    cols="12"
+                                    md="12"
+                                    class="d-flex justify-end"
+                                >
+                                    <VBtn
+                                        color="secondary"
+                                        variant="outlined"
+                                        @click="cancelarDialogRegistrar"
+                                    >
+                                        CANCELAR
+                                    </VBtn>
+                                    <VBtn
+                                        class="ml-5"
+                                        type="submit"
+                                    >
+                                        AGREGAR
                                     </VBtn>
                                 </VCol>
                             </VRow>

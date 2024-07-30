@@ -8,5 +8,6 @@ namespace WafflesBackRepository.Interfaces
     {
         Task<int> AddUsuarioSeccion(int idUsuario, int idSeccion);
         Task<List<int>> GetSeccionesPorUsuario(int idUsuario);
+        Task<int> DeleteUsuarioSeccionesPorUsuario(int idUsuario);
     }
 }
