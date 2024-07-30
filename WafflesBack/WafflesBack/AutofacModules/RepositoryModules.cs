@@ -29,10 +29,7 @@ namespace WafflesBack.AutofacModules
             builder.RegisterType<BilletesRepository>().As<IBilletesRepository>();
             builder.RegisterType<UsuarioRepository>().As<IUsuarioRepository>();
             builder.RegisterType<UsuarioSeccionesRepository>().As<IUsuarioSeccionesRepository>();
-
-
-
-
+            builder.RegisterType<SeccionRepository>().As<ISeccionRepository>();
 
             base.Load(builder);
         }
