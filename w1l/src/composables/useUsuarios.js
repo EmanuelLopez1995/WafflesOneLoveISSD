@@ -38,6 +38,7 @@ const useUsuarios = () => {
                 .catch(() => {
                     algoSalioMalError(currentTheme.value);
                 });
+                return secciones.value;
             return usuarios.value;
         } catch (error) {
             algoSalioMalError(currentTheme.value);

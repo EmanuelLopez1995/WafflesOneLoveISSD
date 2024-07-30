@@ -9,9 +9,10 @@ import axios from 'axios';
 const dialogRegistrar = ref(false);
 const formRegistro = ref(null);
 const vuetifyTheme = useTheme();
-const { secciones, obtenerUsuarios } = useUsuarios();
+const { obtenerSecciones, obtenerUsuarios } = useUsuarios();
 const seccionesSeleccionadas = ref([]);
 const esEditar = ref(false);
+const secciones = ref([]);
 
 const currentTheme = computed(() => {
     return ref(vuetifyTheme.current.value.colors);
@@ -20,6 +21,7 @@ const currentTheme = computed(() => {
 const usuarios = ref([]);
 
 const nuevoUsuario = ref({
+    idUsuario: 0,
     nombreUsuario: '',
     claveUsuario: ''
 });
@@ -31,6 +33,7 @@ const abrirRegistrar = item => {
 
 const cancelarDialogRegistrar = () => {
     nuevoUsuario.value = ref({
+        idUsuario: 0,
         nombreUMD: '',
         nombreCortoUMD: ''
     });
@@ -41,12 +44,12 @@ const cancelarDialogRegistrar = () => {
 const abrirEditar = item => {
     esEditar.value = true;
     nuevoUsuario.value = {
+        idUsuario: item.idUsuario,
         nombreUsuario: item.nombreUsuario,
         claveUsuario: item.claveUsuario
     };
     let usuarioEditar = usuarios.value.find(us => us.idUsuario == item.idUsuario);
     seccionesSeleccionadas.value = usuarioEditar.idsSecciones;
-    console.log(seccionesSeleccionadas.value);
     dialogRegistrar.value = !dialogRegistrar.value;
 };
 
@@ -66,56 +69,40 @@ const eliminar = async function (id) {
 const confirmarRegistroEdicionUsuario = () => {
     formRegistro.value.validate().then(response => {
         if (response.valid) {
-            try {
-                let params = {
-                    nombreUsuario: nuevoUsuario.value.nombreUsuario,
-                    claveUsuario: nuevoUsuario.value.claveUsuario,
-                    idsSecciones: seccionesSeleccionadas.value
-                };
-                if (esEditar.value) {
-                    // axios
-                    //     .put(`/Usuario/AddUsuario`, params)
-                    //     .then(async () => {
-                    //         formRegistro.value.reset();
-                    //         nuevoUsuario.value = ref({
-                    //             nombreUMD: '',
-                    //             nombreCortoUMD: ''
-                    //         });
-                    //         seccionesSeleccionadas.value = [];
-                    //         usuarios.value = await obtenerUsuarios();
-                    //         dialogRegistrar.value = !dialogRegistrar.value;
-                    //         registroExitosoMensaje('Sección', currentTheme.value);
-                    //     })
-                    //     .catch(() => {
-                    //         algoSalioMalError(currentTheme.value);
-                    //     });
-                } else {
-                    axios
-                        .post(`/Usuario/AddUsuario`, params)
-                        .then(async () => {
-                            formRegistro.value.reset();
-                            nuevoUsuario.value = ref({
-                                nombreUMD: '',
-                                nombreCortoUMD: ''
-                            });
-                            seccionesSeleccionadas.value = [];
-                            usuarios.value = await obtenerUsuarios();
-                            dialogRegistrar.value = !dialogRegistrar.value;
-                            registroExitosoMensaje('Sección', currentTheme.value);
-                        })
-                        .catch(() => {
-                            algoSalioMalError(currentTheme.value);
-                        });
-                }
-            } catch (error) {
-                algoSalioMalError(currentTheme.value);
-            }
+            let params = {
+                idUsuario: nuevoUsuario.value.idUsuario,
+                nombreUsuario: nuevoUsuario.value.nombreUsuario,
+                claveUsuario: nuevoUsuario.value.claveUsuario,
+                idsSecciones: seccionesSeleccionadas.value
+            };
+            const axiosRequest = esEditar.value
+                ? axios.put(`/Usuario/UpdateUsuario/${params.idUsuario}`, params)
+                : axios.post(`/Usuario/AddUsuario`, params);
+            
+            axiosRequest
+                .then(async () => {
+                    formRegistro.value.reset();
+                    nuevoUsuario.value = {
+                        idUsuario: 0,
+                        nombreUMD: '',
+                        nombreCortoUMD: ''
+                    };
+                    seccionesSeleccionadas.value = [];
+                    usuarios.value = await obtenerUsuarios();
+                    dialogRegistrar.value = !dialogRegistrar.value;
+                    registroExitosoMensaje('Usuario', currentTheme.value);
+                })
+                .catch(error => {
+                    console.error('Error al registrar o editar usuario:', error);
+                    algoSalioMalError(currentTheme.value);
+                });
         }
     });
 };
 
 onMounted(async () => {
     usuarios.value = await obtenerUsuarios();
+    secciones.value = await obtenerSecciones();
 });
 </script>
 
