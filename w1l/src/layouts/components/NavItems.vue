@@ -11,15 +11,20 @@ const updateTurnoIniciado = () => {
   generalStore.updateTurnoIniciado();
 };
 
+const seccionesPermitidas = ref([]);
+
 // Escuchar los cambios en localStorage
-onMounted(() => {
+onMounted(async () => {
   window.addEventListener('storage', updateTurnoIniciado);
+  let usuario = await JSON.parse(localStorage.getItem('user'));
+  seccionesPermitidas.value = usuario.sections;
 });
 </script>
 
 <template>
   <div>
     <VerticalNavGroup
+      v-if="seccionesPermitidas.includes('4')"
       :item="{
         title: 'Turnos',
         icon: 'ri-t-box-line',
@@ -32,7 +37,7 @@ onMounted(() => {
       }"
     />
     <VerticalNavLink
-      v-if="!generalStore.turnoIniciado"
+      v-if="!generalStore.turnoIniciado && seccionesPermitidas.includes('4')"
       :item="{
         title: 'Inicio de Turno',
         to: '/inicioTurnoYcaja',
@@ -54,6 +59,7 @@ onMounted(() => {
       />
     </VerticalNavGroup>
     <VerticalNavGroup
+      v-if="seccionesPermitidas.includes('3')"
       :item="{
         title: 'Stock',
         icon: 'ri-archive-stack-line',
@@ -73,6 +79,7 @@ onMounted(() => {
       />
     </VerticalNavGroup>
     <VerticalNavGroup
+      v-if="seccionesPermitidas.includes('6')"
       :item="{
         title: 'Proveedores',
         icon: 'ri-account-pin-circle-line',
@@ -92,6 +99,7 @@ onMounted(() => {
       />
     </VerticalNavGroup>
     <VerticalNavGroup
+      v-if="seccionesPermitidas.includes('7')"
       :item="{
         title: 'Empleados',
         icon: 'ri-team-line',
@@ -111,6 +119,7 @@ onMounted(() => {
       />
     </VerticalNavGroup>
     <VerticalNavGroup
+      v-if="seccionesPermitidas.includes('1')"
       :item="{
         title: 'Compras',
         icon: 'ri-bank-card-2-line',
@@ -130,6 +139,7 @@ onMounted(() => {
       />
     </VerticalNavGroup>
     <VerticalNavGroup
+      v-if="seccionesPermitidas.includes('10')"
       :item="{
         title: 'Producción',
         icon: 'ri-restaurant-2-line',
@@ -143,6 +153,7 @@ onMounted(() => {
       />
     </VerticalNavGroup>
     <VerticalNavLink
+      v-if="seccionesPermitidas.includes('5')"
       :item="{
         title: 'Admin',
         icon: 'ri-settings-5-line',
