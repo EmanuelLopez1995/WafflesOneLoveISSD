@@ -86,7 +86,14 @@ const closeDialog = () => {
 };
 
 const descargarListado = () => {
-    descargarPDF(titulosTabla, turnos.value, 'turnos');
+    console.log(turnos.value);
+    const contenidoPDF = JSON.parse(JSON.stringify(turnos.value));
+    contenidoPDF.forEach((tur) => {
+        tur.esFeriado = tur.esFeriado ? 'Si' : 'No';
+        tur.encargadoDeTurno = tur.encargadoDeTurno.nombreCompleto;
+        tur.fechaTurno = tur.fechaTurno.slice(0,10);
+    })
+    descargarPDF(titulosTabla, contenidoPDF, 'turnos');
 };
 
 const titulosTabla = [
