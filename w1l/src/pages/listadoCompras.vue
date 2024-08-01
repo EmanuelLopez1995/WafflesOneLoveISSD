@@ -153,7 +153,11 @@ const guardarEdicionCompra = () => {
 };
 
 const descargarListado = () => {
-    descargarPDF(titulosTabla, compras.value, 'compras');
+    const contenidoPDF = JSON.parse(JSON.stringify(compras.value));
+    contenidoPDF.forEach((con) => {
+        con.proveedor = con.proveedor.nombre
+    })
+    descargarPDF(titulosTabla.value, contenidoPDF, 'compras');
 };
 
 const confirmarModificacion = event => {
