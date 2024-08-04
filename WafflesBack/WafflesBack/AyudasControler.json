@@ -84,9 +84,9 @@
 //Ejemplo POST Compra (nueva compra)
 {
     "fechaCompra": "2024-07-04",
-    "archivo": "RWplbXBsbyBkZSB2YXJiaW5hcnk=",
     "idProveedor": 1,
     "total": 10000,
+    "codigoComprobante":  "00002-A-0000351",
     "detallesCompra": [
         {
             "idArticulo": 1,
