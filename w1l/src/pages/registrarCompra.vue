@@ -37,6 +37,7 @@ const productosSeleccionados = ref([]);
 const formAgregarProducto = ref(null);
 const form = ref(null);
 const proveedores = ref([]);
+const codigoComprobante = ref(null);
 // const archivo = ref(null);
 
 const vuetifyTheme = useTheme();
@@ -51,6 +52,7 @@ const cargarDatosRegistroCompra = () => {
     if (props.esModalDetalle) {
         proveedor.value = props.datosRegistro.proveedor;
         proveedor.value.nombreYid = `${props.datosRegistro.proveedor.nombre} (${props.datosRegistro.proveedor.id})`;
+        codigoComprobante.value = props.datosRegistro.codigoComprobante;
         fecha.value = props.datosRegistro.fechaCompra;
         productosSeleccionados.value = props.datosRegistro.detallesCompra.map(detalle => {
             const articulo = productos.value.find(prod => prod.idArticulo === detalle.idArticulo);
@@ -80,6 +82,7 @@ const crearParams = () => {
         idCompra: props.datosRegistro ? props.datosRegistro.idCompra : 0,
         fechaCompra: fecha.value,
         // archivo: archivoBase64,
+        codigoComprobante: codigoComprobante.value,
         idProveedor: proveedor.value.id,
         total: calcularTotal(),
         detallesCompra: productosParams
@@ -264,6 +267,16 @@ onMounted(async () => {
                             item-title="nombreYid"
                             return-object
                             label="Proveedor"
+                        />
+                    </VCol>
+                    <VCol
+                        cols="12"
+                        md="3"
+                    >
+                        <VTextField
+                            v-model="codigoComprobante"
+                            :rules="[reglaObligatoria()]"
+                            label="Código de comprobante"
                         />
                     </VCol>
                     <!-- <VCol
