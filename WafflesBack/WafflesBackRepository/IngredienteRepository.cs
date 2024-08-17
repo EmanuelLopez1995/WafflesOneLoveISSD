@@ -131,7 +131,6 @@ namespace WafflesBackRepository
                             {
                                 IdIngrediente = reader.GetInt32(0),
                                 nombreIngrediente = reader.GetString(1),
-                                
                                 detalleIngrediente = reader.GetString(2)
                               
                             };
