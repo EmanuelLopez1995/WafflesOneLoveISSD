@@ -100,5 +100,33 @@ namespace WafflesBackRepository
                 }
             }
         }
+
+        public async Task<UMDModel> GetUMDById(int id)
+        {
+            var query = "SELECT * FROM UMD WHERE idUMD = @idUMD";
+
+            using (SqlConnection connection = _connectionHelper.GetConnection())
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@idUMD", id);
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            return new UMDModel
+                            {
+                                idUMD = reader.GetInt32(0),
+                                nombreUMD = reader.GetString(1),
+                                nombreCortoUMD = reader.GetString(2)
+                            };
+                        }
+                    }
+                }
+            }
+            return null;
+        }
     }
 }

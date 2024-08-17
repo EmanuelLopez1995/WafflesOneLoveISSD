@@ -10,5 +10,6 @@ namespace WafflesBackRepository.Interfaces
         Task<int> AddUMD(UMDModel umd);
         Task<int> UpdateUMD(UMDModel umd);
         Task<int> DeleteUMD(int id);
+        Task<UMDModel> GetUMDById(int id);
     }
 }
