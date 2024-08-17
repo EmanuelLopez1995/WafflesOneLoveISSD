@@ -6,9 +6,6 @@ export default function descargarPDF(titulosArray, contenidoArray, titulo) {
     orientation: 'landscape'
   });
 
-  console.log(titulosArray);
-  console.log(contenidoArray);
-
   const datosTabla = [];
   const titulosTabla = titulosArray.map(item => item.title).filter(title => title !== 'OPCIONES');
   datosTabla.push(titulosTabla);
@@ -16,7 +13,7 @@ export default function descargarPDF(titulosArray, contenidoArray, titulo) {
   contenidoArray.forEach(item => {
     const fila = titulosArray.map(titulo => {
       if (titulo.key !== 'opciones') {
-        return item[titulo.key];
+        return item[titulo.key.split('.')[0] ];
       }
     }).filter(value => value !== undefined);
     datosTabla.push(fila);

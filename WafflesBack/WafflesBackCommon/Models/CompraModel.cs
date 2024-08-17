@@ -13,6 +13,7 @@ namespace WafflesBackCommon.Models
         public byte[]? Archivo { get; set; }  // Para almacenar archivos
         public int? IdProveedor { get; set; }
         public decimal? Total { get; set; }
+        public string? codigoComprobante { get; set; }
         public List<DetalleCompraModel>? DetallesCompra { get; set; }
     }
 }

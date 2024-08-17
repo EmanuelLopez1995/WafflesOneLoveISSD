@@ -38,6 +38,7 @@ namespace WafflesBackRepository
                                 //Archivo = (byte[])reader[2],  // Assuming Archivo is VARBINARY
                                 IdProveedor = reader.GetInt32(3),
                                 Total = reader.GetDecimal(4),
+                                codigoComprobante = reader.IsDBNull(reader.GetOrdinal("codigoComprobante")) ? null : reader.GetString(reader.GetOrdinal("codigoComprobante")),
                             };
                             compraList.Add(compra);
                         }
@@ -49,9 +50,9 @@ namespace WafflesBackRepository
 
         public async Task<int> AddCompra(CompraModel compra)
         {
-            var query = @"INSERT INTO Compra (fechaCompra, idProveedor, Total)
+            var query = @"INSERT INTO Compra (fechaCompra, idProveedor, codigoComprobante, Total)
                   OUTPUT INSERTED.idCompra
-                  VALUES (@fechaCompra, @idProveedor, @Total)";
+                  VALUES (@fechaCompra, @idProveedor, @codigoComprobante, @Total)";
 
             using (SqlConnection connection = _connectionHelper.GetConnection())
             {
@@ -61,6 +62,7 @@ namespace WafflesBackRepository
                     command.Parameters.AddWithValue("@fechaCompra", compra.FechaCompra);
                     //command.Parameters.AddWithValue("@archivo", compra.Archivo);
                     command.Parameters.AddWithValue("@idProveedor", compra.IdProveedor);
+                    command.Parameters.AddWithValue("@codigoComprobante", compra.codigoComprobante);
                     command.Parameters.AddWithValue("@Total", compra.Total);
 
                     var id = (int)await command.ExecuteScalarAsync();
@@ -73,7 +75,7 @@ namespace WafflesBackRepository
         {
             var query = @"UPDATE Compra 
                           SET fechaCompra = @fechaCompra, 
-                              idProveedor = @idProveedor, Total = @Total 
+                              idProveedor = @idProveedor, codigoComprobante=@codigoComprobante, Total = @Total 
                           WHERE idCompra = @idCompra";
 
             using (SqlConnection connection = _connectionHelper.GetConnection())
@@ -83,6 +85,7 @@ namespace WafflesBackRepository
                 {
                     command.Parameters.AddWithValue("@fechaCompra", compra.FechaCompra);
                     command.Parameters.AddWithValue("@idProveedor", compra.IdProveedor);
+                    command.Parameters.AddWithValue("@codigoComprobante", compra.codigoComprobante);
                     command.Parameters.AddWithValue("@Total", compra.Total);
                     command.Parameters.AddWithValue("@idCompra", compra.IdCompra);
 

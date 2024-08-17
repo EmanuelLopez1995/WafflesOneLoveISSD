@@ -5,5 +5,6 @@
         public int? idUsuario { get; set; }
         public string? nombreUsuario { get; set; }
         public string? claveUsuario { get; set; }
+        public List<int>? idsSecciones { get; set; }
     }
 }

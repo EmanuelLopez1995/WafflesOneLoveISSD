@@ -83,6 +83,11 @@ const fetchProveedores = async () => {
                     title: 'FECHA'
                 },
                 {
+                    key: 'codigoComprobante',
+                    sortable: false,
+                    title: 'CÓDIGO DE COMPROBANTE'
+                },
+                {
                     key: 'proveedor.nombre',
                     sortable: false,
                     title: 'PROVEEDOR'
@@ -153,7 +158,11 @@ const guardarEdicionCompra = () => {
 };
 
 const descargarListado = () => {
-    descargarPDF(titulosTabla, compras.value, 'compras');
+    const contenidoPDF = JSON.parse(JSON.stringify(compras.value));
+    contenidoPDF.forEach((con) => {
+        con.proveedor = con.proveedor.nombre
+    })
+    descargarPDF(titulosTabla.value, contenidoPDF, 'compras');
 };
 
 const confirmarModificacion = event => {
@@ -162,6 +171,7 @@ const confirmarModificacion = event => {
             idCompra: event.idCompra,
             fechaCompra: event.fechaCompra,
             idProveedor: event.idProveedor,
+            codigoComprobante: event.codigoComprobante,
             total: event.total,
             detallesCompra: event.detallesCompra
         };

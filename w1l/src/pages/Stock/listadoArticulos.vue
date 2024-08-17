@@ -219,7 +219,12 @@ const guardarEdicionCompra = () => {
 };
 
 const descargarListado = () => {
-    descargarPDF(titulosTabla, articulos.value, 'articulos');
+    const contenidoPDF = JSON.parse(JSON.stringify(articulos.value));
+    contenidoPDF.forEach((con) => {
+        con.ingrediente = con.ingrediente.nombreIngrediente;
+        con.umd = con.umd.nombreCortoUMD;
+    })
+    descargarPDF(titulosTabla, contenidoPDF, 'articulos');
 };
 
 const confirmarModificacion = event => {
