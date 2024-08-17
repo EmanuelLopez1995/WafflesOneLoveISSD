@@ -122,6 +122,10 @@ namespace WafflesBackRepository
             }
         }
 
+       
+
+
+
         public async Task<List<int>> GetArticulosPorIngredienteId(int idIngrediente)
         {
             var query = @"SELECT IdArticulo

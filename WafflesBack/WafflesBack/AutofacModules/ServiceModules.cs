@@ -20,9 +20,9 @@ namespace WafflesBack.AutofacModules
             builder.RegisterType<IngredienteService>().As<IIngredienteService>().InstancePerLifetimeScope();
             builder.RegisterType<CompraService>().As<ICompraService>().InstancePerLifetimeScope();
             builder.RegisterType<BilletesService>().As<IBilletesService>().InstancePerLifetimeScope();
+            builder.RegisterType<RecetaService>().As<IRecetaService>().InstancePerLifetimeScope();
             builder.RegisterType<UsuarioService>().As<IUsuarioService>().InstancePerLifetimeScope();
             builder.RegisterType<SeccionService>().As<ISeccionService>().InstancePerLifetimeScope();
-
             base.Load(builder);
         }
     }
