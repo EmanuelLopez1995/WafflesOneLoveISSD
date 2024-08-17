@@ -64,5 +64,17 @@ namespace WafflesBackServices
                 throw new ApplicationException("Error al eliminar la unidad de medida");
             }
         }
+
+        public async Task<UMDModel> GetUMDById(int id)
+        {
+            try
+            {
+                return await _umdRepository.GetUMDById(id);
+            }
+            catch (Exception)
+            {
+                throw new ApplicationException("Error al obtener la unidad de medida por ID");
+            }
+        }
     }
 }

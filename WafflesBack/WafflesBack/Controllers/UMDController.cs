@@ -100,5 +100,27 @@ namespace WafflesBack.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+
+        [HttpGet]
+        [Route("GetUMDPorId/{id}")]
+        public async Task<IActionResult> GetUMDPorId(int id)
+        {
+            try
+            {
+                var umd = await _umdService.GetUMDById(id);
+                if (umd != null)
+                {
+                    return Ok(umd);
+                }
+                else
+                {
+                    return NotFound($"No se encontró la unidad de medida con ID: {id}");
+                }
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
     }
 }
