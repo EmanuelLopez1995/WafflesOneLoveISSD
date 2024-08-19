@@ -5,8 +5,12 @@ import { ref } from 'vue';
 import { useTheme } from 'vuetify';
 import axios from 'axios';
 
-const props = defineProps(['esModal']);
-const emit = defineEmits(['cerrarDialogo']);
+const props = defineProps({
+    esModalDetalle: Boolean,
+    datosRegistro: Object
+});
+
+const emit = defineEmits(['cerrarDialogo', 'confirmarDialogo']);
 const form = ref(null);
 const formIngredientes = ref(null);
 
@@ -36,6 +40,41 @@ const fetchIngredientes = async () => {
     }
 };
 
+const cargarDatosRegistroReceta = async () => {
+    if (props.esModalDetalle) {
+        nombreReceta.value = props.datosRegistro.nombreReceta;
+        procedimiento.value = props.datosRegistro.procedimiento;
+
+        ingredientesAgregados.value = await Promise.all(
+            props.datosRegistro.ingredientes.map(async ing => {
+                const ingredienteCompleto = ingredientesDB.value.find(item => ing.idIngrediente == item.idIngrediente);
+                const umd = await verificarUMD(ingredienteCompleto);
+                return {
+                    idIngrediente: ing.idIngrediente,
+                    cantidadSeleccionada: ing.cantidad,
+                    nombreIngrediente: ingredienteCompleto.nombreIngrediente,
+                    udm: umd
+                };
+            })
+        );
+    }
+};
+
+const crearParams = () => {
+    const ingredientesFormat = ingredientesAgregados.value.map(ingrediente => {
+        return {
+            cantidad: parseInt(ingrediente.cantidadSeleccionada),
+            idIngrediente: ingrediente.idIngrediente
+        };
+    });
+    return {
+        idReceta: props.datosRegistro ? props.datosRegistro.idReceta : 0,
+        nombreReceta: nombreReceta.value,
+        procedimiento: procedimiento.value || '',
+        ingredientes: ingredientesFormat
+    };
+};
+
 const registrarReceta = () => {
     form.value.validate().then(async response => {
         if (response.valid) {
@@ -44,17 +83,7 @@ const registrarReceta = () => {
                 return;
             } else {
                 try {
-                    const ingredientesFormat = ingredientesAgregados.value.map((ingrediente) => {
-                        return {
-                            cantidad: parseInt(ingrediente.cantidadSeleccionada),
-                            idIngrediente: ingrediente.idIngrediente
-                        }
-                    })
-                    const params = {
-                        nombreReceta: nombreReceta.value,
-                        procedimiento: procedimiento.value || '',
-                        ingredientes: ingredientesFormat
-                    };
+                    const params = crearParams();
                     await axios.post('/Receta', params).then(() => {
                         form.value.reset();
                         ingredientesAgregados.value = [];
@@ -86,9 +115,14 @@ const actualizarUnidadDeMedida = async () => {
     unidadDeMedidaSeleccionada.value = nombreCortoUMD;
 };
 
-const verificarUMD = async () => {
+const verificarUMD = async ingrediente => {
     try {
-        const primerArticuloId = ingredienteSeleccionado.value.idsArticulos[0];
+        let primerArticuloId;
+        if (ingrediente) {
+            primerArticuloId = ingrediente.idsArticulos[0];
+        } else {
+            primerArticuloId = ingredienteSeleccionado.value.idsArticulos[0];
+        }
         //VALIDAR SI NO TIENE ARTICULOS RELACIONADOS
         const results = await axios.get(`/Articulo/GetArticuloPorId/${primerArticuloId}`);
         const idUMD = results.data.idUMD;
@@ -105,8 +139,19 @@ const eliminarProductoDeLista = index => {
     }
 };
 
+const confirmarModificacion = () => {
+    if (ingredientesAgregados.value.length == 0) {
+        warningMessage('Debe agregar al menos 1 ingrediente', currentTheme.value.value);
+        return;
+    } else {
+        const params = crearParams();
+        emit('confirmarDialogo', params);
+    }
+};
+
 onMounted(async () => {
     await fetchIngredientes();
+    await cargarDatosRegistroReceta();
 });
 </script>
 
@@ -240,7 +285,26 @@ onMounted(async () => {
                         cols="12"
                         class="d-flex justify-end gap-4"
                     >
-                        <VBtn type="submit"> Registrar </VBtn>
+                        <VBtn
+                            v-if="props.esModalDetalle"
+                            color="secondary"
+                            variant="outlined"
+                            @click="emit('cerrarDialogo')"
+                        >
+                            CANCELAR
+                        </VBtn>
+                        <VBtn
+                            v-if="props.esModalDetalle"
+                            @click="confirmarModificacion"
+                        >
+                            MODIFICAR
+                        </VBtn>
+                        <VBtn
+                            v-if="!props.esModalDetalle"
+                            type="submit"
+                        >
+                            REGISTRAR
+                        </VBtn>
                     </VCol>
                 </VRow>
             </VForm>
