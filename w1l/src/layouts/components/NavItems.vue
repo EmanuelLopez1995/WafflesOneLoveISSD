@@ -152,6 +152,19 @@ onMounted(async () => {
         }"
       />
     </VerticalNavGroup>
+    <VerticalNavGroup
+      :item="{
+        title: 'Estadísticas',
+        icon: 'ri-line-chart-line',
+      }"
+    >
+      <VerticalNavLink
+        :item="{
+          title: 'Compras',
+          to: '/comprasEstadisticas',
+        }"
+      />
+    </VerticalNavGroup>
     <VerticalNavLink
       v-if="seccionesPermitidas.includes('5')"
       :item="{
